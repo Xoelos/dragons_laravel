@@ -1,0 +1,31 @@
+$primary: #233237;
+// $secondary: #DE3C4B;
+$secondary: #ec2127;
+$highlight: #eac67a;
+$background: #18121e;
+$light: #ede7d9;
+$white: #ffffff;
+$black: #000000;
+
+$white-darker: darken($white, 25%);
+$black-lighter: lighten($black, 25%);
+
+$light-lighter: lighten($light, 25%);
+$light-darker: darken($light, 25%);
+
+$highlight-darker: darken($highlight, 25%);
+
+// Palette here:
+// https://coolors.co/233237-ec2127-18121e-ede7d9-eac67a
+
+// This table defines the theme colors (variant names)
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  // "success": $light,
+    "info": $highlight,
+  "warning": $highlight,
+  "danger": $secondary,
+  "light": $light,
+  "dark": $highlight-darker
+);
