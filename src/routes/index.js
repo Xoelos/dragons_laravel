@@ -1,15 +1,13 @@
 import Vue from 'vue';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
 import store from '../store';
 import Router from 'vue-router';
+import axios from 'axios';
 import Documents from '../views/Documents';
 import About from '../views/About';
 import Login from '../views/Login';
 import Register from '../views/Register';
-import Home from '../views/Home';
-import CharacterEdit from '../views/CharacterEdit.vue';
+import Home from '../views/home/Home';
+import Character from '../views/character/Character.vue';
 import Play from '../views/Play';
 import Landing from '../views/Landing';
 import NotFound from '../views/NotFound';
@@ -27,25 +25,27 @@ const router = new Router({
       props: true,
       meta: {
         guest: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME}`,
       },
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
+      props: true,
       meta: {
         guest: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Login`,
       },
     },
     {
       path: '/register',
       name: 'Register',
       component: Register,
+      props: true,
       meta: {
         guest: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Register`,
       },
     },
     {
@@ -54,7 +54,7 @@ const router = new Router({
       component: Documents,
       meta: {
         requiresAuth: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Documents`,
       },
     },
     {
@@ -62,7 +62,7 @@ const router = new Router({
       name: 'About',
       component: About,
       meta: {
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | About`,
       },
     },
     {
@@ -72,17 +72,17 @@ const router = new Router({
       props: true,
       meta: {
         requiresAuth: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Home`,
       },
     },
     {
       path: '/character',
-      name: 'CharacterEdit',
-      component: CharacterEdit,
+      name: 'Character',
+      component: Character,
       props: true,
       meta: {
         requiresAuth: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Edit`,
       },
     },
     {
@@ -92,7 +92,7 @@ const router = new Router({
       props: true,
       meta: {
         requiresAuth: true,
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME} | Play Campaign`,
       },
     },
     {
@@ -100,34 +100,50 @@ const router = new Router({
       name: 'NotFound',
       component: NotFound,
       meta: {
-        title: 'Dashboard',
+        title: `${process.env.VUE_APP_SITE_NAME}`,
       },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  var authed = firebase.auth().currentUser;
+  let auth = store.getters.user.access_token;
+  let auth_local = JSON.parse(localStorage.getItem('access_token'));
+  console.log(`Auth Variable: ${auth}`);
 
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (authed == null) {
+  if (auth_local) {
+    if (!auth && auth_local.expiry > new Date().getTime()) {
+      auth = auth_local.token;
+      store.getters.user.access_token = auth_local.token;
+      console.log(`Auth Local: ${auth}`);
+    }
+  }
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (auth == null) {
       next({
         path: '/landing',
         params: { nextUrl: to.fullPath },
       });
-    } else {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(authed.uid)
-        .get()
-        .then((res) => {
-          store.dispatch('fetchUser', res.data());
+    } else if (!store.getters.user.data) {
+      axios
+        .get(`${store.getters.env}/api/user`, {
+          headers: { Authorization: `Bearer ${auth}` },
+        })
+        .then(res => {
+          console.log(res);
+          store.dispatch('fetchUser', res.data.user);
+          next();
+        })
+        .catch(err => {
+          console.log(err.response);
+          next();
         });
+    } else {
       next();
     }
-  } else if (to.matched.some((record) => record.meta.guest)) {
-    if (authed !== null) {
+  } else if (to.matched.some(record => record.meta.guest)) {
+    if (auth !== null) {
       next({ name: 'Home' });
     } else {
       next();
@@ -135,6 +151,14 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to, from) => {
+  // Use next tick to handle router history correctly
+  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+  Vue.nextTick(() => {
+    document.title = to.meta.title || 'Three-5';
+  });
 });
 
 export default router;

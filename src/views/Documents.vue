@@ -2,22 +2,27 @@
   <span>
     <b-row>
       <b-col cols="12" align="center">
-        <h1>Dungeons and Dragons 3.5e Documents</h1>
+        <h1 class="text-center">Dungeons and Dragons 3.5e Documents</h1>
       </b-col>
     </b-row>
     <b-row class="mt-4">
-      <b-col cols="8" md="6">
-        <h2>Player Guide:</h2>
+      <b-col cols="12" md="6" lg="4">
+        <h2 class="text-center">Player Guide:</h2>
         <a :href="`${publicPath}player-handbook-35e.pdf`" download>
-          <img src="@/assets/player-handbook.jpg" />
+          <img src="@/assets/player-handbook.jpg" class="d-block mx-auto mb-5" />
         </a>
-        <h2>Monster Manual:</h2>
+      </b-col>
+      <b-col cols="12" md="6" lg="4">
+        <h2 class="text-center">Monster Manual:</h2>
         <a :href="`${publicPath}monster-manual-35e.pdf`" download>
-          <img src="@/assets/monster-manual.jpg" />
+          <img src="@/assets/monster-manual.jpg" class="d-block mx-auto mb-5" />
         </a>
-        <h2>Dungeon Master's Guide:</h2>
+      </b-col>
+
+      <b-col cols="12" md="6" lg="4">
+        <h2 class="text-center">Dungeon Master's Guide:</h2>
         <a :href="`${publicPath}dungeon-masters-guide-35e.pdf`" download>
-          <img src="@/assets/dungeon-masters-guide.jpg" />
+          <img src="@/assets/dungeon-masters-guide.jpg" class="d-block mx-auto mb-5" />
         </a>
       </b-col>
     </b-row>
@@ -29,9 +34,9 @@ export default {
   name: "Documents",
   data() {
     return {
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
     };
-  }
+  },
 };
 </script>
 
@@ -40,6 +45,6 @@ export default {
 img {
   height: 300px;
   width: 232px;
-  margin-bottom: 3rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>

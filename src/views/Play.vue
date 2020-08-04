@@ -12,25 +12,18 @@
                     <ul class="playerGrid p-0">
                       <span
                         v-for="(player, index) in campaignUsers"
+                        :key="index"
                         @click="
                           editCharacter(player.characterId, player.uid, false)
                         "
-                        :key="index"
                       >
-                        <li
-                          class="mb-3 p-1"
-                          :class="{ activateId: activeId == player.uid }"
-                        >
+                        <li class="mb-3 p-1" :class="{ activateId: activeId == player.uid }">
                           <p
+                            v-if="player.characterName"
                             class="m-0"
                             align="center"
-                            v-if="player.characterName"
-                          >
-                            {{ `${player.user} | ${player.characterName}` }}
-                          </p>
-                          <p class="m-0" align="center" v-else>
-                            {{ `${player.user}` }}
-                          </p>
+                          >{{ `${player.user} | ${player.characterName}` }}</p>
+                          <p v-else class="m-0" align="center">{{ `${player.user}` }}</p>
                         </li>
                       </span>
                     </ul>
@@ -40,10 +33,10 @@
                     <ul class="playerGrid p-0">
                       <span
                         v-for="(player, index) in campaignUsersOffline"
+                        :key="index"
                         @click="
                           editCharacter(player.characterId, player.uid, true)
                         "
-                        :key="index"
                       >
                         <li
                           class="mb-3 p-1"
@@ -55,57 +48,42 @@
                           }"
                         >
                           <p
+                            v-if="player.characterName"
                             class="m-0"
                             align="center"
-                            v-if="player.characterName"
-                          >
-                            {{ `${player.user} | ${player.characterName}` }}
-                          </p>
-                          <p class="m-0" align="center" v-else>
-                            {{ `${player.user}` }}
-                          </p>
+                          >{{ `${player.user} | ${player.characterName}` }}</p>
+                          <p v-else class="m-0" align="center">{{ `${player.user}` }}</p>
                         </li>
                       </span>
                     </ul>
                   </span>
                 </span>
-              </b-col></b-row
-            >
+              </b-col>
+            </b-row>
             <b-row>
               <b-col cols="12">
-                <DiceRoll
-                  :characterId="playerCharacterId"
-                  :campaignId="campaignId"
-                ></DiceRoll>
-              </b-col> </b-row
-          ></b-col>
+                <DiceRoll :character-id="playerCharacterId" :campaign-id="campaignId"></DiceRoll>
+              </b-col>
+            </b-row>
+          </b-col>
           <b-col cols="12" md="4">
             <b-button
               :disabled="activeId == null"
               class="mb-4 w-100"
               @click="clearPlayerId()"
-              >Global</b-button
-            >
+            >Global</b-button>
             <div class="feedBox">
               <div class="chatBox">
                 <p
-                  :v-if="campaign.messages.length > 0"
                   v-for="(message, index) in campaign.messages"
                   :key="index"
-                >
-                  {{ message.message }}
-                </p>
+                  :v-if="campaign.messages.length > 0"
+                >{{ message.message }}</p>
               </div>
               <div class="messageBox">
                 <b-form @keyup.enter="sendMessage" @submit.stop.prevent>
-                  <textarea
-                    id="messageArea"
-                    v-model="message"
-                    rows="2"
-                  ></textarea>
-                  <b-button variant="primary" @click="sendMessage"
-                    >Send</b-button
-                  >
+                  <textarea id="messageArea" v-model="message" rows="2"></textarea>
+                  <b-button variant="primary" @click="sendMessage">Send</b-button>
                 </b-form>
               </div>
             </div>
@@ -113,34 +91,27 @@
         </b-row>
       </b-tab>
       <b-tab v-if="characterId !== null" title="Character Edit">
-        <CharacterEdit
-          v-if="characterId !== null"
-          :characterId="characterId"
-        ></CharacterEdit>
+        <Character v-if="characterId !== null" :character-id="characterId"></Character>
       </b-tab>
-      <b-tab
-        v-else
-        :disabled="playerCharacterId == null"
-        title="DM Character Edit"
-      >
-        <CharacterEdit
+      <b-tab v-else :disabled="playerCharacterId == null" title="DM Character Edit">
+        <Character
           v-if="characterId == null && playerCharacterId !== null"
-          :characterId="playerCharacterId"
           :key="playerCharacterId"
-        ></CharacterEdit>
+          :character-id="playerCharacterId"
+        ></Character>
       </b-tab>
       <!-- <b-tab title="Roll Dice">
         <DiceRoll
-          :characterId="playerCharacterId"
+          :character-id="playerCharacterId"
           :campaignId="campaignId"
         ></DiceRoll>
-      </b-tab> -->
+      </b-tab>-->
     </b-tabs>
   </div>
 </template>
 
 <script>
-import CharacterEdit from "./CharacterEdit.vue";
+import Character from "./character/Character.vue";
 import DiceRoll from "../components/DiceRoll.vue";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -150,18 +121,18 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    CharacterEdit: CharacterEdit,
-    DiceRoll: DiceRoll
+    Character: Character,
+    DiceRoll: DiceRoll,
   },
   props: {
     campaignId: {
       type: String,
-      default: ""
+      default: "",
     },
     characterId: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data: () => {
     return {
@@ -172,19 +143,20 @@ export default {
       activeId: null,
       privateMessaging: false,
       message: "",
-      error: null
+      error: null,
     };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+      env: "env",
+    }),
   },
   created() {
     if (this.$props.campaignId == "") {
       this.$router.replace({
-        name: "Home"
+        name: "Home",
       });
     } else {
       // Campaign Listener
@@ -192,7 +164,7 @@ export default {
         .firestore()
         .collection("campaigns")
         .doc(this.$props.campaignId)
-        .onSnapshot(res => {
+        .onSnapshot((res) => {
           let dbData = res.data();
           dbData.messages = [];
           this.campaign = dbData;
@@ -203,7 +175,7 @@ export default {
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .on("child_added", res => {
+        .on("child_added", (res) => {
           if (
             res.val().status == "online" &&
             res.val().user !== this.user.data.firstName
@@ -222,14 +194,14 @@ export default {
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .on("child_changed", res => {
+        .on("child_changed", (res) => {
           if (
             res.val().status == "online" &&
             res.val().user !== this.user.data.firstName
           ) {
             this.campaignUsers.push(res.val());
             this.campaignUsersOffline = this.campaignUsersOffline.filter(
-              user => {
+              (user) => {
                 return user.uid !== res.val().uid;
               }
             );
@@ -238,7 +210,7 @@ export default {
             res.val().user !== this.user.data.firstName
           ) {
             this.campaignUsersOffline.push(res.val());
-            this.campaignUsers = this.campaignUsers.filter(user => {
+            this.campaignUsers = this.campaignUsers.filter((user) => {
               return user.uid !== res.val().uid;
             });
           }
@@ -285,7 +257,7 @@ export default {
               characterName: characterData.characterName,
               characterRace: characterData.race,
               characterClass: characterData.class,
-              time: firebase.database.ServerValue.TIMESTAMP
+              time: firebase.database.ServerValue.TIMESTAMP,
             });
         } else {
           // Set online in campaign
@@ -296,7 +268,7 @@ export default {
               user: `${userData.firstName}`,
               status: "online",
               uid: userData.uid,
-              time: firebase.database.ServerValue.TIMESTAMP
+              time: firebase.database.ServerValue.TIMESTAMP,
             });
         }
 
@@ -319,7 +291,7 @@ export default {
           .ref(`${campaignId}/users/${dbCampaignUserId}`)
           .update({
             status: "online",
-            time: firebase.database.ServerValue.TIMESTAMP
+            time: firebase.database.ServerValue.TIMESTAMP,
           });
       }
 
@@ -330,7 +302,7 @@ export default {
         .onDisconnect()
         .update({
           status: "offline",
-          time: firebase.database.ServerValue.TIMESTAMP
+          time: firebase.database.ServerValue.TIMESTAMP,
         });
 
       // Push hello
@@ -338,7 +310,7 @@ export default {
         .database()
         .ref(`${campaignId}/chat/global`)
         .push({
-          message: `${userData.firstName} has joined the game!`
+          message: `${userData.firstName} has joined the game!`,
         });
 
       // 4) Message Listener Global
@@ -346,7 +318,7 @@ export default {
         .database()
         .ref(`${campaignId}/chat/global`)
         .limitToLast(1)
-        .on("child_added", res => {
+        .on("child_added", (res) => {
           this.campaign.messages.unshift(res.val());
         });
 
@@ -354,12 +326,12 @@ export default {
       firebase
         .database()
         .ref(`${campaignId}/users`)
-        .on("child_changed", res => {
+        .on("child_changed", (res) => {
           if (this.$props.characterId !== null) {
           }
           if (res.val().status == "offline") {
             this.campaign.messages.unshift({
-              message: `${res.val().user} is now ${res.val().status}`
+              message: `${res.val().user} is now ${res.val().status}`,
             });
           }
         });
@@ -404,7 +376,7 @@ export default {
         .orderByChild("uid")
         .equalTo(firebase.auth().currentUser.uid)
         .once("value")
-        .then(res => {
+        .then((res) => {
           let statusId = Object.keys(res.val())[0];
 
           // 3) set disconnect listener
@@ -420,7 +392,7 @@ export default {
             .ref(`${this.$props.campaignId}/users/${statusId}`)
             .update({
               status: "offline",
-              time: firebase.database.ServerValue.TIMESTAMP
+              time: firebase.database.ServerValue.TIMESTAMP,
             })
             .then(() => {});
         });
@@ -438,9 +410,9 @@ export default {
           .database()
           .ref(`${this.$props.campaignId}/chat/global`)
           .push({
-            message: `${this.user.data.firstName}: ${message}`
+            message: `${this.user.data.firstName}: ${message}`,
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       }
@@ -457,18 +429,18 @@ export default {
           .ref(`${this.$props.campaignId}/chat/private`)
           .push({
             [`${this.user.data.uid}`]: {
-              message: `${this.user.data.firstName}: ${message}`
-            }
+              message: `${this.user.data.firstName}: ${message}`,
+            },
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       }
     },
     changeView(page) {
       this.$router.push({
-        name: "CharacterEdit",
-        params: { characterId: this.$props.characterId }
+        name: "Character",
+        params: { characterId: this.$props.characterId },
       });
     },
     editCharacter(charId, id, privateMess) {
@@ -480,8 +452,8 @@ export default {
       this.playerCharacterId = null;
       this.activeId = null;
       this.privateMessaging = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

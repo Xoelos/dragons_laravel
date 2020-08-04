@@ -1,8 +1,11 @@
 $primary: #233237;
 // $secondary: #DE3C4B;
 $secondary: #ec2127;
+$offset: #696047;
 $highlight: #eac67a;
 $background: #18121e;
+$success: #28a745;
+$danger: #ec2127;
 $light: #ede7d9;
 $white: #ffffff;
 $black: #000000;
@@ -14,18 +17,28 @@ $light-lighter: lighten($light, 25%);
 $light-darker: darken($light, 25%);
 
 $highlight-darker: darken($highlight, 25%);
+$primary-darker: lighten($primary, 10%);
 
 // Palette here:
 // https://coolors.co/233237-ec2127-18121e-ede7d9-eac67a
 
 // This table defines the theme colors (variant names)
 $theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  // "success": $light,
-    "info": $highlight,
-  "warning": $highlight,
-  "danger": $secondary,
-  "light": $light,
-  "dark": $highlight-darker
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $highlight,
+  'warning': $primary-darker,
+  'danger': $danger,
+  'light': $light,
+  'dark': $highlight-darker,
 );
+
+$header: 'Libre Baskerville', serif;
+$header-bold: 700;
+$paragraph: 'Source Sans Pro', sans-serif;
+$paragraph-semi-bold: 600;
+$paragraph-bold: 900;
+$font-standard: 400;
+
+$nav-height: 70px;

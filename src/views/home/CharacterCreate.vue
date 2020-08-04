@@ -5,35 +5,35 @@
         <h3>Characters:</h3>
       </b-col>
       <b-col cols="12" md="auto">
-        <b-button class="characterButton ml-auto" v-b-modal.modal-xl-1>Create new Character</b-button>
+        <b-button v-b-modal.modal-xl-1 class="characterButton ml-auto">Create new Character</b-button>
       </b-col>
     </b-row>
     <b-list-group v-if="characters.length == 0">
       <b-list-group-item>Add a character to get started!</b-list-group-item>
     </b-list-group>
     <b-list-group v-else>
-      <div class="characterGrid" v-for="character in characters" :key="character.id">
+      <div v-for="character in characters" :key="character.id" class="characterGrid">
         <b-list-group-item
           button
           class="mb-4"
           @click="editCharacter(character.id)"
-        >{{ character.data.characterName }}</b-list-group-item>
+        >{{ character.name }}</b-list-group-item>
         <b-button
+          v-b-modal.deleteCharacterModal
           class="mb-4"
           variant="secondary"
           @click="deleteCharacterId = character.id"
-          v-b-modal.deleteCharacterModal
         >X</b-button>
       </div>
 
       <b-modal
+        id="deleteCharacterModal"
         ok-title="DELETE"
         ok-variant="secondary"
         cancel-variant="primary"
-        @ok="deleteCharacter()"
-        id="deleteCharacterModal"
-        class="d-contents"
         title="DELETE CHARACTER?"
+        class="d-contents"
+        @ok="deleteCharacter()"
       >
         <p class="my-4">This change is permanent, it cannot be undone!</p>
       </b-modal>
@@ -46,7 +46,7 @@
           <b-form-group id="input-group-1" label="Character Info:" label-for="input-1">
             <b-form-input
               id="input-1"
-              v-model="form.characterName"
+              v-model="form.name"
               type="text"
               required
               placeholder="Enter Character Name"
@@ -84,10 +84,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import blankUser from "../views/CharacterEdit.js";
+import axios from "axios";
 
 export default {
   name: "CharacterCreate",
@@ -97,11 +94,11 @@ export default {
       characters: [],
       err: null,
       form: {
-        characterName: "",
+        name: "",
         race: "",
         class: "",
         alignment: "",
-        gender: ""
+        gender: "",
       },
       alignments: [
         { value: null, text: "Select One" },
@@ -113,7 +110,7 @@ export default {
         "Neutral Evil",
         "Chaotic Good",
         "Chaotic Neutral",
-        "Chaotic Evil"
+        "Chaotic Evil",
       ],
       genders: [{ value: null, text: "Select One" }, "Male", "Female"],
       races: [
@@ -124,7 +121,7 @@ export default {
         "Gnome",
         "Half-Elf",
         "Half-Orc",
-        "Halfling"
+        "Halfling",
       ],
       classes: [
         { text: "Select your Class", value: null },
@@ -138,126 +135,85 @@ export default {
         "Ranger",
         "Rogue",
         "Sorcerer",
-        "Wizard"
-      ]
+        "Wizard",
+      ],
     };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+      env: "env",
+    }),
   },
   created() {
-    firebase
-      .firestore()
-      .collection("characters")
-      .where("uid", "==", firebase.auth().currentUser.uid)
-      .onSnapshot(res => {
+    this.loading({ status: true, message: "Loading your Adventure!" });
+    axios
+      .get(`${this.env}/api/character`, {
+        headers: { Authorization: `Bearer ${this.user.access_token}` },
+      })
+      .then((res) => {
+        console.log(res.data.data);
         this.characters = [];
-        res.forEach(character => {
+        res.data.data.forEach((character) => {
           this.characters.push({
             id: character.id,
-            data: character.data()
+            name: character.name,
           });
         });
+        this.loading({ status: false, message: "" });
+      })
+      .catch((err) => {
+        console.log(err.response);
+        this.loading({ status: false, message: "" });
       });
   },
   methods: {
+    loading(change) {
+      this.$emit("loading", change);
+    },
     onSubmit(evt) {
       evt.preventDefault();
-      firebase
-        .firestore()
-        .collection("characters")
-        .add({
-          uid: this.user.data.uid,
-          characterName: this.form.characterName,
-          gender: this.form.gender,
-          race: this.form.race,
-          class: this.form.class,
-          alignment: this.form.alignment,
-          baseAttack: "1",
-          experience: "0",
-          pClass: "",
-          pcExperience: "",
-          speed: "30",
-          ...blankUser
-        })
-        .then(res => {
+      axios
+        .post(
+          `${this.env}/api/character`,
+          {
+            user_id: this.user.data.id,
+            name: this.form.name,
+            race: this.form.race,
+            class: this.form.class,
+            alignment: this.form.alignment,
+            gender: this.form.gender,
+          },
+          {
+            headers: { Authorization: `Bearer ${this.user.access_token}` },
+          }
+        )
+        .then((res) => {
+          console.log(JSON.parse(JSON.stringify(res)));
+          this.characters.push(res.data.character);
           this.$bvModal.hide("modal-xl-1");
           this.form = {
-            characterName: "",
+            name: "",
             race: "",
             class: "",
             alignment: "",
-            gender: ""
+            gender: "",
           };
         })
-        .catch(err => {
-          this.err = err;
+        .catch((err) => {
+          console.log(JSON.parse(JSON.stringify(err.response)));
+          this.err = err.response;
         });
     },
     editCharacter(characterId) {
       this.$router.push({
-        name: "CharacterEdit",
-        params: { characterId: characterId }
+        name: "Character",
+        params: { characterId },
       });
     },
-    deleteCharacter() {
-      let playerId = firebase.auth().currentUser.uid;
-
-      firebase
-        .firestore()
-        .collection("campaigns")
-        .where(`users.${playerId}.characterId`, "==", this.deleteCharacterId)
-        .get()
-        .then(response => {
-          if (response) {
-            response.forEach(doc => {
-              firebase
-                .firestore()
-                .collection("campaigns")
-                .doc(doc.id)
-                .update({
-                  [`users.${playerId}`]: firebase.firestore.FieldValue.delete()
-                })
-                .then(res => {
-                  this.$bvModal.hide("modal-xl-1");
-                  this.form = {
-                    characterName: "",
-                    race: "",
-                    class: "",
-                    alignment: "",
-                    gender: ""
-                  };
-                });
-
-              firebase
-                .database()
-                .ref(`${doc.id}/users`)
-                .orderByChild("characterId")
-                .equalTo(this.deleteCharacterId)
-                .once("value", res => {
-                  if (res.val()) {
-                    let userKey = Object.keys(res.val())[0];
-
-                    firebase
-                      .database()
-                      .ref(`${doc.id}/users/${userKey}`)
-                      .remove();
-                  }
-                });
-            });
-          }
-        });
-
-      firebase
-        .firestore()
-        .collection("characters")
-        .doc(this.deleteCharacterId)
-        .delete();
-    }
-  }
+    deleteCharacter() {},
+  },
 };
 </script>
 

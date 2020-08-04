@@ -1,23 +1,20 @@
 <template>
   <span>
     <b-row class="mt-5">
-      <b-col cols="12" align="center"><h3>Roll Dice!</h3></b-col>
+      <b-col cols="12" align="center">
+        <h3>Roll Dice!</h3>
+      </b-col>
     </b-row>
     <b-row>
       <b-col cols="2" offset="4" align="right">
-        <img
-          v-if="still"
-          src="@/assets/dice-roll-still.png"
-          class="diceButton"
-          @click="rollDice"/><img
-          v-else
-          src="@/assets/dice-roll.gif"
-          class="diceButton"
-          @click="rollDice"/></b-col
-      ><b-col cols="2">
+        <img v-if="still" src="@/assets/dice-roll-still.png" class="diceButton" @click="rollDice" />
+        <img v-else src="@/assets/dice-roll.gif" class="diceButton" @click="rollDice" />
+      </b-col>
+      <b-col cols="2">
         <small>Sides on die</small>
-        <b-form-input v-model="dieSides"></b-form-input></b-col
-    ></b-row>
+        <b-form-input v-model="dieSides"></b-form-input>
+      </b-col>
+    </b-row>
   </span>
 </template>
 
@@ -31,25 +28,26 @@ export default {
   props: {
     campaignId: {
       type: String,
-      default: ""
+      default: "",
     },
     characterId: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data: () => {
     return {
       dieSides: 20,
       still: true,
-      err: null
+      err: null,
     };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user"
-    })
+      user: "user",
+      env: "env",
+    }),
   },
   mounted() {},
   methods: {
@@ -78,13 +76,13 @@ export default {
         .database()
         .ref(`${this.$props.campaignId}/chat/global`)
         .push({
-          message: message
+          message: message,
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
