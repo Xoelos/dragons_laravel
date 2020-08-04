@@ -8,7 +8,9 @@
             <b-breadcrumb-item
               :active="!activeView ? true : false"
               class="lead"
-              @click="activeView ? updateView({ breadcrumb: [], activeView: null }) : null"
+              @click="
+                activeView ? updateView({ breadcrumb: [], activeView: null }) : null
+              "
               >Character</b-breadcrumb-item
             >
             <b-breadcrumb-item
@@ -91,7 +93,7 @@
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
-                ></CharacterSummary>
+                />
                 <CharacterAbility
                   v-else-if="activeView == 'abilities'"
                   :abilities="form.abilities"
@@ -101,7 +103,7 @@
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
-                ></CharacterAbility>
+                />
                 <CharacterSkill
                   v-else-if="activeView == 'skills'"
                   :skills="form.skills"
@@ -112,7 +114,7 @@
                   @refresh="refresh"
                   @make-editable="makeEditable"
                   @move="move"
-                ></CharacterSkill>
+                />
                 <CharacterSavingThrow
                   v-else-if="activeView == 'savingThrows'"
                   :saving-throws="form.saving_throws"
@@ -122,7 +124,7 @@
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
-                ></CharacterSavingThrow>
+                />
                 <CharacterWeapon
                   v-else-if="activeView == 'weapons'"
                   :weapons="form.weapons"
@@ -133,7 +135,7 @@
                   @refresh="refresh"
                   @make-editable="makeEditable"
                   @move="move"
-                ></CharacterWeapon>
+                />
                 <CharacterArmor
                   v-else-if="activeView == 'armor'"
                   :armors="form.armor"
@@ -144,7 +146,7 @@
                   @refresh="refresh"
                   @make-editable="makeEditable"
                   @move="move"
-                ></CharacterArmor>
+                />
                 <CharacterNote
                   v-else-if="activeView == 'notes'"
                   :skills="form.skills"
@@ -154,7 +156,7 @@
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
-                ></CharacterNote>
+                />
                 <CharacterEdit
                   v-else
                   :form="form"
@@ -164,7 +166,7 @@
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
-                ></CharacterEdit>
+                />
               </b-col>
             </b-row>
           </div>

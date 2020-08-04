@@ -4,12 +4,12 @@
     <b-navbar-brand>
       <div v-if="user.access_token">
         <router-link to="/">
-          <img src="@/assets/dndlogo.png" />
+          <img src="@/assets/dndlogo.png">
         </router-link>
       </div>
       <div v-else>
         <router-link to="/landing">
-          <img src="@/assets/dndlogo.png" />
+          <img src="@/assets/dndlogo.png">
         </router-link>
       </div>
     </b-navbar-brand>

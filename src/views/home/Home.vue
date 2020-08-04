@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import CharacterCreate from "./CharacterCreate";
-import CampaignCreate from "./CampaignCreate";
-import { mapGetters } from "vuex";
+import CharacterCreate from './CharacterCreate';
+import CampaignCreate from './CampaignCreate';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     CharacterCreate,
     CampaignCreate,
@@ -34,14 +34,14 @@ export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {},
   methods: {
     loading(change) {
-      this.$emit("loading", change);
+      this.$emit('loading', change);
     },
   },
 };

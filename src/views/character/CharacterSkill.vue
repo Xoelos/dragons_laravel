@@ -8,7 +8,7 @@
           :form="{ data: skills, route: '/api/character/skills' }"
           :character-id="characterId"
           @make-editable="makeEditable"
-        ></EditSave>
+        />
       </b-col>
       <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">
         <b-button
@@ -23,7 +23,7 @@
       <table>
         <thead>
           <tr>
-            <th class="sm-col"></th>
+            <th class="sm-col" />
             <th class="h6 sm-col">
               <cite title="Skill can be performed by average adventurer">
                 Untrained
@@ -45,10 +45,10 @@
             <td class="sm-col">
               <b-button-group vertical class="d-inline-flex">
                 <b-button pill class="px-2 py-0" variant="light" @click="move(index, -1)">
-                  <font-awesome-icon icon="caret-up"></font-awesome-icon>
+                  <font-awesome-icon icon="caret-up" />
                 </b-button>
                 <b-button pill class="px-2 py-0" variant="light" @click="move(index, 1)">
-                  <font-awesome-icon icon="caret-down"></font-awesome-icon>
+                  <font-awesome-icon icon="caret-down" />
                 </b-button>
               </b-button-group>
             </td>
@@ -59,7 +59,7 @@
                 :unchecked-value="0"
                 :disabled="!editable"
                 required
-              ></b-form-checkbox>
+              />
             </td>
             <td class="sm-col">
               <b-form-checkbox
@@ -68,7 +68,7 @@
                 :unchecked-value="0"
                 :disabled="!editable"
                 required
-              ></b-form-checkbox>
+              />
             </td>
             <td>
               <b-form-input
@@ -82,7 +82,7 @@
                     : null
                 "
                 required
-              ></b-form-input>
+              />
             </td>
 
             <td class="lead">
@@ -115,7 +115,7 @@
                     :options="abilityList"
                     :disabled="!editable"
                     required
-                  ></b-form-select>
+                  />
                 </b-col>
                 <b-col cols="3" class="p-0 m-auto">
                   <b-form-input
@@ -123,7 +123,7 @@
                     :readonly="!editable"
                     type="number"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
                 <b-col cols="3" class="p-0 m-auto">
                   <b-form-input
@@ -131,7 +131,7 @@
                     :readonly="!editable"
                     type="number"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
               </b-row>
               <b-row class="mt-4">
@@ -141,7 +141,7 @@
                     :form="{ data: skills, route: '/api/character/skills' }"
                     :character-id="characterId"
                     @make-editable="makeEditable"
-                  ></EditSave>
+                  />
                 </b-col>
                 <b-col cols="6" offset="3" md="2" offset-md="0" class="text-center my-2">
                   <b-button

@@ -9,7 +9,9 @@
           <b-button v-b-modal.modal-xl-2 class="ml-auto campaignButton"
             >Create new Campaign</b-button
           >
-          <b-button v-b-modal.modal-xl-3 class="ml-2 campaignButton">Join a campaign</b-button>
+          <b-button v-b-modal.modal-xl-3 class="ml-2 campaignButton"
+            >Join a campaign</b-button
+          >
         </b-col>
       </b-row>
     </div>
@@ -31,7 +33,9 @@
           @click="deleteCampaignId = { id: campaign.id, owned: true, characterId: null }"
           >X</b-button
         >
-        <small>{{ `Campaign ID: ${campaign.id} | Campaign Code: ${campaign.code}` }}</small>
+        <small>{{
+          `Campaign ID: ${campaign.id} | Campaign Code: ${campaign.code}`
+        }}</small>
       </div>
       <!-- <div
         class="campaignGrid mb-3"

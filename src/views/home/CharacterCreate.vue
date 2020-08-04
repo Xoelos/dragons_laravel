@@ -57,17 +57,32 @@
           <b-row>
             <b-col cols="6">
               <b-form-group id="input-group-2" label="Race:" label-for="input-2">
-                <b-form-select id="input-2" v-model="form.race" :options="races" required />
+                <b-form-select
+                  id="input-2"
+                  v-model="form.race"
+                  :options="races"
+                  required
+                />
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-3" label="Class:" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.class" :options="classes" required />
+                <b-form-select
+                  id="input-3"
+                  v-model="form.class"
+                  :options="classes"
+                  required
+                />
               </b-form-group>
             </b-col>
           </b-row>
 
-          <b-form-group id="input-group-4" class="mt-3" label="Alignment:" label-for="input-4">
+          <b-form-group
+            id="input-group-4"
+            class="mt-3"
+            label="Alignment:"
+            label-for="input-4"
+          >
             <b-form-select
               id="input-4"
               v-model="form.alignment"
@@ -77,7 +92,12 @@
           </b-form-group>
 
           <b-form-group id="input-group-5" label="Gender:" label-for="input-5">
-            <b-form-select id="input-5" v-model="form.gender" :options="genders" required />
+            <b-form-select
+              id="input-5"
+              v-model="form.gender"
+              :options="genders"
+              required
+            />
           </b-form-group>
 
           <b-button type="submit" variant="primary">Submit</b-button>

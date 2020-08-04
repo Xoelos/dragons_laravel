@@ -8,7 +8,7 @@
           :form="{ data: weapons, route: '/api/character/weapons' }"
           :character-id="characterId"
           @make-editable="makeEditable"
-        ></EditSave>
+        />
       </b-col>
       <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">
         <b-button
@@ -23,7 +23,7 @@
       <table>
         <thead>
           <tr>
-            <th class="sm-col"></th>
+            <th class="sm-col" />
             <th class="h6 sm-col">Equipped?</th>
             <th class="h6">Name</th>
             <th class="h6">Attack Bonus</th>
@@ -35,10 +35,10 @@
             <td class="sm-col">
               <b-button-group vertical class="d-inline-flex">
                 <b-button pill class="px-2 py-0" variant="light" @click="move(index, -1)">
-                  <font-awesome-icon icon="caret-up"></font-awesome-icon>
+                  <font-awesome-icon icon="caret-up" />
                 </b-button>
                 <b-button pill class="px-2 py-0" variant="light" @click="move(index, 1)">
-                  <font-awesome-icon icon="caret-down"></font-awesome-icon>
+                  <font-awesome-icon icon="caret-down" />
                 </b-button>
               </b-button-group>
             </td>
@@ -49,7 +49,7 @@
                 :unchecked-value="0"
                 :disabled="!editable"
                 required
-              ></b-form-checkbox>
+              />
             </td>
             <td>
               <b-form-input
@@ -57,7 +57,7 @@
                 :readonly="!editable"
                 type="text"
                 required
-              ></b-form-input>
+              />
             </td>
             <td>
               <b-form-input
@@ -65,7 +65,7 @@
                 :readonly="!editable"
                 type="number"
                 required
-              ></b-form-input>
+              />
             </td>
             <td>
               <b-form-input
@@ -73,7 +73,7 @@
                 :readonly="!editable"
                 type="text"
                 required
-              ></b-form-input>
+              />
             </td>
             <td>
               <b-button variant="primary" @click="$bvModal.show('modal-weapon-' + index)"
@@ -94,7 +94,7 @@
                     :readonly="!editable"
                     type="text"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
                 <b-col md="3" lg="2">
                   <small class="h6">Type</small>
@@ -103,7 +103,7 @@
                     :readonly="!editable"
                     type="text"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
                 <b-col md="3" lg="2">
                   <small class="h6">Range</small>
@@ -112,7 +112,7 @@
                     :readonly="!editable"
                     type="text"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
               </b-row>
               <b-row class="mb-5 mt-4 text-center">
@@ -123,7 +123,7 @@
                     :readonly="!editable"
                     type="number"
                     required
-                  ></b-form-input>
+                  />
                 </b-col>
                 <b-col md="5">
                   <small class="h6">Notes</small>
@@ -131,7 +131,7 @@
                     v-model="weapon.notes"
                     :readonly="!editable"
                     rows="3"
-                  ></b-form-textarea>
+                  />
                 </b-col>
               </b-row>
               <b-row class="mt-4">
@@ -141,7 +141,7 @@
                     :form="{ data: weapons, route: '/api/character/weapons' }"
                     :character-id="characterId"
                     @make-editable="makeEditable"
-                  ></EditSave>
+                  />
                 </b-col>
                 <b-col cols="6" offset="3" md="2" offset-md="0" class="text-center my-2">
                   <b-button

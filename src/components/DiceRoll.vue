@@ -12,12 +12,12 @@
           src="@/assets/dice-roll-still.png"
           class="diceButton"
           @click="rollDice"
-        />
-        <img v-else src="@/assets/dice-roll.gif" class="diceButton" @click="rollDice" />
+        >
+        <img v-else src="@/assets/dice-roll.gif" class="diceButton" @click="rollDice">
       </b-col>
       <b-col cols="2">
         <small>Sides on die</small>
-        <b-form-input v-model="dieSides"></b-form-input>
+        <b-form-input v-model="dieSides" />
       </b-col>
     </b-row>
   </span>

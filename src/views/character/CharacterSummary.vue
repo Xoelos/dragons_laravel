@@ -5,7 +5,7 @@
       :form="{ data: summary, exp: exp, route: '/api/character/summary' }"
       :character-id="characterId"
       @make-editable="makeEditable"
-    ></EditSave>
+    />
     <!-- Summary Display Page -->
     <div class="display">
       <b-row>
@@ -16,7 +16,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Gender</small>
@@ -25,7 +25,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Race</small>
@@ -34,9 +34,9 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
-        <b-col cols="0" md="4"></b-col>
+        <b-col cols="0" md="4" />
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Alignment</small>
           <b-form-input
@@ -44,7 +44,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Size</small>
@@ -53,7 +53,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Speed</small>
@@ -62,7 +62,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Base Attack</small>
@@ -71,10 +71,10 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <!-- Buffer -->
-        <b-col cols="0" md="4"></b-col>
+        <b-col cols="0" md="4" />
       </b-row>
       <b-row class="mt-5">
         <b-col cols="12" md="2">
@@ -84,7 +84,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Experience</small>
@@ -94,7 +94,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Level</small>
@@ -102,7 +102,7 @@
         </b-col>
       </b-row>
 
-      <hr class="d-md-none my-5" />
+      <hr class="d-md-none my-5">
 
       <b-row class="mt-md-2">
         <b-col cols="12" md="2">
@@ -112,7 +112,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">MC Experience</small>
@@ -123,7 +123,7 @@
             type="number"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">MC Level</small>
@@ -133,7 +133,7 @@
         </b-col>
       </b-row>
 
-      <hr class="d-md-none my-5" />
+      <hr class="d-md-none my-5">
 
       <b-row class="mt-md-2">
         <b-col cols="12" md="2">
@@ -143,7 +143,7 @@
             size="sm"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">PC Experience</small>
@@ -154,7 +154,7 @@
             type="number"
             :readonly="!editable"
             required
-          ></b-form-input>
+          />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">PC Level</small>

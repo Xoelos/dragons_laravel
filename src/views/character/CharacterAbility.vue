@@ -7,7 +7,7 @@
       :character-id="characterId"
       @make-editable="makeEditable"
       @refresh="refresh"
-    ></EditSave>
+    />
     <div class="display">
       <table align="center">
         <thead>
@@ -32,7 +32,7 @@
                 type="number"
                 :readonly="!editable"
                 required
-              ></b-form-input>
+              />
             </td>
             <td>
               <b-form-input
@@ -41,7 +41,7 @@
                 min="0"
                 :readonly="!editable"
                 required
-              ></b-form-input>
+              />
             </td>
           </tr>
         </tbody>

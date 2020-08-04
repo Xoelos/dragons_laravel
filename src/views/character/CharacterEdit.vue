@@ -4,32 +4,32 @@
     <b-row class="d-block d-md-none mt-5">
       <b-col cols="12" md="6" lg="4">
         <b-list-group>
-          <b-list-group-item @click="updateView('summary')" class="list-nav h3"
+          <b-list-group-item class="list-nav h3" @click="updateView('summary')"
             >Summary</b-list-group-item
           >
-          <b-list-group-item @click="updateView('abilities')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('abilities')">
             Abilities
-            <font-awesome-icon icon="fist-raised"></font-awesome-icon>
+            <font-awesome-icon icon="fist-raised" />
           </b-list-group-item>
-          <b-list-group-item @click="updateView('skills')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('skills')">
             Skills
-            <font-awesome-icon icon="swimmer"></font-awesome-icon>
+            <font-awesome-icon icon="swimmer" />
           </b-list-group-item>
-          <b-list-group-item @click="updateView('savingThrows')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('savingThrows')">
             Saving Throws
-            <font-awesome-icon icon="skull-crossbones"></font-awesome-icon>
+            <font-awesome-icon icon="skull-crossbones" />
           </b-list-group-item>
-          <b-list-group-item @click="updateView('weapons')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('weapons')">
             Weapons
-            <font-awesome-icon icon="gavel"></font-awesome-icon>
+            <font-awesome-icon icon="gavel" />
           </b-list-group-item>
-          <b-list-group-item @click="updateView('armor')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('armor')">
             Armor
-            <font-awesome-icon icon="shield-alt"></font-awesome-icon>
+            <font-awesome-icon icon="shield-alt" />
           </b-list-group-item>
-          <b-list-group-item @click="updateView('notes')" class="list-nav h3">
+          <b-list-group-item class="list-nav h3" @click="updateView('notes')">
             Notes
-            <font-awesome-icon icon="sticky-note"></font-awesome-icon>
+            <font-awesome-icon icon="sticky-note" />
           </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -41,37 +41,37 @@
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('abilities')">
           Abilities
-          <font-awesome-icon icon="fist-raised"></font-awesome-icon>
+          <font-awesome-icon icon="fist-raised" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('skills')">
           Skills
-          <font-awesome-icon icon="swimmer"></font-awesome-icon>
+          <font-awesome-icon icon="swimmer" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('savingThrows')">
           Saving Throws
-          <font-awesome-icon icon="skull-crossbones"></font-awesome-icon>
+          <font-awesome-icon icon="skull-crossbones" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('weapons')">
           Weapons
-          <font-awesome-icon icon="gavel"></font-awesome-icon>
+          <font-awesome-icon icon="gavel" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('armor')">
           Armor
-          <font-awesome-icon icon="shield-alt"></font-awesome-icon>
+          <font-awesome-icon icon="shield-alt" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">
         <h2 class="d-inline header-nav" @click="updateView('notes')">
           Notes
-          <font-awesome-icon icon="sticky-note"></font-awesome-icon>
+          <font-awesome-icon icon="sticky-note" />
         </h2>
       </b-col>
     </b-row>
@@ -100,7 +100,6 @@ export default {
   data: () => {
     return {};
   },
-  created() {},
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
@@ -108,6 +107,7 @@ export default {
       env: 'env',
     }),
   },
+  created() {},
   methods: {
     updateView(breadcrumb) {
       this.$emit('update-view', {
