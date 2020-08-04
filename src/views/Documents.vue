@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "Documents",
+  name: 'Documents',
   data() {
     return {
       publicPath: process.env.BASE_URL,

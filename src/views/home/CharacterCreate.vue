@@ -5,7 +5,9 @@
         <h3>Characters:</h3>
       </b-col>
       <b-col cols="12" md="auto">
-        <b-button v-b-modal.modal-xl-1 class="characterButton ml-auto">Create new Character</b-button>
+        <b-button v-b-modal.modal-xl-1 class="characterButton ml-auto"
+          >Create new Character</b-button
+        >
       </b-col>
     </b-row>
     <b-list-group v-if="characters.length == 0">
@@ -13,17 +15,16 @@
     </b-list-group>
     <b-list-group v-else>
       <div v-for="character in characters" :key="character.id" class="characterGrid">
-        <b-list-group-item
-          button
-          class="mb-4"
-          @click="editCharacter(character.id)"
-        >{{ character.name }}</b-list-group-item>
+        <b-list-group-item button class="mb-4" @click="editCharacter(character.id)">{{
+          character.name
+        }}</b-list-group-item>
         <b-button
           v-b-modal.deleteCharacterModal
           class="mb-4"
           variant="secondary"
           @click="deleteCharacterId = character.id"
-        >X</b-button>
+          >X</b-button
+        >
       </div>
 
       <b-modal
@@ -67,7 +68,12 @@
           </b-row>
 
           <b-form-group id="input-group-4" class="mt-3" label="Alignment:" label-for="input-4">
-            <b-form-select id="input-4" v-model="form.alignment" :options="alignments" required />
+            <b-form-select
+              id="input-4"
+              v-model="form.alignment"
+              :options="alignments"
+              required
+            />
           </b-form-group>
 
           <b-form-group id="input-group-5" label="Gender:" label-for="input-5">
@@ -83,94 +89,94 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
-  name: "CharacterCreate",
+  name: 'CharacterCreate',
   data: () => {
     return {
-      deleteCharacterId: "",
+      deleteCharacterId: '',
       characters: [],
       err: null,
       form: {
-        name: "",
-        race: "",
-        class: "",
-        alignment: "",
-        gender: "",
+        name: '',
+        race: '',
+        class: '',
+        alignment: '',
+        gender: '',
       },
       alignments: [
-        { value: null, text: "Select One" },
-        "Lawful Good",
-        "Lawful Neutral",
-        "Lawful Evil",
-        "Neutral Good",
-        "True Neutral",
-        "Neutral Evil",
-        "Chaotic Good",
-        "Chaotic Neutral",
-        "Chaotic Evil",
+        { value: null, text: 'Select One' },
+        'Lawful Good',
+        'Lawful Neutral',
+        'Lawful Evil',
+        'Neutral Good',
+        'True Neutral',
+        'Neutral Evil',
+        'Chaotic Good',
+        'Chaotic Neutral',
+        'Chaotic Evil',
       ],
-      genders: [{ value: null, text: "Select One" }, "Male", "Female"],
+      genders: [{ value: null, text: 'Select One' }, 'Male', 'Female'],
       races: [
-        { text: "Select your Race", value: null },
-        "Human",
-        "Dwarf",
-        "Elf",
-        "Gnome",
-        "Half-Elf",
-        "Half-Orc",
-        "Halfling",
+        { text: 'Select your Race', value: null },
+        'Human',
+        'Dwarf',
+        'Elf',
+        'Gnome',
+        'Half-Elf',
+        'Half-Orc',
+        'Halfling',
       ],
       classes: [
-        { text: "Select your Class", value: null },
-        "Barbarian",
-        "Bard",
-        "Cleric",
-        "Druid",
-        "Fighter",
-        "Monk",
-        "Paladin",
-        "Ranger",
-        "Rogue",
-        "Sorcerer",
-        "Wizard",
+        { text: 'Select your Class', value: null },
+        'Barbarian',
+        'Bard',
+        'Cleric',
+        'Druid',
+        'Fighter',
+        'Monk',
+        'Paladin',
+        'Ranger',
+        'Rogue',
+        'Sorcerer',
+        'Wizard',
       ],
     };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {
-    this.loading({ status: true, message: "Loading your Adventure!" });
+    this.loading({ status: true, message: 'Loading your Adventure!' });
     axios
       .get(`${this.env}/api/character`, {
         headers: { Authorization: `Bearer ${this.user.access_token}` },
       })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data);
         this.characters = [];
-        res.data.data.forEach((character) => {
+        res.data.data.forEach(character => {
           this.characters.push({
             id: character.id,
             name: character.name,
           });
         });
-        this.loading({ status: false, message: "" });
+        this.loading({ status: false, message: '' });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err.response);
-        this.loading({ status: false, message: "" });
+        this.loading({ status: false, message: '' });
       });
   },
   methods: {
     loading(change) {
-      this.$emit("loading", change);
+      this.$emit('loading', change);
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -189,26 +195,26 @@ export default {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           }
         )
-        .then((res) => {
+        .then(res => {
           console.log(JSON.parse(JSON.stringify(res)));
           this.characters.push(res.data.character);
-          this.$bvModal.hide("modal-xl-1");
+          this.$bvModal.hide('modal-xl-1');
           this.form = {
-            name: "",
-            race: "",
-            class: "",
-            alignment: "",
-            gender: "",
+            name: '',
+            race: '',
+            class: '',
+            alignment: '',
+            gender: '',
           };
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(JSON.parse(JSON.stringify(err.response)));
           this.err = err.response;
         });
     },
     editCharacter(characterId) {
       this.$router.push({
-        name: "Character",
+        name: 'Character',
         params: { characterId },
       });
     },

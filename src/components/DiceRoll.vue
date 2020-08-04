@@ -7,7 +7,12 @@
     </b-row>
     <b-row>
       <b-col cols="2" offset="4" align="right">
-        <img v-if="still" src="@/assets/dice-roll-still.png" class="diceButton" @click="rollDice" />
+        <img
+          v-if="still"
+          src="@/assets/dice-roll-still.png"
+          class="diceButton"
+          @click="rollDice"
+        />
         <img v-else src="@/assets/dice-roll.gif" class="diceButton" @click="rollDice" />
       </b-col>
       <b-col cols="2">
@@ -19,20 +24,20 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import { mapGetters } from 'vuex';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 export default {
   props: {
     campaignId: {
       type: String,
-      default: "",
+      default: '',
     },
     characterId: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data: () => {
@@ -45,17 +50,15 @@ export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   mounted() {},
   methods: {
     rollDice() {
       if (parseInt(this.dieSides) > 0) {
-        this.sendDiceMessage(
-          Math.floor(Math.random() * parseInt(this.dieSides)) + 1
-        );
+        this.sendDiceMessage(Math.floor(Math.random() * parseInt(this.dieSides)) + 1);
       }
       this.still = false;
       setTimeout(() => {
@@ -78,7 +81,7 @@ export default {
         .push({
           message: message,
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },

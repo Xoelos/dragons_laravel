@@ -42,25 +42,25 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "Home",
+  name: 'Home',
   computed: {
     ...mapGetters({
       // map `this.user` to `this.$store.getters.user`
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   methods: {
     loading(change) {
-      this.$emit("loading", change);
+      this.$emit('loading', change);
     },
     signOut() {
-      this.loading({ status: true, message: "See you later!" });
+      this.loading({ status: true, message: 'See you later!' });
       axios
         .post(
           `${this.env}/api/auth/logout`,
@@ -71,24 +71,24 @@ export default {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           }
         )
-        .then((res) => {
-          localStorage.removeItem("access_token");
+        .then(res => {
+          localStorage.removeItem('access_token');
           this.user.access_token = null;
-          this.loading({ status: false, message: "" });
+          this.loading({ status: false, message: '' });
           this.$router.push({
-            name: "Landing",
+            name: 'Landing',
             params: { logout: res.data.message },
           });
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response);
           if (err.response) {
-            localStorage.removeItem("access_token");
+            localStorage.removeItem('access_token');
             this.user.access_token = null;
-            this.loading({ status: false, message: "" });
+            this.loading({ status: false, message: '' });
             this.$router.push({
-              name: "Landing",
-              params: { logout: "You have been successfully logged out!" },
+              name: 'Landing',
+              params: { logout: 'You have been successfully logged out!' },
             });
           }
         });

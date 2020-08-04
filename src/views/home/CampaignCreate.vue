@@ -6,27 +6,31 @@
           <h3>Campaigns:</h3>
         </b-col>
         <b-col class="d-flex" cols="12" md="auto">
-          <b-button v-b-modal.modal-xl-2 class="ml-auto campaignButton">Create new Campaign</b-button>
+          <b-button v-b-modal.modal-xl-2 class="ml-auto campaignButton"
+            >Create new Campaign</b-button
+          >
           <b-button v-b-modal.modal-xl-3 class="ml-2 campaignButton">Join a campaign</b-button>
         </b-col>
       </b-row>
     </div>
 
     <b-list-group v-if="campaigns.length == 0 && joinedCampaigns.length == 0">
-      <b-list-group-item class="mb-3">Create or join a campaign to get started!</b-list-group-item>
+      <b-list-group-item class="mb-3"
+        >Create or join a campaign to get started!</b-list-group-item
+      >
     </b-list-group>
     <b-list-group v-else>
       <div v-for="campaign in campaigns" :key="campaign.id" class="campaignGrid mb-3">
-        <b-list-group-item
-          button
-          @click="startGame(campaign.id, null)"
-        >{{ `Owned Campaign: ${campaign.name}` }}</b-list-group-item>
+        <b-list-group-item button @click="startGame(campaign.id, null)">{{
+          `Owned Campaign: ${campaign.name}`
+        }}</b-list-group-item>
         <b-button
           v-b-modal.deleteCampaignModal
           class="deleteCampaignButton"
           variant="secondary"
-          @click="deleteCampaignId = {id: campaign.id, owned: true, characterId: null}"
-        >X</b-button>
+          @click="deleteCampaignId = { id: campaign.id, owned: true, characterId: null }"
+          >X</b-button
+        >
         <small>{{ `Campaign ID: ${campaign.id} | Campaign Code: ${campaign.code}` }}</small>
       </div>
       <!-- <div
@@ -104,22 +108,22 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
-  name: "CampaignCreate",
+  name: 'CampaignCreate',
   data: () => {
     return {
-      deleteCampaignId: "",
+      deleteCampaignId: '',
       createForm: {
-        name: "",
-        code: "",
+        name: '',
+        code: '',
       },
       joinForm: {
-        campaignId: "",
-        code: "",
-        character: "",
+        campaignId: '',
+        code: '',
+        character: '',
       },
       campaigns: [],
       joinedCampaigns: [],
@@ -131,8 +135,8 @@ export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   async created() {
@@ -142,7 +146,7 @@ export default {
 
     console.log(res);
     this.campaigns = [];
-    res.data.forEach((campaign) => {
+    res.data.forEach(campaign => {
       this.campaigns.push({
         id: campaign.id,
         name: campaign.name,

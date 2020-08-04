@@ -3,7 +3,7 @@
   <span>
     <EditSave
       :editable="editable"
-      :form="{data: savingThrows, route: '/api/character/saving-throws'}"
+      :form="{ data: savingThrows, route: '/api/character/saving-throws' }"
       :character-id="characterId"
       @make-editable="makeEditable"
       @refresh="refresh"
@@ -22,12 +22,20 @@
           <tr v-for="(savingThrow, index) in savingThrows" :key="index">
             <td class="px-md-5">{{ savingThrow.name }}</td>
             <td class="px-3 px-md-5">
-              {{ Math.floor((
-              parseInt(savingThrow.base_score) +
-              parseInt(savingThrow.magic_score) +
-              parseInt(savingThrow.misc_score) +
-              parseInt(savingThrow.temp_score) +
-              Math.floor((parseInt(savingThrow.ability_score) + parseInt(savingThrow.ability_temp_score) - 10) / 2))) || 0 }}
+              {{
+                Math.floor(
+                  parseInt(savingThrow.base_score) +
+                    parseInt(savingThrow.magic_score) +
+                    parseInt(savingThrow.misc_score) +
+                    parseInt(savingThrow.temp_score) +
+                    Math.floor(
+                      (parseInt(savingThrow.ability_score) +
+                        parseInt(savingThrow.ability_temp_score) -
+                        10) /
+                        2
+                    )
+                ) || 0
+              }}
             </td>
             <td>
               <b-form-input
@@ -70,11 +78,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
-import EditSave from "../../components/EditSave";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
+import EditSave from '../../components/EditSave';
 
 export default {
   components: { EditSave },
@@ -99,23 +107,23 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {},
   methods: {
     updateView(breadcrumb) {
-      this.$emit("update-view", {
+      this.$emit('update-view', {
         breadcrumb: breadcrumbs[breadcrumb],
         activeView: breadcrumb,
       });
     },
     makeEditable() {
-      this.$emit("make-editable");
+      this.$emit('make-editable');
     },
     refresh() {
-      this.$emit("refresh");
+      this.$emit('refresh');
     },
   },
 };

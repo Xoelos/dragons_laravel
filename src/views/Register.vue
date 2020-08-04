@@ -47,9 +47,10 @@
               type="password"
               :state="passwordStrength"
             />
-            <b-form-invalid-feedback
-              :state="passwordStrength"
-            >Password must 8 characters long and contain at least ONE uppercase, ONE lowercase, and ONE number</b-form-invalid-feedback>
+            <b-form-invalid-feedback :state="passwordStrength"
+              >Password must 8 characters long and contain at least ONE uppercase, ONE
+              lowercase, and ONE number</b-form-invalid-feedback
+            >
           </b-form-group>
 
           <b-form-group id="input-group-5" label-for="input-5">
@@ -62,13 +63,13 @@
               :state="passwordValidation"
               type="password"
             />
-            <b-form-invalid-feedback :state="passwordValidation">Your password must match!</b-form-invalid-feedback>
+            <b-form-invalid-feedback :state="passwordValidation"
+              >Your password must match!</b-form-invalid-feedback
+            >
           </b-form-group>
-          <b-button
-            id="registerSubmit"
-            type="submit"
-            class="d-block mx-auto mt-5 w-50"
-          >Create Account</b-button>
+          <b-button id="registerSubmit" type="submit" class="d-block mx-auto mt-5 w-50"
+            >Create Account</b-button
+          >
         </b-form>
       </b-col>
       <b-col cols="0" md="3" lg="4"></b-col>
@@ -83,19 +84,19 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data: () => {
     return {
       form: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
       },
       error: null,
       show: false,
@@ -104,17 +105,16 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
     passwordValidation() {
       return this.form.password == this.form.confirmPassword;
     },
     passwordStrength() {
       return (
-        new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$").test(
-          this.form.password
-        ) || this.form.password == ""
+        new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').test(this.form.password) ||
+        this.form.password == ''
       );
     },
   },
@@ -129,7 +129,7 @@ export default {
           password: this.form.password,
           password_confirmation: this.form.confirmPassword,
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           this.show = false;
           this.user.access_token = res.data.access_token;
@@ -139,11 +139,11 @@ export default {
             expiry: new Date().getTime() + 1000 * 900,
           };
 
-          localStorage.setItem("access_token", JSON.stringify(access_token));
+          localStorage.setItem('access_token', JSON.stringify(access_token));
 
-          this.$router.replace({ name: "Home" });
+          this.$router.replace({ name: 'Home' });
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data);
           this.error = err.response.data;
         });

@@ -8,14 +8,16 @@
             <b-breadcrumb-item
               :active="!activeView ? true : false"
               class="lead"
-              @click="activeView ? updateView({breadcrumb: [], activeView: null}) : null"
-            >Character</b-breadcrumb-item>
+              @click="activeView ? updateView({ breadcrumb: [], activeView: null }) : null"
+              >Character</b-breadcrumb-item
+            >
             <b-breadcrumb-item
               v-for="(view, index) in breadcrumb"
               :key="index"
               :active="view.active"
               class="lead"
-            >{{ view.text }}</b-breadcrumb-item>
+              >{{ view.text }}</b-breadcrumb-item
+            >
           </b-breadcrumb>
         </b-col>
       </b-row>
@@ -68,20 +70,20 @@
               <b-col cols="12" align="center">
                 <CharacterSummary
                   v-if="activeView == 'summary'"
-                  :summary="{ 
-                    name: form.name, 
-                    race: form.race, 
-                    class: form.class, 
-                    alignment: form.alignment, 
-                    base_attack: form.base_attack, 
-                    experience: form.experience,   
-                    prestige_class: form.prestige_class, 
-                    prestige_experience: form.prestige_experience,   
-                    multi_class: form.multi_class, 
+                  :summary="{
+                    name: form.name,
+                    race: form.race,
+                    class: form.class,
+                    alignment: form.alignment,
+                    base_attack: form.base_attack,
+                    experience: form.experience,
+                    prestige_class: form.prestige_class,
+                    prestige_experience: form.prestige_experience,
+                    multi_class: form.multi_class,
                     multi_experience: form.multi_experience,
                     gender: form.gender,
                     speed: form.speed,
-                    size: form.size, 
+                    size: form.size,
                   }"
                   :editable="editable"
                   :breadcrumb="breadcrumb"
@@ -173,19 +175,19 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
 
-import CharacterSummary from "./CharacterSummary";
-import CharacterAbility from "./CharacterAbility";
-import CharacterSkill from "./CharacterSkill";
-import CharacterSavingThrow from "./CharacterSavingThrow";
-import CharacterWeapon from "./CharacterWeapon";
-import CharacterArmor from "./CharacterArmor";
-import CharacterNote from "./CharacterNote";
-import CharacterEdit from "./CharacterEdit";
+import CharacterSummary from './CharacterSummary';
+import CharacterAbility from './CharacterAbility';
+import CharacterSkill from './CharacterSkill';
+import CharacterSavingThrow from './CharacterSavingThrow';
+import CharacterWeapon from './CharacterWeapon';
+import CharacterArmor from './CharacterArmor';
+import CharacterNote from './CharacterNote';
+import CharacterEdit from './CharacterEdit';
 
 export default {
   components: {
@@ -215,35 +217,35 @@ export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {
-    this.loading({ status: true, message: "Loading your Character!" });
+    this.loading({ status: true, message: 'Loading your Character!' });
     if (this.characterId) {
       axios
         .get(`${this.env}/api/character/${this.characterId}`, {
           headers: { Authorization: `Bearer ${this.user.access_token}` },
         })
-        .then((res) => {
+        .then(res => {
           console.log(JSON.parse(JSON.stringify(res.data.data)));
           this.form = res.data.data;
-          this.loading({ status: false, message: "" });
+          this.loading({ status: false, message: '' });
         })
-        .catch((err) => {
-          this.loading({ status: false, message: "" });
+        .catch(err => {
+          this.loading({ status: false, message: '' });
           console.log(err.response);
         });
     } else {
       this.$router.replace({
-        name: "Home",
+        name: 'Home',
       });
     }
   },
   methods: {
     loading(change) {
-      this.$emit("loading", change);
+      this.$emit('loading', change);
     },
     refresh() {
       if (this.characterId) {
@@ -251,16 +253,16 @@ export default {
           .get(`${this.env}/api/character/${this.characterId}`, {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           })
-          .then((res) => {
+          .then(res => {
             console.log(JSON.parse(JSON.stringify(res.data.data)));
             this.form = res.data.data;
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err.response);
           });
       } else {
         this.$router.replace({
-          name: "Home",
+          name: 'Home',
         });
       }
     },

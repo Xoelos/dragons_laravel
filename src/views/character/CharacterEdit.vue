@@ -4,7 +4,9 @@
     <b-row class="d-block d-md-none mt-5">
       <b-col cols="12" md="6" lg="4">
         <b-list-group>
-          <b-list-group-item @click="updateView('summary')" class="list-nav h3">Summary</b-list-group-item>
+          <b-list-group-item @click="updateView('summary')" class="list-nav h3"
+            >Summary</b-list-group-item
+          >
           <b-list-group-item @click="updateView('abilities')" class="list-nav h3">
             Abilities
             <font-awesome-icon icon="fist-raised"></font-awesome-icon>
@@ -76,12 +78,11 @@
   </div>
 </template>
 
-
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
 
 export default {
   props: {
@@ -103,13 +104,13 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   methods: {
     updateView(breadcrumb) {
-      this.$emit("update-view", {
+      this.$emit('update-view', {
         breadcrumb: breadcrumbs[breadcrumb],
         activeView: breadcrumb,
       });

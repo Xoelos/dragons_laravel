@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "Landing",
+  name: 'Landing',
   props: {
     logout: {
       type: String,

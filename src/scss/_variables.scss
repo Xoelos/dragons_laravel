@@ -23,8 +23,7 @@ $primary-darker: lighten($primary, 10%);
 // https://coolors.co/233237-ec2127-18121e-ede7d9-eac67a
 
 // This table defines the theme colors (variant names)
-$theme-colors: (
-  'primary': $primary,
+$theme-colors: ('primary': $primary,
   'secondary': $secondary,
   'success': $success,
   'info': $highlight,
@@ -34,9 +33,11 @@ $theme-colors: (
   'dark': $highlight-darker,
 );
 
-$header: 'Libre Baskerville', serif;
+$header: 'Libre Baskerville',
+serif;
 $header-bold: 700;
-$paragraph: 'Source Sans Pro', sans-serif;
+$paragraph: 'Source Sans Pro',
+sans-serif;
 $paragraph-semi-bold: 600;
 $paragraph-bold: 900;
 $font-standard: 400;

@@ -26,7 +26,9 @@
               class="m-auto"
             />
           </b-form-group>
-          <b-button id="loginSubmit" type="submit" class="d-block mx-auto mt-5 w-50">Login</b-button>
+          <b-button id="loginSubmit" type="submit" class="d-block mx-auto mt-5 w-50"
+            >Login</b-button
+          >
         </b-form>
       </b-col>
       <b-col cols="0" md="3" lg="4"></b-col>
@@ -39,18 +41,17 @@
   </div>
 </template>
 
-
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data: () => {
     return {
       form: {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       },
       alertMessage: null,
     };
@@ -58,8 +59,8 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   methods: {
@@ -72,7 +73,7 @@ export default {
           email: this.form.email,
           password: this.form.password,
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           this.user.access_token = res.data.access_token;
 
@@ -81,17 +82,17 @@ export default {
             expiry: new Date().getTime() + 1000 * 900,
           };
 
-          localStorage.setItem("access_token", JSON.stringify(access_token));
+          localStorage.setItem('access_token', JSON.stringify(access_token));
 
           this.alertShow = false;
-          this.$router.replace({ name: "Home" });
+          this.$router.replace({ name: 'Home' });
         })
-        .catch((err) => {
+        .catch(err => {
           this.alertMessage = err.response.data.error;
         });
     },
     ...mapMutations([
-      "SET_LOGGED_IN", // map `this.SET_LOGGED_IN()` to `this.$store.commit('SET_LOGGED_IN')`
+      'SET_LOGGED_IN', // map `this.SET_LOGGED_IN()` to `this.$store.commit('SET_LOGGED_IN')`
     ]),
   },
 };

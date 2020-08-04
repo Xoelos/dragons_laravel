@@ -13,16 +13,12 @@
                       <span
                         v-for="(player, index) in campaignUsers"
                         :key="index"
-                        @click="
-                          editCharacter(player.characterId, player.uid, false)
-                        "
+                        @click="editCharacter(player.characterId, player.uid, false)"
                       >
                         <li class="mb-3 p-1" :class="{ activateId: activeId == player.uid }">
-                          <p
-                            v-if="player.characterName"
-                            class="m-0"
-                            align="center"
-                          >{{ `${player.user} | ${player.characterName}` }}</p>
+                          <p v-if="player.characterName" class="m-0" align="center">
+                            {{ `${player.user} | ${player.characterName}` }}
+                          </p>
                           <p v-else class="m-0" align="center">{{ `${player.user}` }}</p>
                         </li>
                       </span>
@@ -34,9 +30,7 @@
                       <span
                         v-for="(player, index) in campaignUsersOffline"
                         :key="index"
-                        @click="
-                          editCharacter(player.characterId, player.uid, true)
-                        "
+                        @click="editCharacter(player.characterId, player.uid, true)"
                       >
                         <li
                           class="mb-3 p-1"
@@ -44,14 +38,12 @@
                             activateId:
                               activeId == player.uid &&
                               privateMessaging &&
-                              characterId == null
+                              characterId == null,
                           }"
                         >
-                          <p
-                            v-if="player.characterName"
-                            class="m-0"
-                            align="center"
-                          >{{ `${player.user} | ${player.characterName}` }}</p>
+                          <p v-if="player.characterName" class="m-0" align="center">
+                            {{ `${player.user} | ${player.characterName}` }}
+                          </p>
                           <p v-else class="m-0" align="center">{{ `${player.user}` }}</p>
                         </li>
                       </span>
@@ -62,23 +54,26 @@
             </b-row>
             <b-row>
               <b-col cols="12">
-                <DiceRoll :character-id="playerCharacterId" :campaign-id="campaignId"></DiceRoll>
+                <DiceRoll
+                  :character-id="playerCharacterId"
+                  :campaign-id="campaignId"
+                ></DiceRoll>
               </b-col>
             </b-row>
           </b-col>
           <b-col cols="12" md="4">
-            <b-button
-              :disabled="activeId == null"
-              class="mb-4 w-100"
-              @click="clearPlayerId()"
-            >Global</b-button>
+            <b-button :disabled="activeId == null" class="mb-4 w-100" @click="clearPlayerId()"
+              >Global</b-button
+            >
             <div class="feedBox">
               <div class="chatBox">
                 <p
                   v-for="(message, index) in campaign.messages"
                   :key="index"
                   :v-if="campaign.messages.length > 0"
-                >{{ message.message }}</p>
+                >
+                  {{ message.message }}
+                </p>
               </div>
               <div class="messageBox">
                 <b-form @keyup.enter="sendMessage" @submit.stop.prevent>
@@ -111,13 +106,13 @@
 </template>
 
 <script>
-import Character from "./character/Character.vue";
-import DiceRoll from "../components/DiceRoll.vue";
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/firestore";
-import "firebase/auth";
-import { mapGetters } from "vuex";
+import Character from './character/Character.vue';
+import DiceRoll from '../components/DiceRoll.vue';
+import firebase from 'firebase/app';
+import 'firebase/database';
+import 'firebase/firestore';
+import 'firebase/auth';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -127,11 +122,11 @@ export default {
   props: {
     campaignId: {
       type: String,
-      default: "",
+      default: '',
     },
     characterId: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data: () => {
@@ -142,29 +137,29 @@ export default {
       playerCharacterId: null,
       activeId: null,
       privateMessaging: false,
-      message: "",
+      message: '',
       error: null,
     };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {
-    if (this.$props.campaignId == "") {
+    if (this.$props.campaignId == '') {
       this.$router.replace({
-        name: "Home",
+        name: 'Home',
       });
     } else {
       // Campaign Listener
       firebase
         .firestore()
-        .collection("campaigns")
+        .collection('campaigns')
         .doc(this.$props.campaignId)
-        .onSnapshot((res) => {
+        .onSnapshot(res => {
           let dbData = res.data();
           dbData.messages = [];
           this.campaign = dbData;
@@ -175,14 +170,11 @@ export default {
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .on("child_added", (res) => {
-          if (
-            res.val().status == "online" &&
-            res.val().user !== this.user.data.firstName
-          ) {
+        .on('child_added', res => {
+          if (res.val().status == 'online' && res.val().user !== this.user.data.firstName) {
             this.campaignUsers.push(res.val());
           } else if (
-            res.val().status == "offline" &&
+            res.val().status == 'offline' &&
             res.val().user !== this.user.data.firstName
           ) {
             this.campaignUsersOffline.push(res.val());
@@ -194,23 +186,18 @@ export default {
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .on("child_changed", (res) => {
-          if (
-            res.val().status == "online" &&
-            res.val().user !== this.user.data.firstName
-          ) {
+        .on('child_changed', res => {
+          if (res.val().status == 'online' && res.val().user !== this.user.data.firstName) {
             this.campaignUsers.push(res.val());
-            this.campaignUsersOffline = this.campaignUsersOffline.filter(
-              (user) => {
-                return user.uid !== res.val().uid;
-              }
-            );
+            this.campaignUsersOffline = this.campaignUsersOffline.filter(user => {
+              return user.uid !== res.val().uid;
+            });
           } else if (
-            res.val().status == "offline" &&
+            res.val().status == 'offline' &&
             res.val().user !== this.user.data.firstName
           ) {
             this.campaignUsersOffline.push(res.val());
-            this.campaignUsers = this.campaignUsers.filter((user) => {
+            this.campaignUsers = this.campaignUsers.filter(user => {
               return user.uid !== res.val().uid;
             });
           }
@@ -221,7 +208,7 @@ export default {
     let campaignId = this.$props.campaignId;
     let userData = this.user.data;
 
-    if (campaignId !== "") {
+    if (campaignId !== '') {
       let dbCampaignUserId;
       let dbCampaignUser;
 
@@ -229,9 +216,9 @@ export default {
       dbCampaignUser = await firebase
         .database()
         .ref(`${campaignId}/users`)
-        .orderByChild("uid")
+        .orderByChild('uid')
         .equalTo(firebase.auth().currentUser.uid)
-        .once("value");
+        .once('value');
 
       dbCampaignUser = dbCampaignUser.val();
 
@@ -239,7 +226,7 @@ export default {
         if (this.$props.characterId) {
           let characterData = await firebase
             .firestore()
-            .collection("characters")
+            .collection('characters')
             .doc(this.$props.characterId)
             .get();
 
@@ -251,7 +238,7 @@ export default {
             .ref(`${campaignId}/users`)
             .push({
               user: `${userData.firstName}`,
-              status: "online",
+              status: 'online',
               uid: userData.uid,
               characterId: this.$props.characterId,
               characterName: characterData.characterName,
@@ -266,7 +253,7 @@ export default {
             .ref(`${campaignId}/users`)
             .push({
               user: `${userData.firstName}`,
-              status: "online",
+              status: 'online',
               uid: userData.uid,
               time: firebase.database.ServerValue.TIMESTAMP,
             });
@@ -277,9 +264,9 @@ export default {
         dbCampaignUser = await firebase
           .database()
           .ref(`${campaignId}/users`)
-          .orderByChild("uid")
+          .orderByChild('uid')
           .equalTo(firebase.auth().currentUser.uid)
-          .once("value");
+          .once('value');
 
         dbCampaignUser = dbCampaignUser.val();
       } else {
@@ -290,7 +277,7 @@ export default {
           .database()
           .ref(`${campaignId}/users/${dbCampaignUserId}`)
           .update({
-            status: "online",
+            status: 'online',
             time: firebase.database.ServerValue.TIMESTAMP,
           });
       }
@@ -301,7 +288,7 @@ export default {
         .ref(`${campaignId}/users/${dbCampaignUserId}`)
         .onDisconnect()
         .update({
-          status: "offline",
+          status: 'offline',
           time: firebase.database.ServerValue.TIMESTAMP,
         });
 
@@ -318,7 +305,7 @@ export default {
         .database()
         .ref(`${campaignId}/chat/global`)
         .limitToLast(1)
-        .on("child_added", (res) => {
+        .on('child_added', res => {
           this.campaign.messages.unshift(res.val());
         });
 
@@ -326,10 +313,10 @@ export default {
       firebase
         .database()
         .ref(`${campaignId}/users`)
-        .on("child_changed", (res) => {
+        .on('child_changed', res => {
           if (this.$props.characterId !== null) {
           }
-          if (res.val().status == "offline") {
+          if (res.val().status == 'offline') {
             this.campaign.messages.unshift({
               message: `${res.val().user} is now ${res.val().status}`,
             });
@@ -338,7 +325,7 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.$props.campaignId !== "") {
+    if (this.$props.campaignId !== '') {
       this.campaignUsers = [];
       this.campaignUsersOffline = [];
 
@@ -347,36 +334,36 @@ export default {
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .off("child_added");
+        .off('child_added');
 
       // 2) Status Listener Added
 
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .off("child_changed");
+        .off('child_changed');
 
       // 4) Message Listener Global
       firebase
         .database()
         .ref(`${this.$props.campaignId}/chat/global`)
         .limitToFirst(1)
-        .off("child_added");
+        .off('child_added');
 
       // 5) Status Listener Messages Changed
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .off("child_changed");
+        .off('child_changed');
 
       // Query for user value
       firebase
         .database()
         .ref(`${this.$props.campaignId}/users`)
-        .orderByChild("uid")
+        .orderByChild('uid')
         .equalTo(firebase.auth().currentUser.uid)
-        .once("value")
-        .then((res) => {
+        .once('value')
+        .then(res => {
           let statusId = Object.keys(res.val())[0];
 
           // 3) set disconnect listener
@@ -391,7 +378,7 @@ export default {
             .database()
             .ref(`${this.$props.campaignId}/users/${statusId}`)
             .update({
-              status: "offline",
+              status: 'offline',
               time: firebase.database.ServerValue.TIMESTAMP,
             })
             .then(() => {});
@@ -404,7 +391,7 @@ export default {
 
       if (this.message.length !== 0) {
         let message = this.message;
-        this.message = "";
+        this.message = '';
 
         firebase
           .database()
@@ -412,7 +399,7 @@ export default {
           .push({
             message: `${this.user.data.firstName}: ${message}`,
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           });
       }
@@ -422,7 +409,7 @@ export default {
 
       if (this.message.length !== 0) {
         let message = this.message;
-        this.message = "";
+        this.message = '';
 
         firebase
           .database()
@@ -432,14 +419,14 @@ export default {
               message: `${this.user.data.firstName}: ${message}`,
             },
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           });
       }
     },
     changeView(page) {
       this.$router.push({
-        name: "Character",
+        name: 'Character',
         params: { characterId: this.$props.characterId },
       });
     },

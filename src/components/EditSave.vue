@@ -1,14 +1,17 @@
 <template>
   <b-row>
     <b-col cols="6" md="3" lg="2" class="my-2">
-      <b-button class="d-block m-auto px-4" variant="primary" @click="makeEditable()">Edit</b-button>
+      <b-button class="d-block m-auto px-4" variant="primary" @click="makeEditable()"
+        >Edit</b-button
+      >
     </b-col>
     <b-col cols="6" md="3" lg="2" class="my-2">
       <b-button
         class="d-block m-auto px-4"
         :variant="editable ? 'dark' : 'outline-primary'"
         @click="save()"
-      >Save</b-button>
+        >Save</b-button
+      >
     </b-col>
     <b-col cols="12" md="6" lg="8" align="center">
       <b-alert
@@ -18,15 +21,16 @@
         :variant="saveResponse.variant"
         @dismissed="countdown = 0"
         @dismiss-count-down="countDownChanged(countdown)"
-      >{{ saveResponse.message }}</b-alert>
+        >{{ saveResponse.message }}</b-alert
+      >
     </b-col>
   </b-row>
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -50,15 +54,15 @@ export default {
       timer: 5,
       countdown: 0,
       showSave: false,
-      saveResponse: { message: "Saved!", variant: "success" },
+      saveResponse: { message: 'Saved!', variant: 'success' },
     };
   },
 
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
 
@@ -66,7 +70,7 @@ export default {
 
   methods: {
     makeEditable() {
-      this.$emit("make-editable");
+      this.$emit('make-editable');
     },
     save() {
       if (!this.$props.editable) return;
@@ -94,23 +98,23 @@ export default {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           }
         )
-        .then((res) => {
+        .then(res => {
           console.log(res);
-          this.saveResponse = { message: "Saved!", variant: "success" };
+          this.saveResponse = { message: 'Saved!', variant: 'success' };
           this.showAlert();
           this.refresh();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response);
           this.saveResponse = {
-            message: "Unsuccessful save.",
-            variant: "danger",
+            message: 'Unsuccessful save.',
+            variant: 'danger',
           };
           this.showAlert();
         });
     },
     refresh() {
-      this.$emit("refresh");
+      this.$emit('refresh');
     },
     countDownChanged(countdown) {
       this.countdown = countdown;

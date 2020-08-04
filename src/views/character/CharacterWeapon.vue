@@ -5,7 +5,7 @@
       <b-col cols="12" md="10">
         <EditSave
           :editable="editable"
-          :form="{data: weapons, route: '/api/character/weapons'}"
+          :form="{ data: weapons, route: '/api/character/weapons' }"
           :character-id="characterId"
           @make-editable="makeEditable"
         ></EditSave>
@@ -15,7 +15,8 @@
           class="d-block m-auto px-4"
           :variant="editable ? 'success' : 'outline-primary'"
           @click="addWeapon"
-        >Add</b-button>
+          >Add</b-button
+        >
       </b-col>
     </b-row>
     <div class="display mt-3">
@@ -51,7 +52,12 @@
               ></b-form-checkbox>
             </td>
             <td>
-              <b-form-input v-model="weapon.name" :readonly="!editable" type="text" required></b-form-input>
+              <b-form-input
+                v-model="weapon.name"
+                :readonly="!editable"
+                type="text"
+                required
+              ></b-form-input>
             </td>
             <td>
               <b-form-input
@@ -62,10 +68,17 @@
               ></b-form-input>
             </td>
             <td>
-              <b-form-input v-model="weapon.damage" :readonly="!editable" type="text" required></b-form-input>
+              <b-form-input
+                v-model="weapon.damage"
+                :readonly="!editable"
+                type="text"
+                required
+              ></b-form-input>
             </td>
             <td>
-              <b-button variant="primary" @click="$bvModal.show('modal-weapon-' + index)">Details</b-button>
+              <b-button variant="primary" @click="$bvModal.show('modal-weapon-' + index)"
+                >Details</b-button
+              >
             </td>
             <b-modal
               :id="'modal-weapon-' + index"
@@ -85,28 +98,47 @@
                 </b-col>
                 <b-col md="3" lg="2">
                   <small class="h6">Type</small>
-                  <b-form-input v-model="weapon.type" :readonly="!editable" type="text" required></b-form-input>
+                  <b-form-input
+                    v-model="weapon.type"
+                    :readonly="!editable"
+                    type="text"
+                    required
+                  ></b-form-input>
                 </b-col>
                 <b-col md="3" lg="2">
                   <small class="h6">Range</small>
-                  <b-form-input v-model="weapon.range" :readonly="!editable" type="text" required></b-form-input>
+                  <b-form-input
+                    v-model="weapon.range"
+                    :readonly="!editable"
+                    type="text"
+                    required
+                  ></b-form-input>
                 </b-col>
               </b-row>
               <b-row class="mb-5 mt-4 text-center">
                 <b-col md="1" offset-md="3">
                   <small class="h6">Ammo</small>
-                  <b-form-input v-model="weapon.ammo" :readonly="!editable" type="number" required></b-form-input>
+                  <b-form-input
+                    v-model="weapon.ammo"
+                    :readonly="!editable"
+                    type="number"
+                    required
+                  ></b-form-input>
                 </b-col>
                 <b-col md="5">
                   <small class="h6">Notes</small>
-                  <b-form-textarea v-model="weapon.notes" :readonly="!editable" rows="3"></b-form-textarea>
+                  <b-form-textarea
+                    v-model="weapon.notes"
+                    :readonly="!editable"
+                    rows="3"
+                  ></b-form-textarea>
                 </b-col>
               </b-row>
               <b-row class="mt-4">
                 <b-col md="10">
                   <EditSave
                     :editable="editable"
-                    :form="{data: weapons, route: '/api/character/weapons'}"
+                    :form="{ data: weapons, route: '/api/character/weapons' }"
                     :character-id="characterId"
                     @make-editable="makeEditable"
                   ></EditSave>
@@ -116,7 +148,8 @@
                     class="m-auto px-4"
                     :variant="editable ? 'danger' : 'outline-primary'"
                     @click="deleteWeapon(weapon.id, 'modal-weapon-' + index)"
-                  >Delete</b-button>
+                    >Delete</b-button
+                  >
                 </b-col>
               </b-row>
             </b-modal>
@@ -127,14 +160,13 @@
   </span>
 </template>
 
-
 <script>
-import axios from "axios";
-import arrayMove from "array-move";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
-import EditSave from "../../components/EditSave";
+import axios from 'axios';
+import arrayMove from 'array-move';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
+import EditSave from '../../components/EditSave';
 
 export default {
   components: { EditSave },
@@ -159,22 +191,22 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   methods: {
     updateView(breadcrumb) {
-      this.$emit("update-view", {
+      this.$emit('update-view', {
         breadcrumb: breadcrumbs[breadcrumb],
         activeView: breadcrumb,
       });
     },
     makeEditable() {
-      this.$emit("make-editable");
+      this.$emit('make-editable');
     },
     refresh() {
-      this.$emit("refresh");
+      this.$emit('refresh');
     },
     addWeapon() {
       if (!this.$props.editable) return;
@@ -189,11 +221,11 @@ export default {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           }
         )
-        .then((res) => {
+        .then(res => {
           console.log(res);
           this.refresh();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response);
         });
     },
@@ -204,14 +236,14 @@ export default {
       weapons_array.forEach((weapon, weapon_index) => {
         weapon.order = weapon_index + 2;
       });
-      this.$emit("move", { array: weapons_array, place: "weapons" });
+      this.$emit('move', { array: weapons_array, place: 'weapons' });
     },
     deleteWeapon(weapon_id, modal_id) {
       if (!this.$props.editable) return;
-      if (!confirm("This is permanent, are you sure?")) return;
+      if (!confirm('This is permanent, are you sure?')) return;
       axios({
         url: `${this.env}/api/character/weapons`,
-        method: "delete",
+        method: 'delete',
         data: {
           withCredentials: true,
           weapon_id: weapon_id,
@@ -219,12 +251,12 @@ export default {
         },
         headers: { Authorization: `Bearer ${this.user.access_token}` },
       })
-        .then((res) => {
+        .then(res => {
           console.log(res);
           this.$bvModal.hide(modal_id);
           this.refresh();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response);
         });
     },
@@ -247,7 +279,7 @@ export default {
       border-spacing: 2em 0.25em;
     }
 
-    td input:not([type="checkbox"]),
+    td input:not([type='checkbox']),
     td select,
     td.lead,
     th {

@@ -5,7 +5,7 @@
       <router-view @loading="loading" class="h-100"></router-view>
       <div id="loading" :class="!loaded ? 'd-none' : null">
         <div class="loading_icon text-center">
-          <h1>{{message}}</h1>
+          <h1>{{ message }}</h1>
           <b-spinner variant="dark" type="grow" style="width: 3rem; height: 3rem;"></b-spinner>
         </div>
       </div>
@@ -15,8 +15,8 @@
 
 <script>
 // app.js
-import Vue from "vue";
-import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import Vue from 'vue';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
@@ -25,22 +25,22 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
 // Bootstrap import
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 // Views import
-import Register from "./views/Register.vue";
-import About from "./views/About.vue";
-import Documents from "./views/Documents.vue";
-import Login from "./views/Login.vue";
-import Home from "./views/home/Home.vue";
-import NotFound from "./views/NotFound.vue";
+import Register from './views/Register.vue';
+import About from './views/About.vue';
+import Documents from './views/Documents.vue';
+import Login from './views/Login.vue';
+import Home from './views/home/Home.vue';
+import NotFound from './views/NotFound.vue';
 
 // Component import
-import Navbar from "./components/Navbar.vue";
+import Navbar from './components/Navbar.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Navbar,
   },
@@ -48,7 +48,7 @@ export default {
   data: () => {
     return {
       loaded: false,
-      message: "Loading your adventure!",
+      message: 'Loading your adventure!',
     };
   },
   created() {},
@@ -62,9 +62,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "scss/variables.scss";
-@import "~bootstrap/scss/bootstrap.scss";
-@import "~bootstrap-vue/dist/bootstrap-vue.css";
+@import 'scss/variables.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
 
 html,
 body,

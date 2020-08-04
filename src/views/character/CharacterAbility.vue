@@ -3,7 +3,7 @@
   <span>
     <EditSave
       :editable="editable"
-      :form="{data: abilities, route: '/api/character/abilities'}"
+      :form="{ data: abilities, route: '/api/character/abilities' }"
       :character-id="characterId"
       @make-editable="makeEditable"
       @refresh="refresh"
@@ -19,9 +19,20 @@
         <tbody>
           <tr v-for="(ability, index) in abilities" :key="index">
             <td align="right">{{ ability.name }}</td>
-            <td>{{ Math.floor((parseInt(ability.score) + parseInt(ability.temp_score) - 10) / 2) || 0 }}</td>
             <td>
-              <b-form-input v-model="ability.score" type="number" :readonly="!editable" required></b-form-input>
+              {{
+                Math.floor(
+                  (parseInt(ability.score) + parseInt(ability.temp_score) - 10) / 2
+                ) || 0
+              }}
+            </td>
+            <td>
+              <b-form-input
+                v-model="ability.score"
+                type="number"
+                :readonly="!editable"
+                required
+              ></b-form-input>
             </td>
             <td>
               <b-form-input
@@ -39,13 +50,12 @@
   </span>
 </template>
 
-
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
-import EditSave from "../../components/EditSave";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
+import EditSave from '../../components/EditSave';
 
 export default {
   components: { EditSave },
@@ -70,23 +80,23 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   created() {},
   methods: {
     updateView(breadcrumb) {
-      this.$emit("update-view", {
+      this.$emit('update-view', {
         breadcrumb: breadcrumbs[breadcrumb],
         activeView: breadcrumb,
       });
     },
     makeEditable() {
-      this.$emit("make-editable");
+      this.$emit('make-editable');
     },
     refresh() {
-      this.$emit("refresh");
+      this.$emit('refresh');
     },
   },
 };

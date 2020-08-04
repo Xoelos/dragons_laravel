@@ -1,10 +1,7 @@
 <template>
   <span>
     <b-row>
-      <b-col
-        cols="12"
-        align="center"
-      >
+      <b-col cols="12" align="center">
         <h1>You have successfuly signed out!</h1>
       </b-col>
     </b-row>
@@ -13,13 +10,12 @@
 
 <script>
 export default {
-  name: "SignOut",
+  name: 'SignOut',
   created() {
-    setTimeout(() => this.$router.push({ path: "/landing" }), 1 * 1000);
-  }
+    setTimeout(() => this.$router.push({ path: '/landing' }), 1 * 1000);
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

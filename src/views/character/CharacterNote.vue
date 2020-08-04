@@ -31,12 +31,11 @@
   </div>
 </template>
 
-
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
-import breadcrumbs from "./breadcrumb.js";
+import axios from 'axios';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+import breadcrumbs from './breadcrumb.js';
 
 export default {
   data: () => {
@@ -45,13 +44,13 @@ export default {
   computed: {
     // map `this.env` to `this.$store.getters.env`
     ...mapGetters({
-      user: "user",
-      env: "env",
+      user: 'user',
+      env: 'env',
     }),
   },
   methods: {
     updateView(breadcrumb) {
-      this.$emit("update-view", {
+      this.$emit('update-view', {
         breadcrumb: breadcrumbs[breadcrumb],
         activeView: breadcrumb,
       });
@@ -59,5 +58,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
