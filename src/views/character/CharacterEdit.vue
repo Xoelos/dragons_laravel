@@ -1,5 +1,4 @@
 <template>
-  <!-- Summary Display Page -->
   <div class="display">
     <b-row class="d-block d-md-none mt-5">
       <b-col cols="12" md="6" lg="4">

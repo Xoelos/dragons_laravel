@@ -20,7 +20,7 @@
     </b-row>
     <b-row>
       <b-col class="mt-4" cols="12" offset-md="4" md="4" align="center">
-        <b-alert v-if="logout" show variant="success">{{ logout }}</b-alert>
+        <b-alert :show="!!logout" variant="success">{{ logout }}</b-alert>
       </b-col>
     </b-row>
   </span>

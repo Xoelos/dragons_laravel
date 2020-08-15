@@ -6,17 +6,11 @@
       :character-id="characterId"
       @make-editable="makeEditable"
     />
-    <!-- Summary Display Page -->
     <div class="display">
       <b-row>
         <b-col cols="12" md="4">
           <small class="form-text text-muted">Character Name</small>
-          <b-form-input
-            v-model="summary.name"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
+          <b-form-input v-model="summary.name" size="sm" :readonly="!editable" required />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Gender</small>
@@ -29,12 +23,7 @@
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Race</small>
-          <b-form-input
-            v-model="summary.race"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
+          <b-form-input v-model="summary.race" size="sm" :readonly="!editable" required />
         </b-col>
         <b-col cols="0" md="4" />
         <b-col cols="12" md="2">
@@ -48,12 +37,7 @@
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Size</small>
-          <b-form-input
-            v-model="summary.size"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
+          <b-form-input v-model="summary.size" size="sm" :readonly="!editable" required />
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Speed</small>
@@ -98,11 +82,13 @@
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Level</small>
-          <div class="level">{{ expCalc({ xp: exp.experience, xp_class: exp.class }) }}</div>
+          <div class="level">
+            {{ expCalc({ xp: exp.experience, xp_class: exp.class }) }}
+          </div>
         </b-col>
       </b-row>
 
-      <hr class="d-md-none my-5">
+      <hr class="d-md-none my-5" />
 
       <b-row class="mt-md-2">
         <b-col cols="12" md="2">
@@ -133,7 +119,7 @@
         </b-col>
       </b-row>
 
-      <hr class="d-md-none my-5">
+      <hr class="d-md-none my-5" />
 
       <b-row class="mt-md-2">
         <b-col cols="12" md="2">

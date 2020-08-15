@@ -1,5 +1,4 @@
 <template>
-  <!-- Abilities Display Page -->
   <span>
     <EditSave
       :editable="editable"

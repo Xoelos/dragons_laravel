@@ -35,7 +35,7 @@
     </b-row>
     <b-row class="mt-3">
       <b-col cols="12" offset-md="4" md="4">
-        <b-alert :show="alertMessage" variant="danger">{{ alertMessage }}</b-alert>
+        <b-alert :show="!!alertMessage" variant="danger">{{ alertMessage }}</b-alert>
       </b-col>
     </b-row>
   </div>
@@ -65,8 +65,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(`${this.env}/api/auth/login`);
-
       axios
         .post(`${this.env}/api/auth/login`, {
           withCredentials: true,
@@ -88,7 +86,11 @@ export default {
           this.$router.replace({ name: 'Home' });
         })
         .catch(err => {
-          this.alertMessage = err.response.data.error;
+          console.log(err.response);
+          this.alertMessage = err.response;
+          setTimeout(() => {
+            this.alertMessage = null;
+          }, 1000 * 3);
         });
     },
     ...mapMutations([

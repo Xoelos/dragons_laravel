@@ -1,5 +1,4 @@
 <template>
-  <!-- Saving Throws Display Page -->
   <span>
     <EditSave
       :editable="editable"

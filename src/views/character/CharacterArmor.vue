@@ -1,6 +1,5 @@
 <template>
   <span>
-    <!-- armors Display Page -->
     <b-row>
       <b-col cols="12" md="10">
         <EditSave

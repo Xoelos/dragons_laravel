@@ -149,13 +149,14 @@
                 />
                 <CharacterNote
                   v-else-if="activeView == 'notes'"
-                  :skills="form.skills"
+                  :note-section="form.note_section"
                   :editable="editable"
                   :breadcrumb="breadcrumb"
                   :character-id="characterId"
                   @update-view="updateView"
                   @refresh="refresh"
                   @make-editable="makeEditable"
+                  @move="move"
                 />
                 <CharacterEdit
                   v-else
@@ -205,7 +206,7 @@ export default {
   props: {
     characterId: {
       type: Number,
-      default: 1,
+      default: 0,
     },
   },
   data: () => {
@@ -273,7 +274,11 @@ export default {
       this.activeView = view.activeView;
     },
     move(move) {
-      this.form[move.place] = move.array;
+      if (move.secondPlace) {
+        this.form[move.place][move.secondPlace] = move.array;
+      } else {
+        this.form[move.place] = move.array;
+      }
     },
     makeEditable() {
       this.editable = !this.editable;

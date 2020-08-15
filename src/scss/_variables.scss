@@ -9,11 +9,12 @@ $danger: #ec2127;
 $light: #ede7d9;
 $white: #ffffff;
 $black: #000000;
+$blue: #B8CDF8;
 
 $white-darker: darken($white, 25%);
 $black-lighter: lighten($black, 25%);
 
-$light-lighter: lighten($light, 25%);
+$light-lighter: lighten($light, 5%);
 $light-darker: darken($light, 25%);
 
 $highlight-darker: darken($highlight, 25%);
@@ -31,6 +32,7 @@ $theme-colors: ('primary': $primary,
   'danger': $danger,
   'light': $light,
   'dark': $highlight-darker,
+  'offset': $offset,
 );
 
 $header: 'Libre Baskerville',
