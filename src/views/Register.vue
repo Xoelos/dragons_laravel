@@ -109,13 +109,20 @@ export default {
       env: 'env',
     }),
     passwordValidation() {
-      return this.form.password == this.form.confirmPassword;
+      if (this.form.password == '' || this.form.confirmPassword == '') return null;
+      else if (this.form.password == this.form.confirmPassword) return true;
+      else return false;
     },
     passwordStrength() {
-      return (
-        new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').test(this.form.password) ||
+      if (this.form.confirmPassword == '') return null;
+      else if (
+        new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').test(
+          this.form.password
+        ) ||
         this.form.password == ''
-      );
+      ) {
+        return true;
+      } else return false;
     },
   },
   methods: {

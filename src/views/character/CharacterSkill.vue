@@ -19,60 +19,41 @@
       </b-col>
     </b-row>
     <div class="display mt-3">
-      <table>
-        <thead>
-          <tr>
-            <th class="sm-col" />
-            <th class="h6 sm-col">
-              <cite title="Skill can be performed by average adventurer">
-                Untrained
-                <div>Skill</div>
-              </cite>
-            </th>
-            <th class="h6 sm-col">
-              <cite title="Skill is useable with your class">
-                Class
-                <div>Skill</div>
-              </cite>
-            </th>
-            <th class="h6">Skill</th>
-            <th class="h6">Skill Modifier</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(skill, index) in skills" :key="index">
-            <td class="sm-col">
-              <b-button-group vertical class="d-inline-flex">
-                <b-button pill class="px-2 py-0" variant="light" @click="move(index, -1)">
+      <b-row>
+        <b-col cols="12" md="10" lg="8">
+          <b-row class="mb-3">
+            <b-col cols="1" class="lead"></b-col>
+            <b-col cols="6" class="lead">Skill</b-col>
+            <b-col cols="3" class="lead">Skill Modifier</b-col>
+            <b-col cols="2" class="lead"></b-col>
+          </b-row>
+          <b-row v-for="(skill, index) in skills" :key="index" class="mt-1">
+            <b-col cols="1"
+              ><b-button-group vertical class="d-inline-flex">
+                <b-button
+                  pill
+                  class="px-2 py-0"
+                  variant="light"
+                  @click="move(index, -1)"
+                  :disabled="!editable"
+                >
                   <font-awesome-icon icon="caret-up" />
                 </b-button>
-                <b-button pill class="px-2 py-0" variant="light" @click="move(index, 1)">
+                <b-button
+                  pill
+                  class="px-2 py-0"
+                  variant="light"
+                  @click="move(index, 1)"
+                  :disabled="!editable"
+                >
                   <font-awesome-icon icon="caret-down" />
-                </b-button>
-              </b-button-group>
-            </td>
-            <td class="sm-col">
-              <b-form-checkbox
-                v-model="skill.untrained_skill"
-                :value="1"
-                :unchecked-value="0"
-                :disabled="!editable"
-                required
-              />
-            </td>
-            <td class="sm-col">
-              <b-form-checkbox
-                v-model="skill.class_skill"
-                :value="1"
-                :unchecked-value="0"
-                :disabled="!editable"
-                required
-              />
-            </td>
-            <td>
-              <b-form-input
+                </b-button> </b-button-group
+            ></b-col>
+            <b-col cols="6"
+              ><b-form-input
                 v-model="skill.name"
                 :readonly="!editable"
+                class="text-center skill-name"
                 :class="
                   !skill.class_skill
                     ? !skill.untrained_skill
@@ -81,27 +62,47 @@
                     : null
                 "
                 required
-              />
-            </td>
-
-            <td class="lead">
-              {{
-                parseInt(skill.rank_score) +
-                  parseInt(skill.misc_score) +
-                  Math.floor((skill.score + skill.temp_score - 10) / 2) || 0
-              }}
-            </td>
-            <td>
+            /></b-col>
+            <b-col cols="3">{{
+              parseInt(skill.rank_score) +
+                parseInt(skill.misc_score) +
+                Math.floor((skill.score + skill.temp_score - 10) / 2) || 0
+            }}</b-col>
+            <b-col cols="2">
               <b-button variant="primary" @click="$bvModal.show('modal-skill-' + index)"
                 >Details</b-button
-              >
-            </td>
+              ></b-col
+            >
+
             <b-modal
               :id="'modal-skill-' + index"
               size="xl"
               :title="'Skill: ' + skill.name"
               hide-footer
             >
+              <b-row>
+                <b-col cols="6" class="text-center"> Untrained Skill</b-col>
+                <b-col cols="6" class="text-center"> Class Skill</b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="6" class="text-center">
+                  <b-form-checkbox
+                    v-model="skill.untrained_skill"
+                    :value="1"
+                    :unchecked-value="0"
+                    :disabled="!editable"
+                    required
+                  />
+                </b-col>
+                <b-col cols="6" class="text-center">
+                  <b-form-checkbox
+                    v-model="skill.class_skill"
+                    :value="1"
+                    :unchecked-value="0"
+                    :disabled="!editable"
+                    required
+                  /> </b-col
+              ></b-row>
               <b-row class="mt-5 text-center">
                 <b-col cols="3" class="p-0">Ability</b-col>
                 <b-col cols="3" class="p-0">Ranks</b-col>
@@ -152,9 +153,9 @@
                 </b-col>
               </b-row>
             </b-modal>
-          </tr>
-        </tbody>
-      </table>
+          </b-row>
+        </b-col>
+      </b-row>
     </div>
   </span>
 </template>
@@ -275,29 +276,12 @@ export default {
 .display {
   width: 100%;
   overflow: auto;
-  table {
-    margin-right: auto;
-    margin-left: 0;
-    text-align: center;
-    border-spacing: 1em 0.25em;
-    border-collapse: separate;
-    min-width: 65%;
 
-    @media (max-width: 576px) {
-      border-spacing: 2em 0.25em;
-    }
-
-    td input:not([type='checkbox']),
-    td select,
-    td.lead,
-    th {
-      max-width: 200px;
-      min-width: 100px;
-      margin: auto;
-      white-space: nowrap;
-    }
-    .sm-col {
-      min-width: 30px;
+  input.skill-name {
+    background-color: $white;
+    border: 0;
+    &:read-only {
+      background-color: $light !important;
     }
   }
 

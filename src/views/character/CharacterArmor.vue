@@ -23,10 +23,9 @@
         <thead>
           <tr>
             <th class="sm-col" />
-            <th class="h6 sm-col">Equipped?</th>
             <th class="h6">Name</th>
-            <th class="h6">Attack Bonus</th>
-            <th class="h6">Damage</th>
+            <th class="h6">AC Bonus</th>
+            <th class="h6 sm-col">Equipped?</th>
           </tr>
         </thead>
         <tbody>
@@ -41,15 +40,6 @@
                 </b-button>
               </b-button-group>
             </td>
-            <td class="sm-col">
-              <b-form-checkbox
-                v-model="armor.equipped"
-                :value="1"
-                :unchecked-value="0"
-                :disabled="!editable"
-                required
-              />
-            </td>
             <td>
               <b-form-input
                 v-model="armor.name"
@@ -63,6 +53,15 @@
                 v-model="armor.ac_bonus"
                 :readonly="!editable"
                 type="number"
+                required
+              />
+            </td>
+            <td class="sm-col">
+              <b-form-checkbox
+                v-model="armor.equipped"
+                :value="1"
+                :unchecked-value="0"
+                :disabled="!editable"
                 required
               />
             </td>

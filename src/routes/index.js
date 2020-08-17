@@ -6,6 +6,7 @@ import Documents from '../views/Documents';
 import About from '../views/About';
 import Login from '../views/Login';
 import Register from '../views/Register';
+import Profile from '../views/Profile';
 import Home from '../views/home/Home';
 import Character from '../views/character/Character.vue';
 import Play from '../views/Play';
@@ -46,6 +47,16 @@ const router = new Router({
       meta: {
         guest: true,
         title: `${process.env.VUE_APP_SITE_NAME} | Register`,
+      },
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Edit Profile`,
       },
     },
     {

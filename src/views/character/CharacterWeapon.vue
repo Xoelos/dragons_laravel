@@ -23,10 +23,10 @@
         <thead>
           <tr>
             <th class="sm-col" />
-            <th class="h6 sm-col">Equipped?</th>
             <th class="h6">Name</th>
             <th class="h6">Attack Bonus</th>
             <th class="h6">Damage</th>
+            <th class="h6 sm-col">Equipped?</th>
           </tr>
         </thead>
         <tbody>
@@ -40,15 +40,6 @@
                   <font-awesome-icon icon="caret-down" />
                 </b-button>
               </b-button-group>
-            </td>
-            <td class="sm-col">
-              <b-form-checkbox
-                v-model="weapon.equipped"
-                :value="1"
-                :unchecked-value="0"
-                :disabled="!editable"
-                required
-              />
             </td>
             <td>
               <b-form-input
@@ -71,6 +62,15 @@
                 v-model="weapon.damage"
                 :readonly="!editable"
                 type="text"
+                required
+              />
+            </td>
+            <td class="sm-col">
+              <b-form-checkbox
+                v-model="weapon.equipped"
+                :value="1"
+                :unchecked-value="0"
+                :disabled="!editable"
                 required
               />
             </td>
