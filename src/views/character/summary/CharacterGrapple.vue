@@ -12,7 +12,7 @@
     </b-row>
     <div class="display mt-3">
       <div class="row">
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
           <small>Total Grapple</small>
           <div>
             {{
@@ -25,11 +25,11 @@
             }}
           </div>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
           <small>Base Attack Bonus</small>
           <div>{{ baseAttackBonus }}</div>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
           <small>Size Bonus</small>
           <div>
             <b-form-input
@@ -40,25 +40,7 @@
             />
           </div>
         </div>
-        <div class="col-12 col-md-2">
-          <small>Misc Bonus</small>
-          <b-form-input
-            v-model="grapple.misc_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-2">
-          <small>Size Bonus</small>
-          <b-form-input
-            v-model="grapple.size_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
           <small>Misc Bonus</small>
           <b-form-input
             v-model="grapple.misc_bonus"
