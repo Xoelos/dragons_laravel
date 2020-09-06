@@ -3,9 +3,12 @@
     <div>
       <b-row class="d-flex mb-3">
         <b-col class="pr-2" cols="12" md="auto">
-          <h3>Campaigns:</h3>
+          <h3>Campaigns: (UNDER CONSTRUCTION)</h3>
         </b-col>
-        <b-col class="d-flex" cols="12" md="auto">
+      </b-row>
+    </div>
+
+    <!--  <b-col class="d-flex" cols="12" md="auto">
           <b-button v-b-modal.modal-xl-2 class="ml-auto campaignButton"
             >Create new Campaign</b-button
           >
@@ -13,9 +16,6 @@
             >Join a campaign</b-button
           >
         </b-col>
-      </b-row>
-    </div>
-
     <b-list-group v-if="campaigns.length == 0 && joinedCampaigns.length == 0">
       <b-list-group-item class="mb-3"
         >Create or join a campaign to get started!</b-list-group-item
@@ -37,24 +37,34 @@
           `Campaign ID: ${campaign.id} | Campaign Code: ${campaign.code}`
         }}</small>
       </div>
-      <!-- <div
+      <div
         class="campaignGrid mb-3"
         v-for="joinedCampaign in joinedCampaigns"
         :key="joinedCampaign.id"
       >
-        <b-list-group-item
-          button
-          @click="startGame(joinedCampaign.id, joinedCampaign)"
-        >{{ `Joined Campaign: ${joinedCampaign.data.name} | Character: ${joinedCampaign.data.users[user.data.uid].characterName}` }}</b-list-group-item>
+        <b-list-group-item button @click="startGame(joinedCampaign.id, joinedCampaign)">{{
+          `Joined Campaign: ${joinedCampaign.data.name} | Character: ${
+            joinedCampaign.data.users[user.data.uid].characterName
+          }`
+        }}</b-list-group-item>
         <b-button
           class="deleteCampaignButton"
           variant="secondary"
-          @click="deleteCampaignId = {id: joinedCampaign.id, owned: false, characterId: joinedCampaign.data.users[user.data.uid].characterId}"
+          @click="
+            deleteCampaignId = {
+              id: joinedCampaign.id,
+              owned: false,
+              characterId: joinedCampaign.data.users[user.data.uid].characterId,
+            }
+          "
           v-b-modal.deleteCampaignModal
-        >X</b-button>
+          >X</b-button
+        >
 
-        <small>{{ `Campaign ID: ${joinedCampaign.id} | Campaign Code: ${joinedCampaign.data.code}` }}</small>
-      </div>-->
+        <small>{{
+          `Campaign ID: ${joinedCampaign.id} | Campaign Code: ${joinedCampaign.data.code}`
+        }}</small>
+      </div>
 
       <b-modal
         id="deleteCampaignModal"
@@ -69,7 +79,6 @@
       </b-modal>
     </b-list-group>
 
-    <!-- create campaign modal -->
     <b-modal id="modal-xl-2" size="xl" title="Start new adventure" hide-footer>
       <div>
         <b-form @submit="createCampaign">
@@ -85,7 +94,6 @@
       </div>
     </b-modal>
 
-    <!-- join campaign modal -->
     <b-modal id="modal-xl-3" size="xl" title="Start new adventure" hide-footer>
       <div>
         <b-form @submit="joinCampaign">
@@ -107,7 +115,7 @@
           <b-alert v-if="err !== null" variant="danger">Error! {{ err }}</b-alert>
         </b-form>
       </div>
-    </b-modal>
+    </b-modal> -->
   </span>
 </template>
 
@@ -118,23 +126,24 @@ import axios from 'axios';
 export default {
   name: 'CampaignCreate',
   data: () => {
-    return {
-      deleteCampaignId: '',
-      createForm: {
-        name: '',
-        code: '',
-      },
-      joinForm: {
-        campaignId: '',
-        code: '',
-        character: '',
-      },
-      campaigns: [],
-      joinedCampaigns: [],
-      characters: [],
-      invalid: false,
-      err: null,
-    };
+    return { test: null };
+    // {
+    //   deleteCampaignId: '',
+    //   createForm: {
+    //     name: '',
+    //     code: '',
+    //   },
+    //   joinForm: {
+    //     campaignId: '',
+    //     code: '',
+    //     character: '',
+    //   },
+    //   campaigns: [],
+    //   joinedCampaigns: [],
+    //   characters: [],
+    //   invalid: false,
+    //   err: null,
+    // };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
@@ -144,20 +153,18 @@ export default {
     }),
   },
   async created() {
-    let res = await axios.get(`${this.env}/api/campaign`, {
-      headers: { Authorization: `Bearer ${this.user.access_token}` },
-    });
-
-    console.log(res);
-    this.campaigns = [];
-    res.data.forEach(campaign => {
-      this.campaigns.push({
-        id: campaign.id,
-        name: campaign.name,
-        code: campaign.code,
-      });
-    });
-
+    // let res = await axios.get(`${this.env}/api/campaign`, {
+    //   headers: { Authorization: `Bearer ${this.user.access_token}` },
+    // });
+    // console.log(res);
+    // this.campaigns = [];
+    // res.data.forEach(campaign => {
+    //   this.campaigns.push({
+    //     id: campaign.id,
+    //     name: campaign.name,
+    //     code: campaign.code,
+    //   });
+    // });
     // firebase
     //   .firestore()
     //   .collection("campaigns")
@@ -171,7 +178,6 @@ export default {
     //       });
     //     });
     //   });
-
     // firebase
     //   .firestore()
     //   .collection("campaigns")

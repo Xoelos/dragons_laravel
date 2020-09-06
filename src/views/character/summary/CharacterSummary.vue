@@ -25,7 +25,6 @@
           <small class="form-text text-muted">Race</small>
           <b-form-input v-model="summary.race" size="sm" :readonly="!editable" required />
         </b-col>
-        <b-col cols="0" md="4" />
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Alignment</small>
           <b-form-input
@@ -50,15 +49,34 @@
         </b-col>
         <b-col cols="12" md="2">
           <small class="form-text text-muted">Base Attack</small>
-          <b-form-input
-            v-model="summary.base_attack"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
+          <b-button class="w-100" variant="warning" @click="updateView('baseAttacks')">{{
+            summary.base_attacks
+          }}</b-button>
         </b-col>
-        <!-- Buffer -->
-        <b-col cols="0" md="4" />
+        <b-col cols="12" md="2">
+          <small class="form-text text-muted">Health Points</small>
+          <b-button class="w-100" variant="warning" @click="updateView('hp')">{{
+            summary.hp
+          }}</b-button></b-col
+        >
+        <b-col cols="12" md="2">
+          <small class="form-text text-muted">Initiative</small>
+          <b-button class="w-100" variant="warning" @click="updateView('initiative')">{{
+            summary.initiative
+          }}</b-button></b-col
+        >
+        <b-col cols="12" md="2">
+          <small class="form-text text-muted">Armor Class</small>
+          <b-button class="w-100" variant="warning" @click="updateView('ac')">{{
+            summary.ac
+          }}</b-button>
+        </b-col>
+        <b-col cols="12" md="2">
+          <small class="form-text text-muted">Grapple</small>
+          <b-button class="w-100" variant="warning" @click="updateView('grapple')">{{
+            summary.grapple
+          }}</b-button></b-col
+        >
       </b-row>
       <b-row class="mt-5">
         <b-col cols="12" md="2">
@@ -157,8 +175,8 @@
 import axios from 'axios';
 import { mapMutations } from 'vuex';
 import { mapGetters } from 'vuex';
-import breadcrumbs from './breadcrumb.js';
-import EditSave from '../../components/EditSave';
+import breadcrumbs from './../breadcrumb.js';
+import EditSave from '../../../components/EditSave';
 
 export default {
   components: { EditSave },

@@ -17,54 +17,20 @@
               v-for="(view, index) in breadcrumb"
               :key="index"
               :active="view.active"
+              @click="
+                activeView !== breadcrumb.route
+                  ? updateView({
+                      breadcrumb: breadcrumbs[view.route],
+                      activeView: view.route,
+                    })
+                  : null
+              "
               class="lead"
               >{{ view.text }}</b-breadcrumb-item
             >
           </b-breadcrumb>
         </b-col>
       </b-row>
-      <!-- <b-row>
-        <b-col cols="12" class="my-3">
-           <b-breadcrumb :items="items"></b-breadcrumb>
-           <b-list-group horizontal="md">
-            <b-list-group-item
-              display="summary"
-              :class="{ 'list-group-active': activeView == 'summary' }"
-              @click="activateScreen"
-            >Summary</b-list-group-item>
-            <b-list-group-item
-              display="abilities"
-              :class="{ 'list-group-active': activeView == 'abilities' }"
-              @click="activateScreen"
-            >Abilities</b-list-group-item>
-            <b-list-group-item
-              display="skills"
-              :class="{ 'list-group-active': activeView == 'skills' }"
-              @click="activateScreen"
-            >Skills</b-list-group-item>
-            <b-list-group-item
-              display="savingThrows"
-              :class="{ 'list-group-active': activeView == 'savingThrows' }"
-              @click="activateScreen"
-            >Saving Throws</b-list-group-item>
-            <b-list-group-item
-              display="weapons"
-              :class="{ 'list-group-active': activeView == 'weapons' }"
-              @click="activateScreen"
-            >Weapons</b-list-group-item>
-            <b-list-group-item
-              display="armour"
-              :class="{ 'list-group-active': activeView == 'armour' }"
-              @click="activateScreen"
-            >Armor</b-list-group-item>
-            <b-list-group-item
-              display="notes"
-              :class="{ 'list-group-active': activeView == 'notes' }"
-              @click="activateScreen"
-            >Notes</b-list-group-item>
-          </b-list-group>
-        </b-col>
-      </b-row>-->
       <b-row class="flex-grow-1">
         <b-col cols="12">
           <div class="dataSection">
@@ -77,7 +43,13 @@
                     race: form.race,
                     class: form.class,
                     alignment: form.alignment,
-                    base_attack: form.base_attack,
+                    base_attacks: form.base_attacks[0].fourth_bonus
+                      ? `${form.base_attacks[0].base_bonus}/${form.base_attacks[0].second_bonus}/${form.base_attacks[0].third_bonus}/${form.base_attacks[0].fourth_bonus}`
+                      : form.base_attacks[0].third_bonus
+                      ? `${form.base_attacks[0].base_bonus}/${form.base_attacks[0].second_bonus}/${form.base_attacks[0].third_bonus}`
+                      : form.base_attacks[0].second_bonus
+                      ? `${form.base_attacks[0].base_bonus}/${form.base_attacks[0].second_bonus}`
+                      : `${form.base_attacks[0].base_bonus}`,
                     experience: form.experience,
                     prestige_class: form.prestige_class,
                     prestige_experience: form.prestige_experience,
@@ -86,6 +58,40 @@
                     gender: form.gender,
                     speed: form.speed,
                     size: form.size,
+                    hp:
+                      parseInt(form.health_points[0].total_hp) +
+                      parseInt(form.health_points[0].temp_hp) -
+                      parseInt(form.health_points[0].damage) -
+                      parseInt(form.health_points[0].non_lethal),
+                    ac:
+                      parseInt(form.armor_class[0].armor_bonus) +
+                      parseInt(form.armor_class[0].natural_bonus) +
+                      parseInt(form.armor_class[0].size_bonus) +
+                      parseInt(form.armor_class[0].misc_bonus) +
+                      Math.floor(
+                        (parseInt(form.armor_class[0].score) +
+                          parseInt(form.armor_class[0].temp_score) -
+                          10) /
+                          2
+                      ),
+                    grapple:
+                      parseInt(form.base_attacks[0].base_bonus) +
+                      parseInt(form.grapple[0].size_bonus) +
+                      parseInt(form.grapple[0].misc_bonus) +
+                      Math.floor(
+                        (parseInt(form.grapple[0].score) +
+                          parseInt(form.grapple[0].temp_score) -
+                          10) /
+                          2
+                      ),
+                    initiative:
+                      parseInt(form.initiative[0].misc_bonus) +
+                      Math.floor(
+                        (parseInt(form.initiative[0].score) +
+                          parseInt(form.initiative[0].temp_score) -
+                          10) /
+                          2
+                      ),
                   }"
                   :editable="editable"
                   :breadcrumb="breadcrumb"
@@ -158,6 +164,57 @@
                   @make-editable="makeEditable"
                   @move="move"
                 />
+                <CharacterHP
+                  v-else-if="activeView == 'hp'"
+                  :healthPoints="form.health_points[0]"
+                  :editable="editable"
+                  :breadcrumb="breadcrumb"
+                  :character-id="characterId"
+                  @update-view="updateView"
+                  @refresh="refresh"
+                  @make-editable="makeEditable"
+                />
+                <CharacterAC
+                  v-else-if="activeView == 'ac'"
+                  :armorClass="form.armor_class[0]"
+                  :editable="editable"
+                  :breadcrumb="breadcrumb"
+                  :character-id="characterId"
+                  @update-view="updateView"
+                  @refresh="refresh"
+                  @make-editable="makeEditable"
+                />
+                <CharacterBaseAttack
+                  v-else-if="activeView == 'baseAttacks'"
+                  :baseAttacks="form.base_attacks[0]"
+                  :editable="editable"
+                  :breadcrumb="breadcrumb"
+                  :character-id="characterId"
+                  @update-view="updateView"
+                  @refresh="refresh"
+                  @make-editable="makeEditable"
+                />
+                <CharacterGrapple
+                  v-else-if="activeView == 'grapple'"
+                  :grapple="form.grapple[0]"
+                  :baseAttackBonus="form.base_attacks[0].base_bonus"
+                  :editable="editable"
+                  :breadcrumb="breadcrumb"
+                  :character-id="characterId"
+                  @update-view="updateView"
+                  @refresh="refresh"
+                  @make-editable="makeEditable"
+                />
+                <CharacterInitiative
+                  v-else-if="activeView == 'initiative'"
+                  :initiative="form.initiative[0]"
+                  :editable="editable"
+                  :breadcrumb="breadcrumb"
+                  :character-id="characterId"
+                  @update-view="updateView"
+                  @refresh="refresh"
+                  @make-editable="makeEditable"
+                />
                 <CharacterEdit
                   v-else
                   :form="form"
@@ -183,7 +240,7 @@ import { mapMutations } from 'vuex';
 import { mapGetters } from 'vuex';
 import breadcrumbs from './breadcrumb.js';
 
-import CharacterSummary from './CharacterSummary';
+import CharacterSummary from './summary/CharacterSummary';
 import CharacterAbility from './CharacterAbility';
 import CharacterSkill from './CharacterSkill';
 import CharacterSavingThrow from './CharacterSavingThrow';
@@ -191,6 +248,11 @@ import CharacterWeapon from './CharacterWeapon';
 import CharacterArmor from './CharacterArmor';
 import CharacterNote from './CharacterNote';
 import CharacterEdit from './CharacterEdit';
+import CharacterHP from './summary/CharacterHP';
+import CharacterAC from './summary/CharacterAC';
+import CharacterGrapple from './summary/CharacterGrapple';
+import CharacterBaseAttack from './summary/CharacterBaseAttack';
+import CharacterInitiative from './summary/CharacterInitiative';
 
 export default {
   components: {
@@ -202,6 +264,11 @@ export default {
     CharacterArmor,
     CharacterNote,
     CharacterEdit,
+    CharacterHP,
+    CharacterAC,
+    CharacterGrapple,
+    CharacterBaseAttack,
+    CharacterInitiative,
   },
   props: {
     characterId: {
@@ -214,6 +281,7 @@ export default {
       editable: false,
       activeView: null,
       form: {},
+      breadcrumbs: { ...breadcrumbs },
       breadcrumb: [],
     };
   },
