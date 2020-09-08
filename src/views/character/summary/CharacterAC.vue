@@ -16,7 +16,8 @@
           <small>Total AC</small>
           <div>
             {{
-              parseInt(armorClass.armor_bonus) +
+              10 +
+                parseInt(armorClass.armor_bonus) +
                 parseInt(armorClass.natural_bonus) +
                 parseInt(armorClass.size_bonus) +
                 parseInt(armorClass.misc_bonus) +

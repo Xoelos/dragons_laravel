@@ -64,6 +64,7 @@
                       parseInt(form.health_points[0].damage) -
                       parseInt(form.health_points[0].non_lethal),
                     ac:
+                      10 +
                       parseInt(form.armor_class[0].armor_bonus) +
                       parseInt(form.armor_class[0].natural_bonus) +
                       parseInt(form.armor_class[0].size_bonus) +
