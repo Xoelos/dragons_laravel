@@ -233,7 +233,7 @@ export default {
       armor_array.forEach((armor, armor_index) => {
         armor.order = armor_index + 2;
       });
-      this.$emit('move', { array: armor_array, place: 'armors' });
+      this.$emit('move', { array: armor_array, place: 'armor' });
     },
     deleteArmor(armor_id, modal_id) {
       if (!this.$props.editable) return;

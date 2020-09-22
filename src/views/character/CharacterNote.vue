@@ -297,8 +297,6 @@ export default {
         });
       }
       this.$emit('move', { array: section_array, place: 'note_section' });
-
-      // this.activeNote.noteIndex + move;
     },
     deleteNote(id, route) {
       if (!this.$props.editable || !confirm('This is permanent, are you sure?')) return;
