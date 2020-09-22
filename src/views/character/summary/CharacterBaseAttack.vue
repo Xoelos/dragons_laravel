@@ -7,6 +7,7 @@
           :form="{ data: baseAttacks, route: '/api/character/summary/base-attack' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
     </b-row>

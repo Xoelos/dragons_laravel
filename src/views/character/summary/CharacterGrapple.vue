@@ -7,6 +7,7 @@
           :form="{ data: grapple, route: '/api/character/summary/grapple' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
     </b-row>

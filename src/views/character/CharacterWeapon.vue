@@ -7,6 +7,7 @@
           :form="{ data: weapons, route: '/api/character/weapons' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
       <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">
@@ -140,6 +141,7 @@
                     :form="{ data: weapons, route: '/api/character/weapons' }"
                     :character-id="characterId"
                     @make-editable="makeEditable"
+                    @refresh="refresh"
                   />
                 </b-col>
                 <b-col cols="6" offset="3" md="2" offset-md="0" class="text-center my-2">

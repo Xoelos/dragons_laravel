@@ -5,6 +5,7 @@
       :form="{ data: summary, exp: exp, route: '/api/character/summary' }"
       :character-id="characterId"
       @make-editable="makeEditable"
+      @refresh="refresh"
     />
     <div class="display">
       <b-row>

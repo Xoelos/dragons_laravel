@@ -7,6 +7,7 @@
           :form="{ data: noteSection, route: '/api/character/notes' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
       <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">

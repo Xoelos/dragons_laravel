@@ -7,6 +7,7 @@
           :form="{ data: healthPoints, route: '/api/character/summary/hp' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
     </b-row>

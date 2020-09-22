@@ -7,6 +7,7 @@
           :form="{ data: initiative, route: '/api/character/summary/initiative' }"
           :character-id="characterId"
           @make-editable="makeEditable"
+          @refresh="refresh"
         />
       </b-col>
     </b-row>
