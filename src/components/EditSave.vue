@@ -99,7 +99,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(res);
           this.saveResponse = { message: 'Saved!', variant: 'success' };
           this.showAlert();
           this.refresh();

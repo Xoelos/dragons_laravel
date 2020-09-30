@@ -3,7 +3,7 @@
     <h1>Edit {{ form.name }}</h1>
     <b-form id="character-form">
       <b-row id="character-form-control">
-        <b-col cols="12" class="d-flex align-items-center">
+        <b-col cols="12">
           <b-breadcrumb id="character-bread">
             <b-breadcrumb-item
               :active="!activeView ? true : false"
@@ -31,7 +31,7 @@
           </b-breadcrumb>
         </b-col>
       </b-row>
-      <b-row class="flex-grow-1">
+      <b-row>
         <b-col cols="12">
           <div class="dataSection">
             <b-row>
@@ -301,7 +301,6 @@ export default {
           headers: { Authorization: `Bearer ${this.user.access_token}` },
         })
         .then(res => {
-          console.log(JSON.parse(JSON.stringify(res.data.data)));
           this.form = res.data.data;
           this.loading({ status: false, message: '' });
         })
@@ -326,7 +325,6 @@ export default {
             headers: { Authorization: `Bearer ${this.user.access_token}` },
           })
           .then(res => {
-            console.log(JSON.parse(JSON.stringify(res.data.data)));
             this.form = res.data.data;
           })
           .catch(err => {

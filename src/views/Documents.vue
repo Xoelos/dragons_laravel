@@ -20,7 +20,7 @@
       </b-col>
 
       <b-col cols="12" md="6" lg="4">
-        <h2 class="text-center">Dungeon Master's Guide:</h2>
+        <h2 class="text-center">DM Guide:</h2>
         <a :href="`${publicPath}dungeon-masters-guide-35e.pdf`" download>
           <img src="@/assets/dungeon-masters-guide.jpg" class="d-block mx-auto mb-5" />
         </a>

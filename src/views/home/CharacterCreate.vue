@@ -179,7 +179,6 @@ export default {
         headers: { Authorization: `Bearer ${this.user.access_token}` },
       })
       .then(res => {
-        console.log(res.data.data);
         this.characters = [];
         res.data.data.forEach(character => {
           this.characters.push({
@@ -216,7 +215,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(JSON.parse(JSON.stringify(res)));
           this.characters.push(res.data.character);
           this.$bvModal.hide('modal-xl-1');
           this.form = {

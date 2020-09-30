@@ -182,7 +182,6 @@ export default {
             }
           )
           .then(res => {
-            console.log(res.data);
             this.showProfile = false;
             this.user.data.firstName = this.form.firstName;
             this.user.data.lastName = this.form.lastName;
@@ -214,7 +213,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(res.data);
           this.form.password = '';
           this.form.confirmPassword = '';
           this.showPassword = false;

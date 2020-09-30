@@ -219,7 +219,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(res);
           this.refresh();
         })
         .catch(err => {
@@ -249,7 +248,6 @@ export default {
         headers: { Authorization: `Bearer ${this.user.access_token}` },
       })
         .then(res => {
-          console.log(res);
           this.$bvModal.hide(modal_id);
           this.refresh();
         })

@@ -3,6 +3,7 @@ import store from '../store';
 import Router from 'vue-router';
 import axios from 'axios';
 import Documents from '../views/Documents';
+import AddSpell from '../views/AddSpell';
 import About from '../views/About';
 import Login from '../views/Login';
 import Register from '../views/Register';
@@ -69,6 +70,15 @@ const router = new Router({
       },
     },
     {
+      path: '/spells',
+      name: 'AddSpell',
+      component: AddSpell,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Add Spells`,
+      },
+    },
+    {
       path: '/about',
       name: 'About',
       component: About,
@@ -120,13 +130,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let auth = store.getters.user.access_token;
   let auth_local = JSON.parse(localStorage.getItem('access_token'));
-  console.log(`Auth Variable: ${auth}`);
 
   if (auth_local) {
     if (!auth && auth_local.expiry > new Date().getTime()) {
       auth = auth_local.token;
       store.getters.user.access_token = auth_local.token;
-      console.log(`Auth Local: ${auth}`);
     }
   }
 
@@ -142,7 +150,6 @@ router.beforeEach((to, from, next) => {
           headers: { Authorization: `Bearer ${auth}` },
         })
         .then(res => {
-          console.log(res);
           store.dispatch('fetchUser', res.data.user);
           next();
         })

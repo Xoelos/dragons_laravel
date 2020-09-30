@@ -6,7 +6,11 @@
       <div id="loading" :class="!loaded ? 'd-none' : null">
         <div class="loading_icon text-center">
           <h1>{{ message }}</h1>
-          <b-spinner variant="dark" type="grow" style="width: 3rem; height: 3rem;"></b-spinner>
+          <b-spinner
+            variant="dark"
+            type="grow"
+            style="width: 3rem; height: 3rem;"
+          ></b-spinner>
         </div>
       </div>
     </b-container>
@@ -32,6 +36,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Register from './views/Register.vue';
 import About from './views/About.vue';
 import Documents from './views/Documents.vue';
+import AddSpell from './views/AddSpell.vue';
 import Login from './views/Login.vue';
 import Home from './views/home/Home.vue';
 import NotFound from './views/NotFound.vue';

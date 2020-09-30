@@ -10,9 +10,9 @@
           @refresh="refresh"
         />
       </b-col>
-      <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">
+      <b-col cols="12" md="2" class="my-3">
         <b-button
-          class="d-block m-auto px-4"
+          class="d-block m-auto px-4 w-100"
           :variant="editable ? 'success' : 'outline-primary'"
           @click="addNoteSection"
           >Add Section</b-button
@@ -24,12 +24,12 @@
         <b-col v-if="!noteSection.length" cols="12" class="mt-5">
           <h1 class="mx-auto mt-5">Add a section!</h1>
         </b-col>
-        <b-col v-else cols="12" md="3" class="mb-5">
+        <b-col v-else cols="12" md="3" lg="2" class="mb-5">
           <b-list-group
             v-for="(section, sectionIndex) in noteSection"
             :key="sectionIndex"
           >
-            <b-list-group-item v-b-toggle="'collapse-' + sectionIndex">
+            <b-list-group-item v-b-toggle="'collapse-' + sectionIndex" class="lead">
               {{ section.name }}
             </b-list-group-item>
             <b-collapse
@@ -63,112 +63,133 @@
                     : 'd-none'
                 "
               >
-                <b-button>Add Note</b-button>
+                <b-button variant="success">Add Note</b-button>
               </b-list-group-item>
             </b-collapse>
           </b-list-group>
         </b-col>
-        <b-col cols="12" md="9" v-if="noteSection.length">
+        <b-col cols="12" md="9" lg="10" v-if="noteSection.length">
           <b-row>
             <b-col cols="12">
               <b-row class="mb-4">
-                <b-col cols="12" class="align-items-center d-flex">
-                  <b-input
-                    v-model="noteSection[activeNote.sectionIndex].name"
-                    class="d-inline-block align-middle mx-1 my-0 bg-light name-inputs"
-                  />
-
-                  <b-button-group vertical class="d-inline-flex">
-                    <b-button
-                      class="px-2 py-0"
-                      @click="move(activeNote.sectionIndex, -1, false)"
-                      variant="light"
-                      :disabled="!editable"
-                    >
-                      <font-awesome-icon icon="caret-up" />
-                    </b-button>
-                    <b-button
-                      class="px-2 py-0"
-                      @click="move(activeNote.sectionIndex, 1, false)"
-                      variant="light"
-                      :disabled="!editable"
-                    >
-                      <font-awesome-icon icon="caret-down" />
-                    </b-button>
-                  </b-button-group>
-                  <b-button
-                    variant="danger"
-                    @click="
-                      deleteNote(noteSection[activeNote.sectionIndex].id, 'section')
-                    "
-                    class="ml-auto mr-0"
-                    :disabled="!editable"
-                    >X</b-button
-                  >
-                  <hr class="d-none d-md-block" />
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col cols="12" md="4">
+                <b-col cols="12" md="12" lg="6" class="align-items-left">
                   <b-row>
-                    <b-col cols="12" class="align-items-center d-flex">
-                      <b-input
-                        v-model="
-                          noteSection[activeNote.sectionIndex].note[activeNote.noteIndex]
-                            .name
-                        "
-                        class="d-inline-block align-middle mx-1 my-0 bg-light name-inputs"
-                      />
-
-                      <b-button-group vertical class="d-inline-flex">
+                    <b-col cols="12" md="10" class="d-inline-flex">
+                      <b-form-group label="Reorder">
+                        <b-button-group vertical class="d-inline-flex my-auto">
+                          <b-button
+                            class="px-2 py-0"
+                            @click="move(activeNote.sectionIndex, -1, false)"
+                            variant="light"
+                            :disabled="!editable"
+                          >
+                            <font-awesome-icon icon="caret-up" />
+                          </b-button>
+                          <b-button
+                            class="px-2 py-0"
+                            @click="move(activeNote.sectionIndex, 1, false)"
+                            variant="light"
+                            :disabled="!editable"
+                          >
+                            <font-awesome-icon icon="caret-down" />
+                          </b-button>
+                        </b-button-group>
+                      </b-form-group>
+                      <b-form-group label="Note Section Name">
+                        <b-input
+                          v-model="noteSection[activeNote.sectionIndex].name"
+                          class="d-inline-block align-middle bg-light name-inputs"
+                        />
+                      </b-form-group>
+                    </b-col>
+                    <b-col cols="12" md="2">
+                      <b-form-group label="Delete Section">
                         <b-button
-                          class="px-2 py-0"
+                          variant="danger"
+                          class="w-100 mb-5"
                           @click="
-                            move(activeNote.sectionIndex, -1, true, activeNote.noteIndex)
+                            deleteNote(noteSection[activeNote.sectionIndex].id, 'section')
                           "
-                          variant="light"
                           :disabled="!editable"
+                          >X</b-button
                         >
-                          <font-awesome-icon icon="caret-up" />
-                        </b-button>
-                        <b-button
-                          class="px-2 py-0"
-                          @click="
-                            move(activeNote.sectionIndex, 1, true, activeNote.noteIndex)
-                          "
-                          variant="light"
-                          :disabled="!editable"
-                        >
-                          <font-awesome-icon icon="caret-down" />
-                        </b-button>
-                      </b-button-group>
-                      <b-button
-                        variant="danger"
-                        @click="
-                          deleteNote(
-                            noteSection[activeNote.sectionIndex].note[
-                              activeNote.noteIndex
-                            ].id,
-                            'note'
-                          )
-                        "
-                        class="ml-auto mr-0"
-                        :disabled="!editable"
-                        >X</b-button
-                      >
+                      </b-form-group>
                     </b-col>
                   </b-row>
                 </b-col>
-                <b-col cols="12" md="8">
+                <b-col cols="12" md="12" lg="6" class="align-items-center">
+                  <b-row
+                    ><b-col cols="12" md="10" class="d-inline-flex">
+                      <b-form-group label="Reorder">
+                        <b-button-group vertical class="d-inline-flex">
+                          <b-button
+                            class="px-2 py-0"
+                            @click="
+                              move(
+                                activeNote.sectionIndex,
+                                -1,
+                                true,
+                                activeNote.noteIndex
+                              )
+                            "
+                            variant="light"
+                            :disabled="!editable"
+                          >
+                            <font-awesome-icon icon="caret-up" />
+                          </b-button>
+                          <b-button
+                            class="px-2 py-0"
+                            @click="
+                              move(activeNote.sectionIndex, 1, true, activeNote.noteIndex)
+                            "
+                            variant="light"
+                            :disabled="!editable"
+                          >
+                            <font-awesome-icon icon="caret-down" />
+                          </b-button>
+                        </b-button-group>
+                      </b-form-group>
+                      <b-form-group label="Note Name">
+                        <b-input
+                          v-model="
+                            noteSection[activeNote.sectionIndex].note[
+                              activeNote.noteIndex
+                            ].name
+                          "
+                          class="d-inline-block align-middle mx-1 my-0 bg-light name-inputs"
+                        /> </b-form-group></b-col
+                    ><b-col cols="12" md="2">
+                      <b-form-group label="Delete Note">
+                        <b-button
+                          variant="danger"
+                          class="w-100 mb-3"
+                          @click="
+                            deleteNote(
+                              noteSection[activeNote.sectionIndex].note[
+                                activeNote.noteIndex
+                              ].id,
+                              'note'
+                            )
+                          "
+                          :disabled="!editable"
+                          >X</b-button
+                        ></b-form-group
+                      ></b-col
+                    ></b-row
+                  >
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="12">
                   <b-form-textarea
                     v-model="
                       noteSection[activeNote.sectionIndex].note[activeNote.noteIndex]
                         .summary
                     "
-                    rows="8"
+                    rows="12"
                     :disabled="!editable"
-                  ></b-form-textarea
-                ></b-col>
+                  ></b-form-textarea>
+                </b-col>
               </b-row>
             </b-col>
           </b-row>
@@ -250,7 +271,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(res);
           this.refresh();
         })
         .catch(err => {
@@ -271,7 +291,6 @@ export default {
           }
         )
         .then(res => {
-          console.log(res);
           this.refresh();
         })
         .catch(err => {
@@ -300,7 +319,6 @@ export default {
     },
     deleteNote(id, route) {
       if (!this.$props.editable || !confirm('This is permanent, are you sure?')) return;
-      console.log(id);
       axios({
         url: `${this.env}/api/character/notes/${route}`,
         method: 'delete',
@@ -312,7 +330,6 @@ export default {
         headers: { Authorization: `Bearer ${this.user.access_token}` },
       })
         .then(res => {
-          console.log(res);
           this.refresh();
           if (route == 'section') {
             this.activeNote.sectionIndex = 0;
@@ -380,7 +397,8 @@ export default {
     cursor: pointer;
 
     &.active {
-      color: $secondary;
+      background-color: $primary;
+      color: $highlight;
     }
   }
 }

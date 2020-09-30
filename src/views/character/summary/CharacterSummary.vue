@@ -226,6 +226,9 @@ export default {
     makeEditable() {
       this.$emit('make-editable');
     },
+    refresh() {
+      this.$emit('refresh');
+    },
     expCalc(xp_class) {
       if (!xp_class.xp_class) return 0;
 

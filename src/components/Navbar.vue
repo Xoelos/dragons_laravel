@@ -28,6 +28,9 @@
           <router-link to="/documents">Documents</router-link>
         </b-nav-item>
         <b-nav-item v-show="user.access_token">
+          <router-link to="/spells">Add Spells</router-link>
+        </b-nav-item>
+        <b-nav-item v-show="user.access_token">
           <router-link to="/profile">Profile</router-link>
         </b-nav-item>
         <b-nav-item v-show="!user.access_token">

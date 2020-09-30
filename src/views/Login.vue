@@ -72,7 +72,6 @@ export default {
           password: this.form.password,
         })
         .then(res => {
-          console.log(res.data);
           this.user.access_token = res.data.access_token;
 
           const access_token = {

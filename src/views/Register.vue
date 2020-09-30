@@ -137,7 +137,6 @@ export default {
           password_confirmation: this.form.confirmPassword,
         })
         .then(res => {
-          console.log(res.data);
           this.show = false;
           this.user.access_token = res.data.access_token;
 
