@@ -10,7 +10,7 @@
           @refresh="refresh"
         />
       </b-col>
-      <b-col cols="6" offset="3" md="2" offset-md="0" class="my-2">
+      <b-col cols="12" md="2" offset-md="0" class="my-2">
         <b-button
           class="d-block m-auto px-5"
           :variant="editable ? 'success' : 'outline-primary'"
@@ -23,7 +23,7 @@
       <b-row>
         <b-col cols="12" md="10" lg="8">
           <b-row class="mb-3">
-            <b-col cols="1" class="lead"></b-col>
+            <b-col cols="1" class="lead">Reorder</b-col>
             <b-col cols="6" class="lead">Skill</b-col>
             <b-col cols="3" class="lead">Skill Modifier</b-col>
             <b-col cols="2" class="lead"></b-col>

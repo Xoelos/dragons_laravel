@@ -14,6 +14,7 @@ import {
   faSkullCrossbones,
   faGavel,
   faShieldAlt,
+  faHatWizard,
   faStickyNote,
   faCaretDown,
   faCaretUp,
@@ -27,6 +28,7 @@ library.add(
   faSkullCrossbones,
   faGavel,
   faShieldAlt,
+  faHatWizard,
   faStickyNote,
   faCaretDown,
   faCaretUp

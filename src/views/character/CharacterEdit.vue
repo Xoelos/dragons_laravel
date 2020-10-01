@@ -26,6 +26,10 @@
             Armor
             <font-awesome-icon icon="shield-alt" />
           </b-list-group-item>
+          <b-list-group-item class="list-nav h3" @click="updateView('spells')">
+            Spells
+            <font-awesome-icon icon="hat-wizard" />
+          </b-list-group-item>
           <b-list-group-item class="list-nav h3" @click="updateView('notes')">
             Notes
             <font-awesome-icon icon="sticky-note" />
@@ -65,6 +69,12 @@
         <h2 class="d-inline header-nav" @click="updateView('armor')">
           Armor
           <font-awesome-icon icon="shield-alt" />
+        </h2>
+      </b-col>
+      <b-col cols="12" class="mt-4">
+        <h2 class="d-inline header-nav" @click="updateView('spells')">
+          Spells
+          <font-awesome-icon icon="hat-wizard" />
         </h2>
       </b-col>
       <b-col cols="12" class="mt-4">

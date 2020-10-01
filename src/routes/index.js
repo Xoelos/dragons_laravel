@@ -3,7 +3,7 @@ import store from '../store';
 import Router from 'vue-router';
 import axios from 'axios';
 import Documents from '../views/Documents';
-import AddSpell from '../views/AddSpell';
+import AddSpell from '../views/spells/AddSpell';
 import About from '../views/About';
 import Login from '../views/Login';
 import Register from '../views/Register';

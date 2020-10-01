@@ -132,8 +132,8 @@
           ><b-col cols="6" offset="3" md="4" offset-md="4">
             <b-button
               id="updateProfileSubmit"
-              type="submit"
               @click="addSpell"
+              type="submit"
               class="d-block mx-auto my-5 w-50"
               variant="primary"
               >Add new spell</b-button
@@ -215,7 +215,8 @@ export default {
     }),
   },
   methods: {
-    addSpell() {
+    addSpell(event) {
+      event.preventDefault();
       if (this.form.school_of_magic == '' || this.form.name == '') return;
       axios
         .post(

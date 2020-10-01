@@ -101,6 +101,13 @@ const breadcrumbs = {
       route: 'armor',
     },
   ],
+  spells: [
+    {
+      text: 'Spells',
+      active: true,
+      route: 'spells',
+    },
+  ],
   notes: [
     {
       text: 'Notes',

@@ -36,7 +36,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Register from './views/Register.vue';
 import About from './views/About.vue';
 import Documents from './views/Documents.vue';
-import AddSpell from './views/AddSpell.vue';
+import AddSpell from './views/spells/AddSpell.vue';
 import Login from './views/Login.vue';
 import Home from './views/home/Home.vue';
 import NotFound from './views/NotFound.vue';
