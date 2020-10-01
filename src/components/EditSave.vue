@@ -99,17 +99,26 @@ export default {
           }
         )
         .then(res => {
-          this.saveResponse = { message: 'Saved!', variant: 'success' };
-          this.showAlert();
+          this.$bvToast.toast('Your changes have been successfully saved!', {
+            title: 'Success',
+            toaster: 'b-toaster-top-center',
+            variant: 'success',
+            solid: true,
+            autoHideDelay: 3 * 1000,
+          });
           this.refresh();
         })
         .catch(err => {
           console.log(err.response);
-          this.saveResponse = {
-            message: 'Unsuccessful save.',
-            variant: 'danger',
-          };
-          this.showAlert();
+          this.$bvToast.toast(
+            'There was an issue saving your changes. If this issue persists, please submit the bug in the Report Bug page',
+            {
+              title: 'Error',
+              toaster: 'b-toaster-top-center',
+              variant: 'danger',
+              solid: true,
+            }
+          );
         });
     },
     refresh() {

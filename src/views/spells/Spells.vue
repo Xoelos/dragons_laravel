@@ -61,6 +61,11 @@
     </b-row>
     <b-row>
       <b-col cols="12">
+        <b-row v-if="!spellResults.length">
+          <b-col cols="12">
+            <h4>No spells found.</h4>
+          </b-col>
+        </b-row>
         <b-row v-for="(spell, index) in spellResults" :key="index">
           <b-col cols="12">
             <div class="d-flex flex-column mb-5 lead" align="left">
@@ -110,6 +115,7 @@ export default {
       spellLevel: '',
       spellClass: '',
       spellClasses: [
+        { text: 'None', value: '', autofocus: true },
         { text: 'Bard', value: 'Bard' },
         { text: 'Cleric', value: 'Cleric' },
         { text: 'Druid', value: 'Druid' },
@@ -173,7 +179,8 @@ export default {
 
       let query = [];
       for (let param in params) {
-        query.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
+        if (params[param] !== '')
+          query.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
       }
       const queryString = query.join('&');
 
@@ -181,7 +188,7 @@ export default {
         .get(`${this.env}/api/spells?${queryString}`)
         .then(res => {
           this.spellResults = res.data;
-          console.log(res.data);
+          console.log(res);
         })
         .catch(err => {
           console.log(err.response);

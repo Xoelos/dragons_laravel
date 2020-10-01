@@ -21,7 +21,7 @@
         <hr />
         <b-row>
           <b-col cols="12" align="center">
-            <b-form-group label="Spell Class">
+            <b-form-group label="Spell Class*">
               <b-form-radio-group
                 v-model="spellClass"
                 :options="spellClasses"
@@ -34,7 +34,7 @@
         <b-collapse id="collapse-1">
           <b-row class="my-3">
             <b-col cols="12" align="center">
-              <b-form-group label="Spell Domains">
+              <b-form-group label="Spell Domains*">
                 <b-form-radio-group
                   v-model="spellClass"
                   :options="spellDomains"
@@ -46,8 +46,8 @@
         </b-collapse>
         <b-row class="my-3">
           <b-col cols="12" md="2" offset-md="5" align="center">
-            <b-form-group label="Spell Level">
-              <b-form-input v-model="spellLevel" type="number" required />
+            <b-form-group label="Spell Level*">
+              <b-form-input v-model="spellLevel" type="number" min="0" max="9" required />
             </b-form-group>
           </b-col>
         </b-row>
@@ -172,6 +172,7 @@ export default {
       spellLevel: '',
       spellClass: '',
       spellClasses: [
+        { text: 'None', value: '', autofocus: true },
         { text: 'Bard', value: 'Bard' },
         { text: 'Cleric', value: 'Cleric' },
         { text: 'Druid', value: 'Druid' },
@@ -217,24 +218,38 @@ export default {
   methods: {
     addSpell(event) {
       event.preventDefault();
-      if (this.form.school_of_magic == '' || this.form.name == '') return;
+      if (
+        this.form.school_of_magic == '' ||
+        this.form.name == '' ||
+        this.form.summary == '' ||
+        this.form.levels.length == 0
+      ) {
+        this.$bvToast.toast('Must enter all required information!', {
+          title: 'Error',
+          toaster: 'b-toaster-top-center',
+          variant: 'danger',
+          solid: true,
+          autoHideDelay: 2 * 1000,
+        });
+        return;
+      }
       axios
         .post(
           `${this.env}/api/spells`,
           {
             withCredentials: true,
-            name: this.form.name,
-            school_of_magic: this.form.school_of_magic,
-            area: this.form.area,
-            casting_time: this.form.casting_time,
-            components: this.form.components,
-            duration: this.form.duration,
-            effect: this.form.effect,
-            range: this.form.range,
-            saving_throw: this.form.saving_throw,
-            spell_resistance: this.form.spell_resistance,
-            summary: this.form.summary,
-            target: this.form.target,
+            name: this.form.name.trim(),
+            school_of_magic: this.form.school_of_magic.trim(),
+            area: this.form.area.trim(),
+            casting_time: this.form.casting_time.trim(),
+            components: this.form.components.trim(),
+            duration: this.form.duration.trim(),
+            effect: this.form.effect.trim(),
+            range: this.form.range.trim(),
+            saving_throw: this.form.saving_throw.trim(),
+            spell_resistance: this.form.spell_resistance.trim(),
+            summary: this.form.summary.trim(),
+            target: this.form.target.trim(),
             levels: this.form.levels,
           },
           {
@@ -243,12 +258,47 @@ export default {
         )
         .then(res => {
           console.log(res);
+          this.$bvToast.toast(this.form.name + ' has been added successfully!', {
+            title: 'Success',
+            toaster: 'b-toaster-top-center',
+            variant: 'success',
+            solid: true,
+            autoHideDelay: 3 * 1000,
+          });
+
+          this.form = {
+            name: '',
+            school_of_magic: '',
+            area: '',
+            casting_time: '',
+            components: '',
+            duration: '',
+            effect: '',
+            range: '',
+            saving_throw: '',
+            spell_resistance: '',
+            target: '',
+            summary: '',
+            levels: [],
+          };
+          this.spellLevel = '';
+          this.spellClass = '';
         })
         .catch(err => {
           console.log(err.response);
+          this.$bvToast.toast(
+            'There was an issue adding your spell.\n' + err.response.data,
+            {
+              title: 'Error',
+              toaster: 'b-toaster-top-center',
+              variant: 'danger',
+              solid: true,
+            }
+          );
         });
     },
     addLevel() {
+      if (this.spellLevel == '' || this.spellClass == '') return;
       this.form.levels.push({ level: this.spellLevel, class: this.spellClass });
     },
     deleteLevel(index) {
