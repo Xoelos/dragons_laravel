@@ -1,26 +1,27 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="12" md="10">
-        <EditSave
-          :editable="editable"
-          :form="{ data: noteSection, route: '/api/character/notes' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-      <b-col cols="12" md="2" class="my-3">
-        <b-button
-          class="d-block m-auto px-4 w-100"
-          :variant="editable ? 'success' : 'outline-primary'"
-          @click="addNoteSection"
-          >Add Section</b-button
-        >
-      </b-col>
-    </b-row>
-    <div class="display mt-3">
-      <b-row class="mb-5">
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: noteSection, route: '/api/character/notes' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+          />
+        </b-col>
+        <b-col cols="12" lg="2" class="d-flex">
+          <b-button
+            class="d-block m-auto px-4"
+            :variant="editable ? 'success' : 'outline-primary'"
+            @click="addNoteSection"
+            >Add Section</b-button
+          >
+        </b-col>
+        <b-col cols="12" lg="8"></b-col>
+      </b-row>
+      <b-row class="my-4">
         <b-col v-if="!noteSection.length" cols="12" class="mt-5">
           <h1 class="mx-auto mt-5">Add a section!</h1>
         </b-col>
@@ -195,7 +196,7 @@
           </b-row>
         </b-col>
       </b-row>
-    </div>
+    </b-container>
   </span>
 </template>
 
@@ -345,61 +346,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.display {
-  width: 100%;
-  table {
-    margin-right: auto;
-    margin-left: 0;
-    text-align: center;
-    border-spacing: 1em 0.25em;
-    border-collapse: separate;
-    min-width: 65%;
+.sublist-item {
+  color: $background;
+  background-color: lighten(lightgray, 10%);
+  cursor: pointer;
 
-    @media (max-width: 576px) {
-      border-spacing: 2em 0.25em;
-    }
-
-    td input:not([type='checkbox']),
-    td select,
-    td.lead,
-    th {
-      max-width: 200px;
-      min-width: 100px;
-      margin: auto;
-      white-space: nowrap;
-    }
-    .sm-col {
-      min-width: 30px;
-    }
-  }
-
-  .name-inputs {
-    font-size: 1.4rem;
-    text-align: center;
-    width: auto;
-    border: 0;
-  }
-
-  @media (max-width: 767px) {
-    .display >>> .modal-dialog {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  }
-
-  @media (max-width: 576px) {
-  }
-
-  .sublist-item {
-    color: $background;
-    background-color: lighten(lightgray, 10%);
-    cursor: pointer;
-
-    &.active {
-      background-color: $primary;
-      color: $highlight;
-    }
+  &.active {
+    background-color: $primary;
+    color: $highlight;
   }
 }
 </style>

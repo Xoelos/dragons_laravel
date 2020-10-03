@@ -1,57 +1,61 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="12">
-        <EditSave
-          :editable="editable"
-          :form="{ data: grapple, route: '/api/character/summary/grapple' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-    </b-row>
-    <div class="display mt-3">
-      <div class="row">
-        <div class="col-12 col-md-3">
-          <small>Total Grapple</small>
-          <div>
-            {{
-              parseInt(baseAttackBonus) +
-                parseInt(grapple.size_bonus) +
-                parseInt(grapple.misc_bonus) +
-                Math.floor(
-                  (parseInt(grapple.score) + parseInt(grapple.temp_score) - 10) / 2
-                )
-            }}
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Base Attack Bonus</small>
-          <div>{{ baseAttackBonus }}</div>
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Size Bonus</small>
-          <div>
-            <b-form-input
-              v-model="grapple.size_bonus"
-              :readonly="!editable"
-              type="number"
-              required
-            />
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Misc Bonus</small>
-          <b-form-input
-            v-model="grapple.misc_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: grapple, route: '/api/character/summary/grapple' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+        /></b-col>
+        <b-col cols="12" lg="10"></b-col>
+      </b-row>
+      <div class="mt-4">
+        <b-container fluid>
+          <b-row>
+            <b-col cols="12" md="3">
+              <small>Total Grapple</small>
+              <div>
+                {{
+                  parseInt(baseAttackBonus) +
+                    parseInt(grapple.size_bonus) +
+                    parseInt(grapple.misc_bonus) +
+                    Math.floor(
+                      (parseInt(grapple.score) + parseInt(grapple.temp_score) - 10) / 2
+                    )
+                }}
+              </div>
+            </b-col>
+            <b-col cols="12" md="3">
+              <small>Base Attack Bonus</small>
+              <div>{{ baseAttackBonus }}</div>
+            </b-col>
+            <b-col class="col-12 col-md-3">
+              <small>Size Bonus</small>
+              <div>
+                <b-form-input
+                  v-model="grapple.size_bonus"
+                  :readonly="!editable"
+                  type="number"
+                  required
+                />
+              </div>
+            </b-col>
+            <b-col cols="12" md="3">
+              <small>Misc Bonus</small>
+              <b-form-input
+                v-model="grapple.misc_bonus"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
-    </div>
+    </b-container>
   </span>
 </template>
 

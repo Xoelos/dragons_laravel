@@ -1,174 +1,205 @@
 <template>
   <span>
-    <EditSave
-      :editable="editable"
-      :form="{ data: summary, exp: exp, route: '/api/character/summary' }"
-      :character-id="characterId"
-      @make-editable="makeEditable"
-      @refresh="refresh"
-    />
-    <div class="display mt-3">
+    <b-container fluid class="mb-4">
       <b-row>
-        <b-col cols="12" md="4">
-          <small class="form-text text-muted">Character Name</small>
-          <b-form-input v-model="summary.name" size="sm" :readonly="!editable" required />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Gender</small>
-          <b-form-input
-            v-model="summary.gender"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Race</small>
-          <b-form-input v-model="summary.race" size="sm" :readonly="!editable" required />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Alignment</small>
-          <b-form-input
-            v-model="summary.alignment"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Size</small>
-          <b-form-input v-model="summary.size" size="sm" :readonly="!editable" required />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Speed</small>
-          <b-form-input
-            v-model="summary.speed"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Base Attack</small>
-          <b-button class="w-100" variant="warning" @click="updateView('baseAttacks')">{{
-            summary.base_attacks
-          }}</b-button>
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Health Points</small>
-          <b-button class="w-100" variant="warning" @click="updateView('hp')">{{
-            summary.hp
-          }}</b-button></b-col
-        >
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Initiative</small>
-          <b-button class="w-100" variant="warning" @click="updateView('initiative')">{{
-            summary.initiative
-          }}</b-button></b-col
-        >
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Armor Class</small>
-          <b-button class="w-100" variant="warning" @click="updateView('ac')">{{
-            summary.ac
-          }}</b-button>
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Grapple</small>
-          <b-button class="w-100" variant="warning" @click="updateView('grapple')">{{
-            summary.grapple
-          }}</b-button></b-col
-        >
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: summary, exp: exp, route: '/api/character/summary' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+        /></b-col>
+        <b-col cols="12" lg="10"></b-col>
       </b-row>
-      <b-row class="mt-5">
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Class</small>
-          <b-form-input
-            v-model="summary.class"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Experience</small>
-          <b-form-input
-            v-model="exp.experience"
-            type="number"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Level</small>
-          <div class="level">
-            {{ expCalc({ xp: exp.experience, xp_class: exp.class }) }}
-          </div>
-        </b-col>
-      </b-row>
+      <div class="mt-4">
+        <b-container fluid>
+          <b-row>
+            <b-col cols="12" md="4">
+              <small class="form-text text-muted">Character Name</small>
+              <b-form-input
+                v-model="summary.name"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Gender</small>
+              <b-form-input
+                v-model="summary.gender"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Race</small>
+              <b-form-input
+                v-model="summary.race"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Alignment</small>
+              <b-form-input
+                v-model="summary.alignment"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Size</small>
+              <b-form-input
+                v-model="summary.size"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Speed</small>
+              <b-form-input
+                v-model="summary.speed"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Base Attack</small>
+              <b-button
+                class="w-100"
+                variant="warning"
+                @click="updateView('baseAttacks')"
+                >{{ summary.base_attacks }}</b-button
+              >
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Health Points</small>
+              <b-button class="w-100" variant="warning" @click="updateView('hp')">{{
+                summary.hp
+              }}</b-button></b-col
+            >
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Initiative</small>
+              <b-button
+                class="w-100"
+                variant="warning"
+                @click="updateView('initiative')"
+                >{{ summary.initiative }}</b-button
+              ></b-col
+            >
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Armor Class</small>
+              <b-button class="w-100" variant="warning" @click="updateView('ac')">{{
+                summary.ac
+              }}</b-button>
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Grapple</small>
+              <b-button class="w-100" variant="warning" @click="updateView('grapple')">{{
+                summary.grapple
+              }}</b-button></b-col
+            >
+          </b-row>
+          <b-row class="mt-5">
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Class</small>
+              <b-form-input
+                v-model="summary.class"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Experience</small>
+              <b-form-input
+                v-model="exp.experience"
+                type="number"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Level</small>
+              <div class="level">
+                {{ expCalc({ xp: exp.experience, xp_class: exp.class }) }}
+              </div>
+            </b-col>
+          </b-row>
 
-      <hr class="d-md-none my-5" />
+          <hr class="d-md-none my-5" />
 
-      <b-row class="mt-md-2">
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Multi Class</small>
-          <b-form-input
-            v-model="exp.multi_class"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">MC Experience</small>
-          <b-form-input
-            v-model="exp.multi_experience"
-            class="level"
-            size="sm"
-            type="number"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">MC Level</small>
-          <div class="level">
-            {{ expCalc({ xp: exp.multi_experience, xp_class: exp.multi_class }) }}
-          </div>
-        </b-col>
-      </b-row>
+          <b-row class="mt-md-2">
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Multi Class</small>
+              <b-form-input
+                v-model="exp.multi_class"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">MC Experience</small>
+              <b-form-input
+                v-model="exp.multi_experience"
+                class="level"
+                size="sm"
+                type="number"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">MC Level</small>
+              <div class="level">
+                {{ expCalc({ xp: exp.multi_experience, xp_class: exp.multi_class }) }}
+              </div>
+            </b-col>
+          </b-row>
 
-      <hr class="d-md-none my-5" />
+          <hr class="d-md-none my-5" />
 
-      <b-row class="mt-md-2">
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">Prestige Class</small>
-          <b-form-input
-            v-model="exp.prestige_class"
-            size="sm"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">PC Experience</small>
-          <b-form-input
-            v-model="exp.prestige_experience"
-            class="level"
-            size="sm"
-            type="number"
-            :readonly="!editable"
-            required
-          />
-        </b-col>
-        <b-col cols="12" md="2">
-          <small class="form-text text-muted">PC Level</small>
-          <div class="level">
-            {{ expCalc({ xp: exp.prestige_experience, xp_class: exp.prestige_class }) }}
-          </div>
-        </b-col>
-      </b-row>
-    </div>
+          <b-row class="mt-md-2">
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">Prestige Class</small>
+              <b-form-input
+                v-model="exp.prestige_class"
+                size="sm"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">PC Experience</small>
+              <b-form-input
+                v-model="exp.prestige_experience"
+                class="level"
+                size="sm"
+                type="number"
+                :readonly="!editable"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small class="form-text text-muted">PC Level</small>
+              <div class="level">
+                {{
+                  expCalc({ xp: exp.prestige_experience, xp_class: exp.prestige_class })
+                }}
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
+    </b-container>
   </span>
 </template>
 

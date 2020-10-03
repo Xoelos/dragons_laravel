@@ -1,67 +1,71 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="12">
-        <EditSave
-          :editable="editable"
-          :form="{ data: healthPoints, route: '/api/character/summary/hp' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-    </b-row>
-    <div class="display mt-3">
-      <div class="row">
-        <div class="col-12 col-md-2">
-          <small>Health Points</small>
-          <b-form-input
-            v-model="healthPoints.total_hp"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-2">
-          <small>Current HP</small>
-          <div>
-            {{
-              parseInt(healthPoints.total_hp) -
-                parseInt(healthPoints.damage) -
-                parseInt(healthPoints.non_lethal) +
-                parseInt(healthPoints.temp_hp) || 0
-            }}
-          </div>
-        </div>
-        <div class="col-12 col-md-2">
-          <small>Damage Taken</small>
-          <b-form-input
-            v-model="healthPoints.damage"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-2">
-          <small>Non Lethal</small>
-          <b-form-input
-            v-model="healthPoints.non_lethal"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-2">
-          <small>Temporary HP</small>
-          <b-form-input
-            v-model="healthPoints.temp_hp"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: healthPoints, route: '/api/character/summary/hp' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+        /></b-col>
+        <b-col cols="12" lg="10"></b-col>
+      </b-row>
+      <div class="mt-4">
+        <b-container fluid>
+          <b-row>
+            <b-col cols="12" md="1">
+              <small>Current HP</small>
+              <div>
+                {{
+                  parseInt(healthPoints.total_hp) -
+                    parseInt(healthPoints.damage) -
+                    parseInt(healthPoints.non_lethal) +
+                    parseInt(healthPoints.temp_hp) || 0
+                }}
+              </div>
+            </b-col>
+            <b-col cols="12" md="2">
+              <small>Base Health Points</small>
+              <b-form-input
+                v-model="healthPoints.total_hp"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col class="col-12 col-md-2">
+              <small>Temporary HP</small>
+              <b-form-input
+                v-model="healthPoints.temp_hp"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small>Damage Taken</small>
+              <b-form-input
+                v-model="healthPoints.damage"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="2">
+              <small>Non Lethal</small>
+              <b-form-input
+                v-model="healthPoints.non_lethal"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
-    </div>
+    </b-container>
   </span>
 </template>
 

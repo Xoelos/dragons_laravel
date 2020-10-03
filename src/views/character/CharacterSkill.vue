@@ -1,162 +1,167 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="8" md="2">
-        <EditSave
-          :editable="editable"
-          :form="{ data: localSkills, route: '/api/character/skills' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-      <b-col cols="4" md="1" class="d-flex">
-        <b-button
-          class="d-block m-auto px-4 align-center"
-          :variant="editable ? 'success' : 'outline-primary'"
-          @click="addSkill"
-          >Add</b-button
-        >
-      </b-col>
-      <b-col cols="12" md="9"></b-col>
-    </b-row>
-    <div class="display mt-3">
-      <div class="container-fluid">
-        <b-row>
-          <b-col cols="12" md="9" lg="6">
-            <b-row class="mb-3">
-              <b-col cols="5" class="lead p-0">Skill</b-col>
-              <b-col cols="4" class="lead p-0">Skill Modifier</b-col>
-              <b-col cols="3" class="lead p-0"></b-col>
-              <b-col cols="3" class="lead p-0"></b-col>
-            </b-row>
-            <draggable
-              v-model="localSkills"
-              @start="drag = true"
-              @end="drag = false"
-              :disabled="!editable"
-            >
-              <b-row v-for="(skill, index) in localSkills" :key="index" class="mt-1">
-                <b-col cols="5" class="p-0 m-auto"
-                  ><b-form-input
-                    v-model="skill.name"
-                    :readonly="!editable"
-                    class="text-center skill-name"
-                    :class="
-                      !skill.class_skill
-                        ? !skill.untrained_skill
-                          ? 'non-skill'
-                          : null
-                        : null
-                    "
-                    required
-                /></b-col>
-                <b-col cols="4" class="p-0 m-auto">{{
-                  parseInt(skill.rank_score) +
-                    parseInt(skill.misc_score) +
-                    Math.floor((skill.score + skill.temp_score - 10) / 2) || 0
-                }}</b-col>
-                <b-col cols="3" class="p-0">
-                  <b-button
-                    variant="primary"
-                    @click="$bvModal.show('modal-skill-' + index)"
-                    >Details</b-button
-                  ></b-col
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="8" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: localSkills, route: '/api/character/skills' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+          />
+        </b-col>
+        <b-col cols="4" lg="1" class="d-flex">
+          <b-button
+            class="d-block m-auto px-4 align-center"
+            :variant="editable ? 'success' : 'outline-primary'"
+            @click="addSkill"
+            >Add</b-button
+          >
+        </b-col>
+        <b-col cols="12" lg="9"></b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" md="8" lg="6">
+          <div class="display mt-4">
+            <b-container fluid class="ml-1 wide-container">
+              <b-row class="mb-3">
+                <b-col
+                  cols="4"
+                  class="h6 font-weight-bold"
+                  v-b-tooltip.hover
+                  title="Drag and drop to reorder!"
+                  >Skill</b-col
                 >
-
-                <b-modal
-                  :id="'modal-skill-' + index"
-                  size="xl"
-                  :title="'Skill: ' + skill.name"
-                  hide-footer
+                <b-col cols="4" class="h6 font-weight-bold text-nowrap"
+                  >Skill Modifier</b-col
                 >
-                  <b-row>
-                    <b-col cols="6" class="text-center"> Untrained Skill</b-col>
-                    <b-col cols="6" class="text-center"> Class Skill</b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col cols="6" class="text-center">
-                      <b-form-checkbox
-                        v-model="skill.untrained_skill"
-                        :value="1"
-                        :unchecked-value="0"
-                        :disabled="!editable"
-                        required
-                      />
-                    </b-col>
-                    <b-col cols="6" class="text-center">
-                      <b-form-checkbox
-                        v-model="skill.class_skill"
-                        :value="1"
-                        :unchecked-value="0"
-                        :disabled="!editable"
-                        required
-                      /> </b-col
-                  ></b-row>
-                  <b-row class="mt-5 text-center">
-                    <b-col cols="3" class="p-0">Ability</b-col>
-                    <b-col cols="3" class="p-0">Ranks</b-col>
-                    <b-col cols="3" class="p-0">Misc</b-col>
-                  </b-row>
-                  <b-row class="mt-2 mb-5 text-center">
-                    <b-col cols="3" class="p-0 m-auto">
-                      <b-form-select
-                        v-model="skill.ability_id"
-                        :options="abilityList"
-                        :disabled="!editable"
-                        required
-                      />
-                    </b-col>
-                    <b-col cols="3" class="p-0 m-auto">
-                      <b-form-input
-                        v-model="skill.rank_score"
-                        :readonly="!editable"
-                        type="number"
-                        required
-                      />
-                    </b-col>
-                    <b-col cols="3" class="p-0 m-auto">
-                      <b-form-input
-                        v-model="skill.misc_score"
-                        :readonly="!editable"
-                        type="number"
-                        required
-                      />
-                    </b-col>
-                  </b-row>
-                  <b-row class="mt-4">
-                    <b-col cols="12" md="10">
-                      <EditSave
-                        :editable="editable"
-                        :form="{ data: skills, route: '/api/character/skills' }"
-                        :character-id="characterId"
-                        @make-editable="makeEditable"
-                        @refresh="refresh"
-                      />
-                    </b-col>
-                    <b-col
-                      cols="6"
-                      offset="3"
-                      md="2"
-                      offset-md="0"
-                      class="text-center my-2"
-                    >
-                      <b-button
-                        class="m-auto px-5"
-                        :variant="editable ? 'danger' : 'outline-primary'"
-                        @click="deleteSkill(skill.id, 'modal-skill-' + index)"
-                        >DELETE</b-button
-                      >
-                    </b-col>
-                  </b-row>
-                </b-modal>
+                <b-col cols="4"></b-col>
               </b-row>
-            </draggable>
-          </b-col>
-          <b-col cols="12" md="3" lg="6"></b-col>
-        </b-row>
-      </div>
-    </div>
+              <draggable v-model="localSkills" handle=".handle" :disabled="!editable">
+                <b-row v-for="(skill, index) in localSkills" :key="index" class="mt-1">
+                  <b-col cols="4" class="p-0 m-auto handle"
+                    ><b-form-input
+                      slot="footer"
+                      v-model="skill.name"
+                      :readonly="!editable"
+                      class="text-center skill-name"
+                      :class="
+                        !skill.class_skill
+                          ? !skill.untrained_skill
+                            ? 'non-skill'
+                            : null
+                          : null
+                      "
+                      required
+                  /></b-col>
+                  <b-col cols="4" class="p-0 m-auto drag">{{
+                    parseInt(skill.rank_score) +
+                      parseInt(skill.misc_score) +
+                      Math.floor((skill.score + skill.temp_score - 10) / 2) || 0
+                  }}</b-col>
+                  <b-col cols="4" class="p-0">
+                    <b-button
+                      variant="primary"
+                      @click="$bvModal.show('modal-skill-' + index)"
+                      >Details</b-button
+                    ></b-col
+                  >
+
+                  <b-modal
+                    :id="'modal-skill-' + index"
+                    size="xl"
+                    :title="'Skill: ' + skill.name"
+                    hide-footer
+                  >
+                    <b-row>
+                      <b-col cols="6" class="text-center"> Untrained Skill</b-col>
+                      <b-col cols="6" class="text-center"> Class Skill</b-col>
+                    </b-row>
+                    <b-row>
+                      <b-col cols="6" class="text-center">
+                        <b-form-checkbox
+                          v-model="skill.untrained_skill"
+                          :value="1"
+                          :unchecked-value="0"
+                          :disabled="!editable"
+                          required
+                        />
+                      </b-col>
+                      <b-col cols="6" class="text-center">
+                        <b-form-checkbox
+                          v-model="skill.class_skill"
+                          :value="1"
+                          :unchecked-value="0"
+                          :disabled="!editable"
+                          required
+                        /> </b-col
+                    ></b-row>
+                    <b-row class="mt-5 text-center">
+                      <b-col cols="3" class="p-0">Ability</b-col>
+                      <b-col cols="3" class="p-0">Ranks</b-col>
+                      <b-col cols="3" class="p-0">Misc</b-col>
+                    </b-row>
+                    <b-row class="mt-2 mb-5 text-center">
+                      <b-col cols="3" class="p-0 m-auto">
+                        <b-form-select
+                          v-model="skill.ability_id"
+                          :options="abilityList"
+                          :disabled="!editable"
+                          required
+                        />
+                      </b-col>
+                      <b-col cols="3" class="p-0 m-auto">
+                        <b-form-input
+                          v-model="skill.rank_score"
+                          :readonly="!editable"
+                          type="number"
+                          required
+                        />
+                      </b-col>
+                      <b-col cols="3" class="p-0 m-auto">
+                        <b-form-input
+                          v-model="skill.misc_score"
+                          :readonly="!editable"
+                          type="number"
+                          required
+                        />
+                      </b-col>
+                    </b-row>
+                    <b-row class="mt-4">
+                      <b-col cols="12" md="10">
+                        <EditSave
+                          :editable="editable"
+                          :form="{ data: skills, route: '/api/character/skills' }"
+                          :character-id="characterId"
+                          @make-editable="makeEditable"
+                          @refresh="refresh"
+                        />
+                      </b-col>
+                      <b-col
+                        cols="6"
+                        offset="3"
+                        md="2"
+                        offset-md="0"
+                        class="text-center my-2"
+                      >
+                        <b-button
+                          class="m-auto px-5"
+                          :variant="editable ? 'danger' : 'outline-primary'"
+                          @click="deleteSkill(skill.id, 'modal-skill-' + index)"
+                          >DELETE</b-button
+                        >
+                      </b-col>
+                    </b-row>
+                  </b-modal>
+                </b-row>
+              </draggable>
+            </b-container>
+          </div>
+        </b-col>
+        <b-col cols="12" md="4" lg="6"></b-col>
+      </b-row>
+    </b-container>
   </span>
 </template>
 
@@ -269,18 +274,22 @@ export default {
 <style lang="scss" scoped>
 .display {
   width: 100%;
-  overflow: auto;
+}
 
-  input.skill-name {
-    background-color: $white;
-    border: 0;
-    &:read-only {
-      background-color: $light !important;
-    }
-  }
+.wide-container {
+  min-width: max-content;
+  float: left;
+}
 
-  .non-skill {
-    text-decoration: line-through;
+input.skill-name {
+  background-color: $white;
+  border: 0;
+  &:read-only {
+    background-color: $light !important;
   }
+}
+
+.non-skill {
+  text-decoration: line-through;
 }
 </style>

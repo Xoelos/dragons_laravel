@@ -1,56 +1,60 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="12">
-        <EditSave
-          :editable="editable"
-          :form="{ data: baseAttacks, route: '/api/character/summary/base-attack' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-    </b-row>
-    <div class="display mt-3">
-      <div class="row">
-        <div class="col-12 col-md-3">
-          <small>Base Attack Bonus</small>
-          <b-form-input
-            v-model="baseAttacks.base_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Second Attack Bonus</small>
-          <b-form-input
-            v-model="baseAttacks.second_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Third Attack Bonus</small>
-          <b-form-input
-            v-model="baseAttacks.third_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
-        <div class="col-12 col-md-3">
-          <small>Fourth Attack Bonus</small>
-          <b-form-input
-            v-model="baseAttacks.fourth_bonus"
-            :readonly="!editable"
-            type="number"
-            required
-          />
-        </div>
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: baseAttacks, route: '/api/character/summary/base-attack' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+        /></b-col>
+        <b-col cols="12" lg="10"></b-col>
+      </b-row>
+      <div class="mt-4">
+        <b-container fluid>
+          <b-row>
+            <b-col cols="12" md="3">
+              <small>Base Attack Bonus</small>
+              <b-form-input
+                v-model="baseAttacks.base_bonus"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="3">
+              <small>Second Attack Bonus</small>
+              <b-form-input
+                v-model="baseAttacks.second_bonus"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="3">
+              <small>Third Attack Bonus</small>
+              <b-form-input
+                v-model="baseAttacks.third_bonus"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+            <b-col cols="12" md="3">
+              <small>Fourth Attack Bonus</small>
+              <b-form-input
+                v-model="baseAttacks.fourth_bonus"
+                :readonly="!editable"
+                type="number"
+                required
+              />
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
-    </div>
+    </b-container>
   </span>
 </template>
 

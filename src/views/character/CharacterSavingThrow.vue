@@ -1,26 +1,30 @@
 <template>
   <span>
-    <EditSave
-      :editable="editable"
-      :form="{ data: savingThrows, route: '/api/character/saving-throws' }"
-      :character-id="characterId"
-      @make-editable="makeEditable"
-      @refresh="refresh"
-    />
-    <div class="display">
-      <table align="center">
-        <thead>
-          <th>Saving Throw</th>
-          <th>Total</th>
-          <th>Base Save</th>
-          <th>Magic Modifier</th>
-          <th>Misc Modifier</th>
-          <th>Temp Modifier</th>
-        </thead>
-        <tbody>
-          <tr v-for="(savingThrow, index) in savingThrows" :key="index">
-            <td class="px-md-5">{{ savingThrow.name }}</td>
-            <td class="px-3 px-md-5">
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="12" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: savingThrows, route: '/api/character/saving-throws' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+        /></b-col>
+        <b-col cols="12" lg="10"></b-col>
+      </b-row>
+      <div class="display mt-4">
+        <b-container fluid class="wide-container">
+          <b-row class="mb-3">
+            <b-col cols="2" class="h6 font-weight-bold">Saving Throw</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Total</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Base Save</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Magic Modifier</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Misc Modifier</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Temp Modifier</b-col>
+          </b-row>
+          <b-row v-for="(savingThrow, index) in savingThrows" :key="index">
+            <b-col cols="2" class="px-md-5">{{ savingThrow.name }}</b-col>
+            <b-col cols="2" class="px-3 px-md-5">
               {{
                 Math.floor(
                   parseInt(savingThrow.base_score) +
@@ -35,32 +39,32 @@
                     )
                 ) || 0
               }}
-            </td>
-            <td>
+            </b-col>
+            <b-col cols="2">
               <b-form-input
                 v-model="savingThrow.base_score"
                 type="number"
                 :readonly="!editable"
                 required
               />
-            </td>
-            <td>
+            </b-col>
+            <b-col cols="2">
               <b-form-input
                 v-model="savingThrow.magic_score"
                 type="number"
                 :readonly="!editable"
                 required
               />
-            </td>
-            <td>
+            </b-col>
+            <b-col cols="2">
               <b-form-input
                 v-model="savingThrow.misc_score"
                 type="number"
                 :readonly="!editable"
                 required
               />
-            </td>
-            <td>
+            </b-col>
+            <b-col cols="2">
               <b-form-input
                 v-model="savingThrow.temp_score"
                 type="number"
@@ -68,11 +72,11 @@
                 :readonly="!editable"
                 required
               />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
+    </b-container>
   </span>
 </template>
 
@@ -131,25 +135,9 @@ export default {
 .display {
   width: 100%;
   overflow: auto;
-  table {
-    text-align: center;
-    margin-right: auto;
-    margin-left: 0;
-    border-spacing: 1em;
-    border-collapse: separate;
-
-    @media (max-width: 576px) {
-      border-spacing: 2em 0.25em;
-    }
-
-    input,
-    select,
-    td,
-    th {
-      white-space: nowrap;
-      max-width: 200px;
-      margin: auto;
-    }
-  }
+}
+.wide-container {
+  width: max-content;
+  float: left;
 }
 </style>

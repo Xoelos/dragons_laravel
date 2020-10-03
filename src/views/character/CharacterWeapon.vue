@@ -1,157 +1,168 @@
 <template>
   <span>
-    <b-row>
-      <b-col cols="8" md="2">
-        <EditSave
-          :editable="editable"
-          :form="{ data: localWeapons, route: '/api/character/weapons' }"
-          :character-id="characterId"
-          @make-editable="makeEditable"
-          @refresh="refresh"
-        />
-      </b-col>
-      <b-col cols="4" md="1" class="d-flex">
-        <b-button
-          class="d-block m-auto px-4"
-          :variant="editable ? 'success' : 'outline-primary'"
-          @click="addWeapon"
-          >Add</b-button
-        >
-      </b-col>
-      <b-col cols="12" md="9"></b-col>
-    </b-row>
-    <div class="display mt-3">
-      <div class="container-fluid wide-container">
-        <b-row>
-          <b-col cols="3" class="h6">Name</b-col>
-          <b-col cols="2" class="h6">Attack Bonus</b-col>
-          <b-col cols="2" class="h6">Damage</b-col>
-          <b-col cols="2" class="h6 sm-col">Equipped?</b-col>
-          <b-col cols="2"></b-col>
-        </b-row>
-        <draggable
-          v-model="localWeapons"
-          @start="drag = true"
-          @end="drag = false"
-          :disabled="!editable"
-        >
-          <b-row v-for="(weapon, index) in localWeapons" :key="index" class="my-2">
-            <b-col cols="3">
-              <b-form-input
-                v-model="weapon.name"
-                :readonly="!editable"
-                type="text"
-                required
-              />
-            </b-col>
-            <b-col cols="2">
-              <b-form-input
-                v-model="weapon.attack_bonus"
-                :readonly="!editable"
-                type="number"
-                required
-              />
-            </b-col>
-            <b-col cols="2">
-              <b-form-input
-                v-model="weapon.damage"
-                :readonly="!editable"
-                type="text"
-                required
-              />
-            </b-col>
-            <b-col cols="2" class="sm-col">
-              <b-form-checkbox
-                v-model="weapon.equipped"
-                :value="1"
-                :unchecked-value="0"
-                :disabled="!editable"
-                required
-              />
-            </b-col>
-            <b-col cols="2">
-              <b-button variant="primary" @click="$bvModal.show('modal-weapon-' + index)"
-                >Details</b-button
-              >
-            </b-col>
-            <b-modal
-              :id="'modal-weapon-' + index"
-              size="xl"
-              :title="'Weapon: ' + weapon.name"
-              hide-footer
+    <b-container fluid class="mb-4">
+      <b-row>
+        <b-col cols="8" lg="2">
+          <EditSave
+            :editable="editable"
+            :form="{ data: localWeapons, route: '/api/character/weapons' }"
+            :character-id="characterId"
+            @make-editable="makeEditable"
+            @refresh="refresh"
+          />
+        </b-col>
+        <b-col cols="4" lg="1" class="d-flex">
+          <b-button
+            class="d-block m-auto px-4"
+            :variant="editable ? 'success' : 'outline-primary'"
+            @click="addWeapon"
+            >Add</b-button
+          >
+        </b-col>
+        <b-col cols="12" lg="9"></b-col>
+      </b-row>
+      <div class="display mt-4">
+        <b-container fluid class="wide-container">
+          <b-row class="mb-3">
+            <b-col
+              cols="3"
+              class="h6 font-weight-bold"
+              v-b-tooltip.hover
+              title="Drag and drop to reorder!"
+              >Name</b-col
             >
-              <b-row class="mt-2 text-center">
-                <b-col md="3" lg="2" offset-md="3">
-                  <small class="h6">Critical</small>
-                  <b-form-input
-                    v-model="weapon.critical"
-                    :readonly="!editable"
-                    type="text"
-                    required
-                  />
-                </b-col>
-                <b-col md="3" lg="2">
-                  <small class="h6">Type</small>
-                  <b-form-input
-                    v-model="weapon.type"
-                    :readonly="!editable"
-                    type="text"
-                    required
-                  />
-                </b-col>
-                <b-col md="3" lg="2">
-                  <small class="h6">Range</small>
-                  <b-form-input
-                    v-model="weapon.range"
-                    :readonly="!editable"
-                    type="text"
-                    required
-                  />
-                </b-col>
-              </b-row>
-              <b-row class="mb-5 mt-4 text-center">
-                <b-col md="1" offset-md="3">
-                  <small class="h6">Ammo</small>
-                  <b-form-input
-                    v-model="weapon.ammo"
-                    :readonly="!editable"
-                    type="number"
-                    required
-                  />
-                </b-col>
-                <b-col md="5">
-                  <small class="h6">Notes</small>
-                  <b-form-textarea
-                    v-model="weapon.notes"
-                    :readonly="!editable"
-                    rows="3"
-                  />
-                </b-col>
-              </b-row>
-              <b-row class="mt-4">
-                <b-col md="10">
-                  <EditSave
-                    :editable="editable"
-                    :form="{ data: localWeapons, route: '/api/character/weapons' }"
-                    :character-id="characterId"
-                    @make-editable="makeEditable"
-                    @refresh="refresh"
-                  />
-                </b-col>
-                <b-col cols="6" offset="3" md="2" offset-md="0" class="text-center my-2">
-                  <b-button
-                    class="m-auto px-4"
-                    :variant="editable ? 'danger' : 'outline-primary'"
-                    @click="deleteWeapon(weapon.id, 'modal-weapon-' + index)"
-                    >Delete</b-button
-                  >
-                </b-col>
-              </b-row>
-            </b-modal>
+            <b-col cols="2" class="h6 font-weight-bold">Attack Bonus</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Damage</b-col>
+            <b-col cols="2" class="h6 font-weight-bold">Equipped?</b-col>
+            <b-col cols="2"></b-col>
           </b-row>
-        </draggable>
+          <draggable v-model="localWeapons" handle=".handle" :disabled="!editable">
+            <b-row v-for="(weapon, index) in localWeapons" :key="index" class="my-2">
+              <b-col cols="3" class="handle">
+                <b-form-input
+                  v-model="weapon.name"
+                  :readonly="!editable"
+                  type="text"
+                  required
+                />
+              </b-col>
+              <b-col cols="2">
+                <b-form-input
+                  v-model="weapon.attack_bonus"
+                  :readonly="!editable"
+                  type="number"
+                  required
+                />
+              </b-col>
+              <b-col cols="2">
+                <b-form-input
+                  v-model="weapon.damage"
+                  :readonly="!editable"
+                  type="text"
+                  required
+                />
+              </b-col>
+              <b-col cols="2" class="sm-col">
+                <b-form-checkbox
+                  v-model="weapon.equipped"
+                  :value="1"
+                  :unchecked-value="0"
+                  :disabled="!editable"
+                  required
+                />
+              </b-col>
+              <b-col cols="2">
+                <b-button
+                  variant="primary"
+                  @click="$bvModal.show('modal-weapon-' + index)"
+                  >Details</b-button
+                >
+              </b-col>
+              <b-modal
+                :id="'modal-weapon-' + index"
+                size="xl"
+                :title="'Weapon: ' + weapon.name"
+                hide-footer
+              >
+                <b-row class="mt-2 text-center">
+                  <b-col md="3" lg="2" offset-md="3">
+                    <small class="h6">Critical</small>
+                    <b-form-input
+                      v-model="weapon.critical"
+                      :readonly="!editable"
+                      type="text"
+                      required
+                    />
+                  </b-col>
+                  <b-col md="3" lg="2">
+                    <small class="h6">Type</small>
+                    <b-form-input
+                      v-model="weapon.type"
+                      :readonly="!editable"
+                      type="text"
+                      required
+                    />
+                  </b-col>
+                  <b-col md="3" lg="2">
+                    <small class="h6">Range</small>
+                    <b-form-input
+                      v-model="weapon.range"
+                      :readonly="!editable"
+                      type="text"
+                      required
+                    />
+                  </b-col>
+                </b-row>
+                <b-row class="mb-5 mt-4 text-center">
+                  <b-col md="1" offset-md="3">
+                    <small class="h6">Ammo</small>
+                    <b-form-input
+                      v-model="weapon.ammo"
+                      :readonly="!editable"
+                      type="number"
+                      required
+                    />
+                  </b-col>
+                  <b-col md="5">
+                    <small class="h6">Notes</small>
+                    <b-form-textarea
+                      v-model="weapon.notes"
+                      :readonly="!editable"
+                      rows="3"
+                    />
+                  </b-col>
+                </b-row>
+                <b-row class="mt-4">
+                  <b-col md="10">
+                    <EditSave
+                      :editable="editable"
+                      :form="{ data: localWeapons, route: '/api/character/weapons' }"
+                      :character-id="characterId"
+                      @make-editable="makeEditable"
+                      @refresh="refresh"
+                    />
+                  </b-col>
+                  <b-col
+                    cols="6"
+                    offset="3"
+                    md="2"
+                    offset-md="0"
+                    class="text-center my-2"
+                  >
+                    <b-button
+                      class="m-auto px-4"
+                      :variant="editable ? 'danger' : 'outline-primary'"
+                      @click="deleteWeapon(weapon.id, 'modal-weapon-' + index)"
+                      >Delete</b-button
+                    >
+                  </b-col>
+                </b-row>
+              </b-modal>
+            </b-row>
+          </draggable>
+        </b-container>
       </div>
-    </div>
+    </b-container>
   </span>
 </template>
 
@@ -265,22 +276,10 @@ export default {
 <style lang="scss" scoped>
 .display {
   width: 100%;
-  overflow-x: auto;
-
-  .wide-container {
-    width: max-content;
-    float: left;
-  }
-
-  @media (max-width: 767px) {
-    .display >>> .modal-dialog {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  }
-
-  @media (max-width: 576px) {
-  }
+  overflow: auto;
+}
+.wide-container {
+  width: max-content;
+  float: left;
 }
 </style>
