@@ -22,25 +22,25 @@
         <b-col cols="12" lg="9"></b-col>
       </b-row>
       <b-row>
-        <b-col cols="12" md="8" lg="6">
+        <b-col cols="12" md="8" lg="5" class="p-0">
           <div class="display mt-4">
-            <b-container fluid class="ml-1 wide-container">
+            <b-container fluid class="ml-1 wide-container p-0">
               <b-row class="mb-3">
                 <b-col
-                  cols="4"
+                  cols="5"
                   class="h6 font-weight-bold"
                   v-b-tooltip.hover
                   title="Drag and drop to reorder!"
                   >Skill</b-col
                 >
-                <b-col cols="4" class="h6 font-weight-bold text-nowrap"
+                <b-col cols="3" class="h6 font-weight-bold text-nowrap p-0 m-0"
                   >Skill Modifier</b-col
                 >
                 <b-col cols="4"></b-col>
               </b-row>
               <draggable v-model="localSkills" handle=".handle" :disabled="!editable">
-                <b-row v-for="(skill, index) in localSkills" :key="index" class="mt-1">
-                  <b-col cols="4" class="p-0 m-auto handle"
+                <b-row v-for="(skill, index) in localSkills" :key="index" class="my-2">
+                  <b-col cols="5" class="p-0 m-auto handle"
                     ><b-form-input
                       slot="footer"
                       v-model="skill.name"
@@ -55,7 +55,7 @@
                       "
                       required
                   /></b-col>
-                  <b-col cols="4" class="p-0 m-auto drag">{{
+                  <b-col cols="3" class="p-0 m-auto drag">{{
                     parseInt(skill.rank_score) +
                       parseInt(skill.misc_score) +
                       Math.floor((skill.score + skill.temp_score - 10) / 2) || 0
@@ -159,7 +159,7 @@
             </b-container>
           </div>
         </b-col>
-        <b-col cols="12" md="4" lg="6"></b-col>
+        <b-col cols="12" md="4" lg="7"></b-col>
       </b-row>
     </b-container>
   </span>

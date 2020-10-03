@@ -224,11 +224,8 @@ export default {
     },
     refresh() {
       this.$emit('refresh');
-      updateProps();
     },
-    updateProps() {
-      this.localWeapons = [...this.$props.weapons];
-    },
+
     addWeapon() {
       if (!this.$props.editable) return;
       axios

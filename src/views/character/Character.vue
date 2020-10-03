@@ -33,7 +33,7 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col cols="12" align="center">
+          <b-col cols="12" align="center" class="p-0">
             <div class="dataSection">
               <CharacterSummary
                 v-if="activeView == 'summary'"

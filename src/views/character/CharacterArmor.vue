@@ -221,10 +221,6 @@ export default {
     },
     refresh() {
       this.$emit('refresh');
-      updateProps();
-    },
-    updateProps() {
-      this.localArmors = [...this.$props.armors];
     },
     addArmor() {
       if (!this.$props.editable) return;
