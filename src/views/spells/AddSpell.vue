@@ -233,6 +233,9 @@ export default {
         });
         return;
       }
+
+      const summary = this.form.summary.replace('\n', ' ').trim();
+
       axios
         .post(
           `${this.env}/api/spells`,
@@ -248,7 +251,7 @@ export default {
             range: this.form.range.trim(),
             saving_throw: this.form.saving_throw.trim(),
             spell_resistance: this.form.spell_resistance.trim(),
-            summary: this.form.summary.trim(),
+            summary: summary,
             target: this.form.target.trim(),
             levels: this.form.levels,
           },

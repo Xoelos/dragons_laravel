@@ -81,6 +81,7 @@ body {
   background-color: $light;
   color: $primary;
   font-family: $paragraph;
+  -webkit-overflow-scrolling: unset;
 
   h1,
   h2,

@@ -1,27 +1,16 @@
 <template>
   <b-row>
-    <b-col cols="6" md="3" lg="2" class="my-2">
+    <b-col cols="6" class="my-2">
       <b-button class="d-block m-auto px-4" variant="primary" @click="makeEditable()"
         >Edit</b-button
       >
     </b-col>
-    <b-col cols="6" md="3" lg="2" class="my-2">
+    <b-col cols="6" class="my-2">
       <b-button
         class="d-block m-auto px-4"
         :variant="editable ? 'dark' : 'outline-primary'"
         @click="save()"
         >Save</b-button
-      >
-    </b-col>
-    <b-col cols="12" md="6" lg="8" align="center">
-      <b-alert
-        class="my-2 p-1 w-50"
-        align="center"
-        :show="countdown"
-        :variant="saveResponse.variant"
-        @dismissed="countdown = 0"
-        @dismiss-count-down="countDownChanged(countdown)"
-        >{{ saveResponse.message }}</b-alert
       >
     </b-col>
   </b-row>

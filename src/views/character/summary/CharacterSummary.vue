@@ -7,7 +7,7 @@
       @make-editable="makeEditable"
       @refresh="refresh"
     />
-    <div class="display">
+    <div class="display mt-3">
       <b-row>
         <b-col cols="12" md="4">
           <small class="form-text text-muted">Character Name</small>
@@ -260,11 +260,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.display {
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-bottom: 4em;
-}
 .level {
   padding: 0.25rem 0.5rem;
 }

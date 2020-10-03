@@ -12,6 +12,7 @@
               type="email"
               required
               placeholder="Email"
+              autocomplete="on"
               class="mx-auto mt-5"
             />
           </b-form-group>
@@ -22,6 +23,7 @@
               v-model="form.password"
               required
               placeholder="Password"
+              autocomplete="password"
               type="password"
               class="m-auto"
             />

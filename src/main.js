@@ -2,11 +2,12 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from '../src/routes';
 import store from './store';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import { firestorePlugin } from 'vuefire';
+// import firebase from 'firebase/app';
+// import 'firebase/auth';
+// import 'firebase/firestore';
+// import { firestorePlugin } from 'vuefire';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faAngleRight,
   faFistRaised,
@@ -19,7 +20,6 @@ import {
   faCaretDown,
   faCaretUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(
   faAngleRight,
