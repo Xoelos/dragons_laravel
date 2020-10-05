@@ -7,10 +7,12 @@
       </b-col>
     </b-row>
     <b-row class="mt-5">
-      <b-col cols="12" md="5">
+      <b-col cols="12" md="8" offset-md="2">
         <CharacterCreate @loading="loading" />
       </b-col>
-      <b-col cols="12" md="7">
+    </b-row>
+    <b-row>
+      <b-col cols="12" md="8" offset-md="2" class="mt-5">
         <CampaignCreate @loading="loading" />
       </b-col>
     </b-row>

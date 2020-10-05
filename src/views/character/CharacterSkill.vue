@@ -191,6 +191,11 @@ export default {
       type: Boolean,
     },
   },
+  watch: {
+    skills(skills) {
+      this.localSkills = [...skills];
+    },
+  },
   data: () => {
     return {
       abilityList: [

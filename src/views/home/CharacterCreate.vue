@@ -1,47 +1,62 @@
 <template>
   <div>
-    <b-row class="d-flex mb-3">
-      <b-col class="pr-2" cols="12" md="auto">
-        <h3>Characters:</h3>
+    <b-row class="mb-3">
+      <b-col cols="12">
+        <h2>Characters:</h2>
       </b-col>
-      <b-col cols="12" md="auto">
-        <b-button v-b-modal.modal-xl-1 class="characterButton ml-auto"
+    </b-row>
+    <b-row>
+      <b-col cols="12" lg="10">
+        <b-list-group v-if="characters.length == 0">
+          <b-list-group-item class="h3"
+            >Add a character to get started!</b-list-group-item
+          >
+        </b-list-group>
+        <b-list-group v-else>
+          <b-row v-for="character in characters" :key="character.id">
+            <b-col cols="12" lg="10">
+              <b-list-group-item button @click="editCharacter(character.id)" class="h3"
+                >{{ character.name }} | {{ character.race }}</b-list-group-item
+              >
+            </b-col>
+          </b-row>
+
+          <b-modal
+            id="deleteCharacterModal"
+            header-text-variant="danger"
+            ok-title="DELETE"
+            ok-variant="secondary"
+            cancel-variant="primary"
+            :title="`Delete character?`"
+            @ok="deleteCharacter()"
+          >
+            <b-form-select
+              v-model="deletingCharacter"
+              :options="characterNames"
+              required
+            />
+            <small>This change is permanent and cannot be undone!</small>
+          </b-modal>
+        </b-list-group>
+      </b-col>
+    </b-row>
+    <b-row class="mt-4">
+      <b-col cols="12" lg="4">
+        <b-button v-b-modal.createCharacter class="characterButton d-block m-auto"
           >Create new Character</b-button
         >
       </b-col>
-    </b-row>
-    <b-list-group v-if="characters.length == 0">
-      <b-list-group-item>Add a character to get started!</b-list-group-item>
-    </b-list-group>
-    <b-list-group v-else>
-      <div v-for="character in characters" :key="character.id" class="characterGrid">
-        <b-list-group-item button class="mb-4" @click="editCharacter(character.id)">{{
-          character.name
-        }}</b-list-group-item>
+      <b-col cols="12" lg="4" class="mt-4 mt-lg-0">
         <b-button
           v-b-modal.deleteCharacterModal
-          class="mb-4"
+          class="deleteButton d-block m-auto"
           variant="secondary"
-          @click="deleteCharacterId = character.id"
-          >X</b-button
+          >Delete a character</b-button
         >
-      </div>
-
-      <b-modal
-        id="deleteCharacterModal"
-        ok-title="DELETE"
-        ok-variant="secondary"
-        cancel-variant="primary"
-        title="DELETE CHARACTER?"
-        class="d-contents"
-        @ok="deleteCharacter()"
-      >
-        <p class="my-4">This change is permanent, it cannot be undone!</p>
-      </b-modal>
-    </b-list-group>
-
+      </b-col>
+    </b-row>
     <!-- Character modal -->
-    <b-modal id="modal-xl-1" size="xl" title="Create new hero" hide-footer>
+    <b-modal id="createCharacter" size="xl" title="Create new hero" hide-footer>
       <div>
         <b-form @submit="onSubmit">
           <b-form-group id="input-group-1" label="Character Info:" label-for="input-1">
@@ -116,7 +131,7 @@ export default {
   name: 'CharacterCreate',
   data: () => {
     return {
-      deleteCharacterId: '',
+      deletingCharacter: null,
       characters: [],
       err: null,
       form: {
@@ -174,28 +189,28 @@ export default {
   },
   created() {
     this.loading({ status: true, message: 'Loading your Adventure!' });
-    axios
-      .get(`${this.env}/api/character`, {
-        headers: { Authorization: `Bearer ${this.user.access_token}` },
-      })
-      .then(res => {
-        this.characters = [];
-        res.data.data.forEach(character => {
-          this.characters.push({
-            id: character.id,
-            name: character.name,
-          });
-        });
-        this.loading({ status: false, message: '' });
-      })
-      .catch(err => {
-        console.log(err.response);
-        this.loading({ status: false, message: '' });
-      });
+    this.getCharacters();
   },
   methods: {
     loading(change) {
       this.$emit('loading', change);
+    },
+    getCharacters() {
+      axios
+        .get(`${this.env}/api/character`, {
+          headers: { Authorization: `Bearer ${this.user.access_token}` },
+        })
+        .then(res => {
+          this.characters = res.data.data;
+          this.characterNames = this.characters.map(character => {
+            return { text: character.name + ' | ' + character.race, value: character.id };
+          });
+          this.loading({ status: false, message: '' });
+        })
+        .catch(err => {
+          console.log(err.response);
+          this.loading({ status: false, message: '' });
+        });
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -216,7 +231,10 @@ export default {
         )
         .then(res => {
           this.characters.push(res.data.character);
-          this.$bvModal.hide('modal-xl-1');
+          this.characterNames = this.characters.map(character => {
+            return { text: character.name + ' | ' + character.race, value: character.id };
+          });
+          this.$bvModal.hide('createCharacter');
           this.form = {
             name: '',
             race: '',
@@ -236,7 +254,25 @@ export default {
         params: { characterId },
       });
     },
-    deleteCharacter() {},
+    deleteCharacter() {
+      axios({
+        url: `${this.env}/api/character`,
+        method: 'delete',
+        data: {
+          withCredentials: true,
+          character_id: this.deletingCharacter,
+        },
+        headers: { Authorization: `Bearer ${this.user.access_token}` },
+      })
+        .then(res => {
+          console.log(res);
+          this.getCharacters();
+          this.$bvModal.hide('deleteCharacterModal');
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
+    },
   },
 };
 </script>
@@ -245,8 +281,10 @@ export default {
 <style lang="scss" scoped>
 .characterButton {
   background-color: $background;
-  color: $secondary;
+  color: $highlight;
   transition: 0.3s;
+  font-size: larger;
+  font-weight: 700;
   h1 {
     transition: -0.1s;
   }
@@ -255,6 +293,30 @@ export default {
 .characterButton:hover,
 .characterButton:active,
 .characterButton:focus {
+  background-color: $highlight;
+  color: $secondary;
+  border-color: $secondary;
+  transition: 0.4s;
+  h1:hover,
+  h1:active {
+    transition: -0.2s;
+  }
+}
+
+.deleteButton {
+  background-color: $background;
+  color: $secondary;
+  transition: 0.3s;
+  font-size: larger;
+  font-weight: 700;
+  h1 {
+    transition: -0.1s;
+  }
+}
+
+.deleteButton:hover,
+.deleteButton:active,
+.deleteButton:focus {
   background-color: $secondary;
   color: $highlight;
   border-color: $highlight;
@@ -263,11 +325,5 @@ export default {
   h1:active {
     transition: -0.2s;
   }
-}
-
-.characterGrid {
-  display: grid;
-  grid-gap: 5%;
-  grid-template-columns: 8fr 1fr;
 }
 </style>
