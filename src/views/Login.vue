@@ -36,8 +36,15 @@
       <b-col cols="0" md="3" lg="4"></b-col>
     </b-row>
     <b-row class="mt-3">
-      <b-col cols="12" offset-md="4" md="4">
+      <b-col cols="12" offset-md="4" md="4" align="center">
         <b-alert :show="!!alertMessage" variant="danger">{{ alertMessage }}</b-alert>
+        <b-spinner
+          v-show="show"
+          variant="success"
+          class="mt-5 mx-auto"
+          type="grow"
+          label="Spinning"
+        />
       </b-col>
     </b-row>
   </div>
@@ -56,6 +63,7 @@ export default {
         password: '',
       },
       alertMessage: null,
+      show: false,
     };
   },
   computed: {
@@ -67,6 +75,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.show = true;
       axios
         .post(`${this.env}/api/auth/login`, {
           withCredentials: true,
@@ -75,10 +84,11 @@ export default {
         })
         .then(res => {
           this.user.access_token = res.data.access_token;
+          this.show = false;
 
           const access_token = {
             token: res.data.access_token,
-            expiry: new Date().getTime() + 1000 * 900,
+            expiry: new Date().getTime() + 1000 * 60 * 120,
           };
 
           localStorage.setItem('access_token', JSON.stringify(access_token));
@@ -88,7 +98,8 @@ export default {
         })
         .catch(err => {
           console.log(err.response);
-          this.alertMessage = err.response;
+          this.show = false;
+          this.alertMessage = err.response.data.error;
           setTimeout(() => {
             this.alertMessage = null;
           }, 1000 * 3);

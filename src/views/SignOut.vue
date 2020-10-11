@@ -12,7 +12,7 @@
 export default {
   name: 'SignOut',
   created() {
-    setTimeout(() => this.$router.push({ path: '/landing' }), 1 * 1000);
+    setTimeout(() => this.$router.push({ path: '/landing' }), 1 * 1000).catch(err => {});
   },
 };
 </script>

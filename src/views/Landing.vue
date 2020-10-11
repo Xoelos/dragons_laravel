@@ -18,11 +18,11 @@
         </h2>
       </b-col>
     </b-row>
-    <b-row>
+    <!-- <b-row>
       <b-col class="mt-4" cols="12" offset-md="4" md="4" align="center">
-        <b-alert :show="!!logout" variant="success">{{ logout }}</b-alert>
+        <b-alert :show="!!logout" variant="primary">{{ logout }}</b-alert>
       </b-col>
-    </b-row>
+    </b-row> -->
   </span>
 </template>
 
@@ -34,6 +34,15 @@ export default {
       type: String,
       default: null,
     },
+  },
+  created() {
+    if (!!this.$props.logout) {
+      this.$bvToast.toast(this.$props.logout, {
+        toaster: 'b-toaster-top-center',
+        variant: 'secondary',
+        solid: true,
+      });
+    }
   },
 };
 </script>

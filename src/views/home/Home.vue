@@ -40,7 +40,9 @@ export default {
       env: 'env',
     }),
   },
-  created() {},
+  created() {
+    this.loading({ status: true, message: 'Loading your Adventure!' });
+  },
   methods: {
     loading(change) {
       this.$emit('loading', change);

@@ -82,10 +82,12 @@ export default {
           this.user.access_token = null;
           this.user.data = null;
           this.loading({ status: false, message: '' });
-          this.$router.push({
-            name: 'Landing',
-            params: { logout: res.data.message },
-          });
+          this.$router
+            .push({
+              name: 'Landing',
+              params: { logout: res.data.message },
+            })
+            .catch(err => {});
         })
         .catch(err => {
           console.log(err.response);
@@ -94,10 +96,12 @@ export default {
             this.user.access_token = null;
             this.user.data = null;
             this.loading({ status: false, message: '' });
-            this.$router.push({
-              name: 'Landing',
-              params: { logout: 'You have been successfully logged out!' },
-            });
+            this.$router
+              .push({
+                name: 'Landing',
+                params: { logout: 'You have been successfully logged out!' },
+              })
+              .catch(err => {});
           }
         });
     },

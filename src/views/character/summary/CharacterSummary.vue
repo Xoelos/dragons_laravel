@@ -103,103 +103,119 @@
               <small class="form-text text-muted">Grapple</small>
               <b-button class="w-100" variant="warning" @click="updateView('grapple')">{{
                 summary.grapple
-              }}</b-button></b-col
-            >
+              }}</b-button>
+            </b-col>
           </b-row>
           <b-row class="mt-5">
-            <b-col cols="12" md="2">
+            <b-col cols="12" md="3" lg="2">
               <small class="form-text text-muted">Class</small>
               <b-form-input
                 v-model="summary.class"
+                class="class"
                 size="sm"
                 :readonly="!editable"
                 required
               />
             </b-col>
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">Experience</small>
-              <b-form-input
-                v-model="exp.experience"
-                type="number"
-                size="sm"
-                :readonly="!editable"
-                required
-              />
-            </b-col>
-            <b-col cols="12" md="2">
+            <b-col cols="12" md="3" lg="2">
               <small class="form-text text-muted">Level</small>
               <div class="level">
                 {{ expCalc({ xp: exp.experience, xp_class: exp.class }) }}
               </div>
             </b-col>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Experience</small>
+              <b-button
+                class="experience"
+                variant="warning"
+                v-b-modal.exp
+                @click="addExp = 'experience'"
+                :readonly="!editable"
+                >{{ exp.experience ? exp.experience : 0 }}</b-button
+              >
+            </b-col>
           </b-row>
 
           <hr class="d-md-none my-5" />
 
           <b-row class="mt-md-2">
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">Multi Class</small>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Multiclass</small>
               <b-form-input
                 v-model="exp.multi_class"
+                class="class"
                 size="sm"
                 :readonly="!editable"
                 required
               />
             </b-col>
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">MC Experience</small>
-              <b-form-input
-                v-model="exp.multi_experience"
-                class="level"
-                size="sm"
-                type="number"
-                :readonly="!editable"
-                required
-              />
-            </b-col>
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">MC Level</small>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Multiclass Level</small>
               <div class="level">
                 {{ expCalc({ xp: exp.multi_experience, xp_class: exp.multi_class }) }}
               </div>
             </b-col>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Multiclass Experience</small>
+              <b-button
+                class="experience"
+                variant="warning"
+                v-b-modal.exp
+                @click="addExp = 'multi_experience'"
+                :readonly="!editable"
+                >{{ exp.multi_experience ? exp.multi_experience : 0 }}</b-button
+              >
+            </b-col>
           </b-row>
 
           <hr class="d-md-none my-5" />
 
           <b-row class="mt-md-2">
-            <b-col cols="12" md="2">
+            <b-col cols="12" md="3" lg="2">
               <small class="form-text text-muted">Prestige Class</small>
               <b-form-input
                 v-model="exp.prestige_class"
+                class="class"
                 size="sm"
                 :readonly="!editable"
                 required
               />
             </b-col>
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">PC Experience</small>
-              <b-form-input
-                v-model="exp.prestige_experience"
-                class="level"
-                size="sm"
-                type="number"
-                :readonly="!editable"
-                required
-              />
-            </b-col>
-            <b-col cols="12" md="2">
-              <small class="form-text text-muted">PC Level</small>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Prestige Class Level</small>
               <div class="level">
                 {{
                   expCalc({ xp: exp.prestige_experience, xp_class: exp.prestige_class })
                 }}
               </div>
             </b-col>
+            <b-col cols="12" md="3" lg="2">
+              <small class="form-text text-muted">Prestige Class Experience</small>
+              <b-button
+                class="experience"
+                variant="warning"
+                v-b-modal.exp
+                @click="addExp = 'prestige_experience'"
+                :readonly="!editable"
+                >{{ exp.prestige_experience ? exp.prestige_experience : 0 }}</b-button
+              >
+            </b-col>
           </b-row>
         </b-container>
       </div>
     </b-container>
+
+    <!-- Modal -->
+    <b-modal
+      id="exp"
+      title="Add Experience!"
+      ok-title="Add"
+      ok-variant="success"
+      :ok-only="true"
+      @ok="addExperience()"
+    >
+      <b-form-input v-model="experience" />
+    </b-modal>
   </span>
 </template>
 
@@ -237,6 +253,8 @@ export default {
         prestige_class: this.summary.prestige_class,
         prestige_experience: this.summary.prestige_experience,
       },
+      addExp: null,
+      experience: 0,
     };
   },
   computed: {
@@ -287,16 +305,26 @@ export default {
       else if (experience <= 0) return 1;
       else return 1;
     },
+    addExperience() {
+      this.exp[this.addExp] += parseInt(this.experience);
+      this.experience = 0;
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-.level {
-  padding: 0.25rem 0.5rem;
+.experience {
+  height: auto;
+  width: 100%;
 }
 
 input {
   text-align: center;
   font-size: 1rem;
+
+  &.class:read-only {
+    background-color: $light !important;
+    border: 0;
+  }
 }
 </style>

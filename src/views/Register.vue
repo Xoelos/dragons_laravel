@@ -76,8 +76,14 @@
     </b-row>
     <b-row>
       <b-col align="center">
-        <b-alert v-if="error !== null" variant="danger">Error! {{ error }}</b-alert>
-        <b-spinner v-show="show" variant="success" type="grow" label="Spinning" />
+        <b-alert :show="!!error" variant="danger">Error! {{ error }}</b-alert>
+        <b-spinner
+          v-show="show"
+          variant="success"
+          class="mt-5"
+          type="grow"
+          label="Spinning"
+        />
       </b-col>
     </b-row>
   </div>
@@ -142,7 +148,7 @@ export default {
 
           const access_token = {
             token: res.data.access_token,
-            expiry: new Date().getTime() + 1000 * 900,
+            expiry: new Date().getTime() + 1000 * 60 * 120,
           };
 
           localStorage.setItem('access_token', JSON.stringify(access_token));

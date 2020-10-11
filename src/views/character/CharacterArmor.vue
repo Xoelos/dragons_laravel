@@ -209,6 +209,7 @@ export default {
       env: 'env',
     }),
   },
+  created() {},
   methods: {
     updateView(breadcrumb) {
       this.$emit('update-view', {

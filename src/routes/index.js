@@ -10,7 +10,7 @@ import Register from '../views/Register';
 import Profile from '../views/Profile';
 import Home from '../views/home/Home';
 import Character from '../views/character/Character.vue';
-import Play from '../views/Play';
+import Play from '../views/play/Play';
 import Landing from '../views/Landing';
 import NotFound from '../views/NotFound';
 
@@ -107,8 +107,108 @@ const router = new Router({
       },
     },
     {
+      path: '/character/summary',
+      name: 'Summary',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Summary`,
+      },
+    },
+    {
+      path: '/character/abilities',
+      name: 'Abilities',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Abilities`,
+      },
+    },
+    {
+      path: '/character/skills',
+      name: 'Skills',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Skills`,
+      },
+    },
+    {
+      path: '/character/saving-throws',
+      name: 'Saving Throws',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Saving Throws`,
+      },
+    },
+    {
+      path: '/character/weapons',
+      name: 'Weapons',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Weapons`,
+      },
+    },
+    {
+      path: '/character/armor',
+      name: 'Armor',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Armor`,
+      },
+    },
+    {
+      path: '/character/spells',
+      name: 'Spells',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Spells`,
+      },
+    },
+    {
+      path: '/character/notes',
+      name: 'Notes',
+      component: Character,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Character Notes`,
+      },
+    },
+    {
       path: '/play',
       name: 'Play',
+      component: Play,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Play Campaign`,
+      },
+    },
+    {
+      path: '/play/chat',
+      name: 'Chat',
+      component: Play,
+      props: true,
+      meta: {
+        requiresAuth: true,
+        title: `${process.env.VUE_APP_SITE_NAME} | Play Campaign`,
+      },
+    },
+    {
+      path: '/play/roll',
+      name: 'Roll',
       component: Play,
       props: true,
       meta: {
@@ -131,18 +231,19 @@ router.beforeEach((to, from, next) => {
   let auth = store.getters.user.access_token;
   let auth_local = JSON.parse(localStorage.getItem('access_token'));
 
-  if (auth_local) {
-    if (!auth && auth_local.expiry > new Date().getTime()) {
-      auth = auth_local.token;
-      store.getters.user.access_token = auth_local.token;
-    }
+  if (!auth && auth_local && auth_local.expiry > new Date().getTime()) {
+    auth = auth_local.token;
+    store.getters.user.access_token = auth_local.token;
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (auth == null) {
+    if (auth == null || !auth_local || auth_local.expiry < new Date().getTime()) {
+      localStorage.removeItem('access_token');
+      store.getters.user.access_token = null;
+      store.getters.user.data = null;
       next({
-        path: '/landing',
-        params: { nextUrl: to.fullPath },
+        name: 'Landing',
+        params: { logout: 'Your credentials have expired, you have been logged out!' },
       });
     } else if (!store.getters.user.data) {
       axios
@@ -155,7 +256,9 @@ router.beforeEach((to, from, next) => {
         })
         .catch(err => {
           console.log(err.response);
-          next();
+          next({
+            name: 'Landing',
+          });
         });
     } else {
       next();

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <span>
     <b-row class="mb-3">
-      <b-col cols="12">
+      <b-col cols="12" lg="10">
         <h2>Characters:</h2>
       </b-col>
     </b-row>
@@ -20,38 +20,21 @@
               >
             </b-col>
           </b-row>
-
-          <b-modal
-            id="deleteCharacterModal"
-            header-text-variant="danger"
-            ok-title="DELETE"
-            ok-variant="secondary"
-            cancel-variant="primary"
-            :title="`Delete character?`"
-            @ok="deleteCharacter()"
-          >
-            <b-form-select
-              v-model="deletingCharacter"
-              :options="characterNames"
-              required
-            />
-            <small>This change is permanent and cannot be undone!</small>
-          </b-modal>
         </b-list-group>
       </b-col>
     </b-row>
     <b-row class="mt-4">
       <b-col cols="12" lg="4">
-        <b-button v-b-modal.createCharacter class="characterButton d-block m-auto"
-          >Create new Character</b-button
+        <b-button v-b-modal.createCharacter class="characterButton d-block"
+          >Create Character</b-button
         >
       </b-col>
       <b-col cols="12" lg="4" class="mt-4 mt-lg-0">
         <b-button
           v-b-modal.deleteCharacterModal
-          class="deleteButton d-block m-auto"
+          class="deleteButton d-block"
           variant="secondary"
-          >Delete a character</b-button
+          >Delete Character</b-button
         >
       </b-col>
     </b-row>
@@ -120,7 +103,21 @@
         </b-form>
       </div>
     </b-modal>
-  </div>
+
+    <!-- Delete Character Modal -->
+    <b-modal
+      id="deleteCharacterModal"
+      header-text-variant="danger"
+      ok-title="DELETE"
+      ok-variant="secondary"
+      cancel-variant="primary"
+      title="Delete character?"
+      @ok="deleteCharacter()"
+    >
+      <b-form-select v-model="deletingCharacter" :options="characterNames" required />
+      <small>This change is permanent and cannot be undone!</small>
+    </b-modal>
+  </span>
 </template>
 
 <script>
@@ -131,8 +128,9 @@ export default {
   name: 'CharacterCreate',
   data: () => {
     return {
-      deletingCharacter: null,
       characters: [],
+      characterNames: [],
+      deletingCharacter: null,
       err: null,
       form: {
         name: '',
@@ -188,7 +186,6 @@ export default {
     }),
   },
   created() {
-    this.loading({ status: true, message: 'Loading your Adventure!' });
     this.getCharacters();
   },
   methods: {
@@ -249,10 +246,12 @@ export default {
         });
     },
     editCharacter(characterId) {
-      this.$router.push({
-        name: 'Character',
-        params: { characterId },
-      });
+      this.$router
+        .push({
+          name: 'Character',
+          params: { characterId },
+        })
+        .catch(err => {});
     },
     deleteCharacter() {
       axios({

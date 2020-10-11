@@ -202,6 +202,7 @@ export default {
       localWeapons: [],
     };
   },
+  created() {},
   mounted: function() {
     this.localWeapons = [...this.$props.weapons];
   },

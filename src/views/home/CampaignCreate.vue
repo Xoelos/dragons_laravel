@@ -1,92 +1,51 @@
 <template>
   <span>
-    <div>
-      <b-row class="d-flex mb-3">
-        <b-col class="pr-2" cols="12" md="auto">
-          <h3>Campaigns: (UNDER CONSTRUCTION)</h3>
-        </b-col>
-      </b-row>
-    </div>
-
-    <!--  <b-col class="d-flex" cols="12" md="auto">
-          <b-button v-b-modal.modal-xl-2 class="ml-auto campaignButton"
-            >Create new Campaign</b-button
+    <b-row class="mb-3">
+      <b-col cols="12" lg="10">
+        <h2>Campaigns:</h2>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-list-group v-if="campaigns.length == 0">
+          <b-list-group-item class="h3"
+            >Create or
+            <span class="d-inline-block">join a campaign!</span></b-list-group-item
           >
-          <b-button v-b-modal.modal-xl-3 class="ml-2 campaignButton"
-            >Join a campaign</b-button
-          >
-        </b-col>
-    <b-list-group v-if="campaigns.length == 0 && joinedCampaigns.length == 0">
-      <b-list-group-item class="mb-3"
-        >Create or join a campaign to get started!</b-list-group-item
-      >
-    </b-list-group>
-    <b-list-group v-else>
-      <div v-for="campaign in campaigns" :key="campaign.id" class="campaignGrid mb-3">
-        <b-list-group-item button @click="startGame(campaign.id, null)">{{
-          `Owned Campaign: ${campaign.name}`
-        }}</b-list-group-item>
-        <b-button
-          v-b-modal.deleteCampaignModal
-          class="deleteCampaignButton"
-          variant="secondary"
-          @click="deleteCampaignId = { id: campaign.id, owned: true, characterId: null }"
-          >X</b-button
+        </b-list-group>
+        <b-list-group v-else>
+          <div v-for="campaign in campaigns" :key="campaign.id" class="campaignGrid mb-3">
+            <b-list-group-item button @click="startGame(campaign.id)" class="h3">{{
+              campaign.name
+            }}</b-list-group-item>
+            <small>{{ `Campaign Code: ${campaign.code}` }}</small
+            ><small v-if="campaign.owner === 1">&nbsp;| Owner</small>
+          </div>
+        </b-list-group>
+      </b-col>
+    </b-row>
+    <b-row class="mt-4 mb-5">
+      <b-col cols="12" lg="4">
+        <b-button v-b-modal.createCampaign class="campaign d-block"
+          >Create Campaign</b-button
         >
-        <small>{{
-          `Campaign ID: ${campaign.id} | Campaign Code: ${campaign.code}`
-        }}</small>
-      </div>
-      <div
-        class="campaignGrid mb-3"
-        v-for="joinedCampaign in joinedCampaigns"
-        :key="joinedCampaign.id"
-      >
-        <b-list-group-item button @click="startGame(joinedCampaign.id, joinedCampaign)">{{
-          `Joined Campaign: ${joinedCampaign.data.name} | Character: ${
-            joinedCampaign.data.users[user.data.uid].characterName
-          }`
-        }}</b-list-group-item>
-        <b-button
-          class="deleteCampaignButton"
-          variant="secondary"
-          @click="
-            deleteCampaignId = {
-              id: joinedCampaign.id,
-              owned: false,
-              characterId: joinedCampaign.data.users[user.data.uid].characterId,
-            }
-          "
-          v-b-modal.deleteCampaignModal
-          >X</b-button
+      </b-col>
+      <b-col cols="12" lg="4" class="mt-4 mt-lg-0">
+        <b-button v-b-modal.joinCampaign class="campaign d-block">Join campaign</b-button>
+      </b-col>
+      <b-col cols="12" lg="4" class="mt-4 mt-lg-0">
+        <b-button v-b-modal.deleteCampaignModal class="delete d-block" variant="secondary"
+          >Delete Campaign</b-button
         >
+      </b-col>
+    </b-row>
 
-        <small>{{
-          `Campaign ID: ${joinedCampaign.id} | Campaign Code: ${joinedCampaign.data.code}`
-        }}</small>
-      </div>
-
-      <b-modal
-        id="deleteCampaignModal"
-        ok-title="DELETE"
-        ok-variant="secondary"
-        cancel-variant="primary"
-        class="d-contents"
-        title="DELETE CAMPAIGN?"
-        @ok="deleteCampaign()"
-      >
-        <p class="my-4">This change is permanent, it cannot be undone!</p>
-      </b-modal>
-    </b-list-group>
-
-    <b-modal id="modal-xl-2" size="xl" title="Start new adventure" hide-footer>
+    <!-- Create Campaign Model -->
+    <b-modal id="createCampaign" size="md" title="Start new adventure" hide-footer>
       <div>
-        <b-form @submit="createCampaign">
+        <b-form @submit="createCampaign" @submit.stop.prevent>
           <b-form-group id="input-group-1" label="Campaign Name:" label-for="input-2">
-            <b-form-input id="input-2" v-model="createForm.name" required />
-          </b-form-group>
-          <b-form-group id="input-group-1" label="Campaign Code:" label-for="input-2">
-            <b-form-input id="input-2" v-model="createForm.code" required />
+            <b-form-input id="input-2" v-model="form.name" required />
           </b-form-group>
           <b-button type="submit" variant="primary">Submit</b-button>
           <b-alert v-if="err !== null" variant="danger">Error! {{ err }}</b-alert>
@@ -94,28 +53,40 @@
       </div>
     </b-modal>
 
-    <b-modal id="modal-xl-3" size="xl" title="Start new adventure" hide-footer>
+    <!-- Join Campaign Model -->
+    <b-modal id="joinCampaign" size="md" title="Join an adventure" hide-footer>
       <div>
-        <b-form @submit="joinCampaign">
-          <b-form-group id="input-group-3" label="Campaign ID:" label-for="input-3">
-            <b-form-input id="input-3" v-model="joinForm.campaignId" required />
-          </b-form-group>
+        <b-form @submit="joinCampaign" @submit.stop.prevent>
           <b-form-group id="input-group-3" label="Campaign Code:" label-for="input-3">
-            <b-form-input id="input-3" v-model="joinForm.code" required />
+            <b-form-input id="input-3" v-model="join.code" required />
           </b-form-group>
-          <b-form-group id="input-group-3" label="Character to use:" label-for="input-3">
-            <b-form-select
-              id="input-3"
-              v-model="joinForm.character"
-              :options="characters"
-              required
-            />
-          </b-form-group>
+          <label>Select Characters:</label>
+          <b-form-select
+            v-model="join.characterIds"
+            :options="characters"
+            :select-size="4"
+            multiple
+            class="mb-3"
+          ></b-form-select>
           <b-button type="submit" variant="primary">Submit</b-button>
           <b-alert v-if="err !== null" variant="danger">Error! {{ err }}</b-alert>
         </b-form>
       </div>
-    </b-modal> -->
+    </b-modal>
+
+    <!-- Delete Campaign Model -->
+    <b-modal
+      id="deleteCampaignModal"
+      header-text-variant="danger"
+      ok-title="DELETE"
+      ok-variant="secondary"
+      cancel-variant="primary"
+      title="Delete Campaign?"
+      @ok="deleteCampaign()"
+    >
+      <b-form-select v-model="deletingCampaign" :options="campaignNames" required />
+      <small>This change is permanent, it cannot be undone!</small>
+    </b-modal>
   </span>
 </template>
 
@@ -126,24 +97,20 @@ import axios from 'axios';
 export default {
   name: 'CampaignCreate',
   data: () => {
-    return { test: null };
-    // {
-    //   deleteCampaignId: '',
-    //   createForm: {
-    //     name: '',
-    //     code: '',
-    //   },
-    //   joinForm: {
-    //     campaignId: '',
-    //     code: '',
-    //     character: '',
-    //   },
-    //   campaigns: [],
-    //   joinedCampaigns: [],
-    //   characters: [],
-    //   invalid: false,
-    //   err: null,
-    // };
+    return {
+      campaigns: [],
+      campaignNames: [],
+      characters: [],
+      deletingCampaign: null,
+      err: null,
+      form: {
+        name: '',
+      },
+      join: {
+        characterIds: [],
+        code: '',
+      },
+    };
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
@@ -152,166 +119,124 @@ export default {
       env: 'env',
     }),
   },
-  async created() {
-    // let res = await axios.get(`${this.env}/api/campaign`, {
-    //   headers: { Authorization: `Bearer ${this.user.access_token}` },
-    // });
-    // console.log(res);
-    // this.campaigns = [];
-    // res.data.forEach(campaign => {
-    //   this.campaigns.push({
-    //     id: campaign.id,
-    //     name: campaign.name,
-    //     code: campaign.code,
-    //   });
-    // });
-    // firebase
-    //   .firestore()
-    //   .collection("campaigns")
-    //   .where(`users.${playerId}.uid`, "==", playerId)
-    //   .onSnapshot((res) => {
-    //     this.joinedCampaigns = [];
-    //     res.forEach((campaign) => {
-    //       this.joinedCampaigns.push({
-    //         id: campaign.id,
-    //         data: campaign.data(),
-    //       });
-    //     });
-    //   });
-    // firebase
-    //   .firestore()
-    //   .collection("campaigns")
-    //   .where("uid", "==", playerId)
-    //   .onSnapshot((res) => {
-    //     this.campaigns = [];
-    //     res.forEach((campaign) => {
-    //       this.campaigns.push({
-    //         id: campaign.id,
-    //         data: campaign.data(),
-    //       });
-    //     });
-    //   });
+  created() {
+    this.getCampaigns();
+    this.getCharacters();
   },
   methods: {
-    createCampaign(e) {
-      e.preventDefault();
-      //   firebase
-      //     .firestore()
-      //     .collection("campaigns")
-      //     .add({
-      //       uid: this.user.data.uid,
-      //       name: this.createForm.name,
-      //       code: this.createForm.code,
-      //     })
-      //     .then((res) => {
-      //       this.$bvModal.hide("modal-xl-2");
-      //     })
-      //     .catch((err) => {
-      //       this.err = err;
-      //     });
+    loading(change) {
+      this.$emit('loading', change);
     },
-    joinCampaign(e) {
-      e.preventDefault();
-      //   let playerId = firebase.auth().currentUser.uid;
-      //   var newId = firebase.firestore().collection("campaigns").doc().id;
-      //   firebase
-      //     .firestore()
-      //     .collection("campaigns")
-      //     .where(
-      //       firebase.firestore.FieldPath.documentId(),
-      //       "==",
-      //       this.joinForm.campaignId
-      //     )
-      //     .where("code", "==", this.joinForm.code)
-      //     .get()
-      //     .then((res) => {
-      //       res.forEach((doc) => {
-      //         if (res.docs.length == 1 && doc.data().uid !== playerId) {
-      //           firebase
-      //             .firestore()
-      //             .collection("campaigns")
-      //             .doc(this.joinForm.campaignId)
-      //             .set(
-      //               {
-      //                 users: {
-      //                   [playerId]: {
-      //                     uid: playerId,
-      //                     characterId: this.joinForm.character.id,
-      //                     firstName: this.user.data.firstName,
-      //                     characterName: this.joinForm.character.name,
-      //                   },
-      //                 },
-      //               },
-      //               { merge: true }
-      //             )
-      //             .then((res) => {
-      //               this.$bvModal.hide("modal-xl-3");
-      //             })
-      //             .catch((err) => {
-      //               this.err = err;
-      //             });
-      //         } else {
-      //           console.log("nothing found for campaign ID!");
-      //           this.invalid = true;
-      //           this.err = "Bad request";
-      //         }
-      //       });
-      //     });
+    getCampaigns() {
+      axios
+        .get(`${this.env}/api/campaign`, {
+          headers: { Authorization: `Bearer ${this.user.access_token}` },
+        })
+        .then(res => {
+          this.campaigns = res.data.data;
+          this.campaignNames = this.campaigns.map(campaign => {
+            return {
+              text: campaign.owner === 1 ? `${campaign.name} (Owned)` : campaign.name,
+              value: campaign.id,
+            };
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     },
-    startGame(campaignId, characterId) {
-      //   if (characterId !== null)
-      //     characterId = characterId.data.users[this.user.data.uid].characterId;
-      //   this.$router.replace({
-      //     name: "Play",
-      //     params: { campaignId, characterId },
-      //   });
+    getCharacters() {
+      axios
+        .get(`${this.env}/api/character`, {
+          headers: { Authorization: `Bearer ${this.user.access_token}` },
+        })
+        .then(res => {
+          this.characters = res.data.data.map(character => {
+            return { text: character.name + ' | ' + character.race, value: character.id };
+          });
+
+          this.loading({ status: false, message: '' });
+        })
+        .catch(err => {
+          console.log(err.response);
+          this.loading({ status: false, message: '' });
+        });
+    },
+    createCampaign() {
+      axios
+        .post(
+          `${this.env}/api/campaign`,
+          {
+            withCredentials: true,
+            name: this.form.name,
+          },
+          {
+            headers: { Authorization: `Bearer ${this.user.access_token}` },
+          }
+        )
+        .then(res => {
+          this.form.name = '';
+          this.campaigns.push(res.data);
+          this.loading({ status: false, message: '' });
+          this.$bvModal.hide('createCampaign');
+        })
+        .catch(err => {
+          console.log(err.response);
+          this.loading({ status: false, message: '' });
+          this.$bvModal.hide('createCampaign');
+        });
+    },
+    joinCampaign() {
+      axios
+        .post(
+          `${this.env}/api/campaign/join`,
+          {
+            withCredentials: true,
+            code: this.join.code,
+            character_ids: this.join.characterIds,
+          },
+          {
+            headers: { Authorization: `Bearer ${this.user.access_token}` },
+          }
+        )
+        .then(res => {
+          this.join.code = '';
+          this.campaigns.push(res.data);
+          this.loading({ status: false, message: '' });
+          this.$bvModal.hide('joinCampaign');
+        })
+        .catch(err => {
+          console.log(err.response);
+          this.loading({ status: false, message: '' });
+          this.$bvModal.hide('joinCampaign');
+        });
     },
     deleteCampaign() {
-      //   if (this.deleteCampaignId.owned) {
-      //     firebase
-      //       .firestore()
-      //       .collection("campaigns")
-      //       .doc(this.deleteCampaignId.id)
-      //       .delete();
-      //   } else {
-      //     let playerId = firebase.auth().currentUser.uid;
-      //     firebase
-      //       .firestore()
-      //       .collection("campaigns")
-      //       .where(
-      //         `users.${playerId}.characterId`,
-      //         "==",
-      //         this.deleteCampaignId.characterId
-      //       )
-      //       .get()
-      //       .then((response) => {
-      //         if (response) {
-      //           response.forEach((doc) => {
-      //             firebase
-      //               .firestore()
-      //               .collection("campaigns")
-      //               .doc(doc.id)
-      //               .update({
-      //                 [`users.${playerId}`]: firebase.firestore.FieldValue.delete(),
-      //               })
-      //               .then((res) => {
-      //                 firebase
-      //                   .database()
-      //                   .ref(`${this.deleteCampaignId.id}/users`)
-      //                   .orderByChild("uid")
-      //                   .equalTo(playerId)
-      //                   .once("value", (res) => {
-      //                     let userKey = Object.keys(res.val())[0];
-      //                     firebase
-      //                       .database()
-      //                       .ref(`${this.deleteCampaignId.id}/users/${userKey}`)
-      //                       .remove();
-      //                   });
-      //               });
-      //           });
-      //         }
-      //       });
-      //   }
+      axios({
+        url: `${this.env}/api/campaign`,
+        method: 'delete',
+        data: {
+          withCredentials: true,
+          campaign_id: this.deletingCampaign,
+        },
+        headers: { Authorization: `Bearer ${this.user.access_token}` },
+      })
+        .then(res => {
+          console.log(res);
+          this.getCampaigns();
+          this.$bvModal.hide('deleteCampaignModal');
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
+    },
+    startGame(campaignId) {
+      this.$router
+        .push({
+          name: 'Play',
+          params: { campaignId },
+        })
+        .catch(err => {});
     },
   },
 };
@@ -319,45 +244,51 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.campaignButton {
+.campaign {
   background-color: $background;
   color: $highlight;
   transition: 0.3s;
+  font-size: larger;
+  font-weight: 700;
   h1 {
     transition: -0.1s;
   }
 }
 
-.campaignButton:hover,
-.campaignButton:active,
-.campaignButton:focus {
+.campaign:hover,
+.campaign:active,
+.campaign:focus {
   background-color: $highlight;
   color: $secondary;
-  transition: 0.4s;
   border-color: $secondary;
-  h1:hover {
+  transition: 0.4s;
+  h1:hover,
+  h1:active {
     transition: -0.2s;
   }
 }
 
-.clickable {
-  div {
-    cursor: pointer;
-    :hover {
-      color: $highlight !important;
-      background-color: $primary;
-    }
+.delete {
+  background-color: $background;
+  color: $secondary;
+  transition: 0.3s;
+  font-size: larger;
+  font-weight: 700;
+  h1 {
+    transition: -0.1s;
   }
 }
 
-.campaignGrid {
-  display: grid;
-  grid-gap: 5%;
-  grid-template-columns: 12fr 1fr;
-}
-
-.deleteCampaignButton {
-  grid-row: 1/2;
-  grid-column: 2/3;
+.delete:hover,
+.delete:active,
+.delete:focus {
+  background-color: $secondary;
+  color: $highlight;
+  border-color: $highlight;
+  transition: 0.4s;
+  h1:hover,
+  h1:active {
+    transition: -0.2s;
+  }
 }
 </style>
