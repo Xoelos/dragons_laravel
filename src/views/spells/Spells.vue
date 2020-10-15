@@ -55,8 +55,8 @@
             class="d-block mx-auto my-5 px-5"
             variant="primary"
             >Search</b-button
-          ></b-col
-        >
+          >
+        </b-col>
       </b-col>
     </b-row>
     <b-row>
@@ -67,30 +67,67 @@
           </b-col>
         </b-row>
         <b-row v-for="(spell, index) in spellResults" :key="index">
-          <b-col cols="12">
-            <div class="d-flex flex-column mb-5 lead" align="left">
-              <h4>Name: {{ spell.name }}</h4>
-              <div>School of Magic: {{ spell.school_of_magic }}</div>
-              <div>
-                Level:
-                <span v-for="(level, index) in spell.level" :key="index">
-                  {{ level.class }} {{ level.level }},
-                </span>
-              </div>
-              <div v-if="spell.components">Components: {{ spell.components }}</div>
-              <div v-if="spell.casting_time">Casting Time: {{ spell.casting_time }}</div>
-              <div v-if="spell.range">Range: {{ spell.range }}</div>
-              <div v-if="spell.area">Area: {{ spell.area }}</div>
-              <div v-if="spell.target">Target: {{ spell.target }}</div>
-              <div v-if="spell.effect">Effect: {{ spell.effect }}</div>
-              <div v-if="spell.duration">Duration: {{ spell.duration }}</div>
-              <div v-if="spell.saving_throw">Saving Throw: {{ spell.saving_throw }}</div>
-              <div v-if="spell.spell_resistance">
-                Spell Resistance: {{ spell.spell_resistance }}
-              </div>
-              <div>Summary: {{ spell.summary }}</div>
-            </div></b-col
-          >
+          <b-col cols="12" md="8" offset-md="2" align="left">
+            <b-card :title="spell.name" border-variant="primary" class="my-3 p-4">
+              <b-card-sub-title>
+                <div class="mb-2">{{ spell.school_of_magic }}</div>
+                <div class="mb-2">{{ spellLevels(spell.level) }}</div>
+              </b-card-sub-title>
+              <b-collapse :id="'collapse-summary-' + spell.id" :visible="true">
+                <b-card-text>
+                  {{ spellSummary(spell.summary) }}
+                </b-card-text>
+              </b-collapse>
+              <b-collapse :id="'collapse-' + spell.id">
+                <b-card-text v-if="spell.components"
+                  ><span class="lead mr-2">Components:</span>
+                  {{ spell.components }}</b-card-text
+                >
+                <b-card-text v-if="spell.casting_time"
+                  ><span class="lead mr-2">Casting Time:</span>
+                  {{ spell.casting_time }}</b-card-text
+                >
+                <b-card-text v-if="spell.range"
+                  ><span class="lead mr-2">Range:</span> {{ spell.range }}</b-card-text
+                >
+                <b-card-text v-if="spell.area"
+                  ><span class="lead mr-2">Area:</span> {{ spell.area }}</b-card-text
+                >
+                <b-card-text v-if="spell.target"
+                  ><span class="lead mr-2">Target:</span> {{ spell.target }}</b-card-text
+                >
+                <b-card-text v-if="spell.effect"
+                  ><span class="lead mr-2">Effect:</span> {{ spell.effect }}</b-card-text
+                >
+                <b-card-text v-if="spell.duration"
+                  ><span class="lead mr-2">Duration:</span>
+                  {{ spell.duration }}</b-card-text
+                >
+                <b-card-text v-if="spell.saving_throw"
+                  ><span class="lead mr-2">Saving Throw:</span>
+                  {{ spell.saving_throw }}</b-card-text
+                >
+                <b-card-text v-if="spell.spell_resistance">
+                  <span class="lead mr-2">Spell Resistance:</span>
+                  {{ spell.spell_resistance }}
+                </b-card-text>
+                <b-card-text>
+                  <div class="lead mr-2">Summary:</div>
+                  <b-row>
+                    <b-col cols="12">
+                      <p class="spell-summary lead">{{ spell.summary }}</p>
+                    </b-col>
+                  </b-row>
+                </b-card-text>
+              </b-collapse>
+              <b-button
+                variant="primary"
+                class="mt-5"
+                v-b-toggle="'collapse-' + spell.id + ' collapse-summary-' + spell.id"
+                >Details</b-button
+              >
+            </b-card>
+          </b-col>
         </b-row>
       </b-col>
     </b-row>
@@ -194,9 +231,35 @@ export default {
           console.log(err.response);
         });
     },
+    spellLevels(spellLevels) {
+      let levels = '';
+      spellLevels.forEach((level, index) => {
+        levels += level.class;
+        levels += ' ';
+        levels += level.level;
+        if (index !== spellLevels.length - 1) levels += ', ';
+      });
+      return levels;
+    },
+    spellSummary(spellSummary) {
+      let i = 60;
+      spellSummary = spellSummary.split(' ');
+      if (spellSummary.length > i) {
+        spellSummary = spellSummary.slice(0, i).join(' ');
+        spellSummary += '...';
+      } else {
+        spellSummary = spellSummary.slice(0, i).join(' ');
+      }
+      return spellSummary;
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.spell-summary {
+  margin-top: 1.5em;
+  line-height: 1.75;
+}
+</style>
