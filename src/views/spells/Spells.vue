@@ -73,11 +73,6 @@
                 <div class="mb-2">{{ spell.school_of_magic }}</div>
                 <div class="mb-2">{{ spellLevels(spell.level) }}</div>
               </b-card-sub-title>
-              <b-collapse :id="'collapse-summary-' + spell.id" :visible="true">
-                <b-card-text>
-                  {{ spellSummary(spell.summary) }}
-                </b-card-text>
-              </b-collapse>
               <b-collapse :id="'collapse-' + spell.id">
                 <b-card-text v-if="spell.components"
                   ><span class="lead mr-2">Components:</span>
@@ -115,9 +110,16 @@
                   <div class="lead mr-2">Summary:</div>
                   <b-row>
                     <b-col cols="12">
-                      <p class="spell-summary lead">{{ spell.summary }}</p>
+                      <p class="spell-summary lead pre-wrap">
+                        {{ spell.summary }}
+                      </p>
                     </b-col>
                   </b-row>
+                </b-card-text>
+              </b-collapse>
+              <b-collapse :id="'collapse-summary-' + spell.id" :visible="true">
+                <b-card-text>
+                  {{ spellSummary(spell.summary) }}
                 </b-card-text>
               </b-collapse>
               <b-button
@@ -261,5 +263,9 @@ export default {
 .spell-summary {
   margin-top: 1.5em;
   line-height: 1.75;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
 }
 </style>
